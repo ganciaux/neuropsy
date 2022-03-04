@@ -17,6 +17,7 @@ export const useStyles = makeStyles((theme) => ({
       paddingTop: '70px',
       paddingLeft: '70px',
     },
+    width: '100%',
   },
 }))
 
