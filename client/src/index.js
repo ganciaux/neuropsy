@@ -5,6 +5,9 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Clients from './pages/Clients/Clients'
+import ClientAdd from './pages/Clients/ClientAdd'
+import ClientEdit from './pages/Clients/ClientEdit'
+import ClientDetails from './pages/Clients/ClientDetails'
 import { ThemeProvider } from '@mui/styles'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -14,6 +17,9 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="clients" element={<Clients />} />
+          <Route path="clients/add" element={<ClientAdd />} />
+          <Route path="clients/edit/:id" element={<ClientEdit />} />
+          <Route path="clients/details/:id" element={<ClientDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>

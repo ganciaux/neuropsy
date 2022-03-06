@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
   gridWrapperStyles: {
     position: 'relative',
     paddingTop: '80px',
-    paddingLeft: '150px',
+    paddingLeft: '200px',
     paddingRight: '20px',
     minHeight: 'calc(100vh)',
     textAlign: 'justify',
