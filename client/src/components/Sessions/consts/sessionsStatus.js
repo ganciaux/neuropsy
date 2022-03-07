@@ -1,4 +1,4 @@
-export const clientTypes = [
+export const sessionStatus = [
   {
     id: 0,
     value: 0,
@@ -7,16 +7,21 @@ export const clientTypes = [
   {
     id: 1,
     value: 1,
-    label: 'Madame',
+    label: 'Plannifié',
   },
   {
     id: 2,
     value: 2,
-    label: 'Monsieur',
+    label: 'Reporté',
   },
   {
     id: 3,
     value: 3,
-    label: 'Societé',
+    label: 'Annulé',
+  },
+  {
+    id: 4,
+    value: 4,
+    label: 'Validé',
   },
 ]

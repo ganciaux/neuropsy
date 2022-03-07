@@ -3,7 +3,9 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import HomeIcon from '@mui/icons-material/Home'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EuroIcon from '@mui/icons-material/Euro'
-import ListAltIcon from '@mui/icons-material/ListAlt'
+import TodayIcon from '@mui/icons-material/Today'
+import ArticleIcon from '@mui/icons-material/Article'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 
 export const mainNavbarItems = [
   {
@@ -20,7 +22,7 @@ export const mainNavbarItems = [
   },
   {
     id: 2,
-    icon: <CalendarTodayIcon />,
+    icon: <TodayIcon />,
     label: 'Rendez-vous',
     route: 'sessions',
   },
@@ -32,8 +34,14 @@ export const mainNavbarItems = [
   },
   {
     id: 4,
-    icon: <ListAltIcon />,
+    icon: <ShoppingCartIcon />,
     label: 'Commandes',
     route: 'orders',
+  },
+  {
+    id: 5,
+    icon: <ArticleIcon />,
+    label: 'Articles',
+    route: 'articles',
   },
 ]

@@ -8,6 +8,12 @@ import Clients from './pages/Clients/Clients'
 import ClientAdd from './pages/Clients/ClientAdd'
 import ClientEdit from './pages/Clients/ClientEdit'
 import ClientDetails from './pages/Clients/ClientDetails'
+import Articles from './pages/Articles/Articles'
+import ArticleAdd from './pages/Articles/ArticleAdd'
+import ArticleEdit from './pages/Articles/ArticleEdit'
+import ArticleDetails from './pages/Articles/ArticleDetails'
+import Payments from './pages/Payments/Payments'
+import PaymentAdd from './pages/Payments/PaymentAdd'
 import { ThemeProvider } from '@mui/styles'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -20,6 +26,12 @@ ReactDOM.render(
           <Route path="clients/add" element={<ClientAdd />} />
           <Route path="clients/edit/:id" element={<ClientEdit />} />
           <Route path="clients/details/:id" element={<ClientDetails />} />
+          <Route path="articles" element={<Articles />} />
+          <Route path="articles/add" element={<ArticleAdd />} />
+          <Route path="articles/edit/:id" element={<ArticleEdit />} />
+          <Route path="articles/details/:id" element={<ArticleDetails />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="payments/add" element={<PaymentAdd />} />
         </Route>
       </Routes>
     </BrowserRouter>

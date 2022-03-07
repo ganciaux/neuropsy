@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import BasicCard from '../../components/common/BasicCard/BasicCard'
 import axios from 'axios'
-import { Button, Link, Stack, TextField, Typography } from '@mui/material'
+import { TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EuroIcon from '@mui/icons-material/Euro'
-import CommonButton from '../../components/common/CommonButton/CommonButton'
+import Header from '../../components/common/Header/Header'
+import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
+import DataLineAction from '../../components/common/DataLine/DataLineAction'
 
 const Clients = () => {
   const [clients, setClients] = useState([])
-  const [filter, setFilter] = useState('')
   const [clientsFiltered, setClientsFiltered] = useState([])
 
   useEffect(() => {
@@ -39,62 +40,41 @@ const Clients = () => {
   }
 
   const getContent = (client) => {
-    console.log(client)
     return (
       <>
         <Typography variant="h6" gutterBottom>
           {client.name} {client.firstname}
         </Typography>
-        {getLine(<AlternateEmailIcon />, client.email)}
-        {getLine(<PhoneIphoneIcon />, client.phone)}
-        {getLine(<CalendarTodayIcon />, 'Rendez-vous...')}
-        {getLine(<EuroIcon />, 'Paiments...')}
+        <DataLineIcon icon={<AlternateEmailIcon />} text={client.email} />
+        <DataLineIcon icon={<PhoneIphoneIcon />} text={client.phone} />
+        <DataLineIcon icon={<CalendarTodayIcon />} text="Rendez-vous..." />
+        <DataLineIcon icon={<EuroIcon />} text="Paiments..." />
       </>
-    )
-  }
-
-  const getLine = (icon, text) => {
-    return (
-      <Stack direction="row" alignItems="center" gap={1}>
-        {icon}
-        <Typography variant="body1">{text}</Typography>
-      </Stack>
     )
   }
 
   const getAction = (id) => {
     return (
       <>
-        <Link href={`/clients/details/${id}`} underline="hover">
-          <Button size="small">Details</Button>
-        </Link>
-        <Link href={`/clients/edit/${id}`} underline="hover">
-          <Button size="small">Modifier</Button>
-        </Link>
+        <DataLineAction url="/clients/details" id={id} label="Détails" />
+        <DataLineAction url="/clients/edit" id={id} label="Modifier" />
       </>
     )
   }
 
   return (
     <Box>
-      <Typography variant="h3" gutterBottom component="div">
-        Liste des clients
-        <Link href="/clients/add" underline="hover">
-          <CommonButton variant="contained">Ajouter</CommonButton>
-        </Link>
-      </Typography>
+      <Header title="Liste de clients" href="/clients/add" action="Ajouter" />
       <TextField
         name="search"
-        placeholder="Filtre"
-        label="Filtre"
+        placeholder="Recherche dans le nom, le prénom et l'email"
+        label="Filtre de recherche"
         variant="outlined"
         fullWidth
-        required
         onChange={handleFilter}
       />
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
         {clientsFiltered.map((client) => {
-          console.log(client)
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={client.id}>
               <BasicCard

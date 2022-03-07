@@ -6,26 +6,18 @@ import { Box } from '@mui/material'
 import Header from '../../components/common/Header/Header'
 import CommonGrid from '../../components/common/CommonGrid/CommonGrid'
 import CommonGridLine from '../../components/common/CommonGrid/CommonGridLine'
-import { format, parseISO } from 'date-fns'
 
-const ClientDetails = () => {
+const ArticleDetails = () => {
   const { id } = useParams()
   const [isLoading, setIsLoading] = React.useState(true)
   const [data, setData] = React.useState({})
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/clients/${id}`)
+      .get(`http://localhost:5001/api/articles/${id}`)
       .then((res) => {
         setIsLoading(false)
         setData(res.data.data)
-        setData({
-          ...data,
-          birthdateStr: format(
-            new Date(parseISO(res.data.data.birthdate)),
-            'dd-MM-yyyy',
-          ),
-        })
       })
       .catch((err) => {
         setIsLoading(false)
@@ -35,7 +27,7 @@ const ClientDetails = () => {
 
   return (
     <Box>
-      <Header title="Details clients" />
+      <Header title="Détails article" />
       {isLoading && (
         <Box sx={{ display: 'flex' }}>
           <CircularProgress />
@@ -44,13 +36,9 @@ const ClientDetails = () => {
       {!isLoading && (
         <CommonGrid title="Fiche article">
           <CommonGridLine label="Nom" value={data.name} />
-          <CommonGridLine label="Prénom" value={data.firstname} />
-          <CommonGridLine label="Email" value={data.email} />
-          <CommonGridLine label="Téléphone" value={data.phone} />
-          <CommonGridLine label="Ville" value={data.city} />
-          <CommonGridLine label="Code postal" value={data.zip} />
-          <CommonGridLine label="Adresse" value={data.address} />
-          <CommonGridLine label="Date de naissance" value={data.birthdateStr} />
+          <CommonGridLine label="Label" value={data.label} />
+          <CommonGridLine label="Prix" value={`${data.price?.toFixed(2)}€`} />
+          <CommonGridLine label="Nombre de sessions" value={data.sessions} />
           <CommonGridLine label="Description" value={data.name} />
         </CommonGrid>
       )}
@@ -58,4 +46,4 @@ const ClientDetails = () => {
   )
 }
 
-export default ClientDetails
+export default ArticleDetails

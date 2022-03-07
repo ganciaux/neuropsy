@@ -2,32 +2,21 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
 import { Alert, Button, TextField, Typography } from '@mui/material'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import ClientType from './ClientType'
 
-const ClientForm = ({ id }) => {
+const ArticleForm = ({ id }) => {
   const isNew = id ? false : true
   const defaultData = {
     name: '',
-    firstname: '',
-    type: 0,
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    zip: '',
-    address: '',
-    city: '',
+    label: '',
+    price: '',
+    sessions: '',
     description: '',
-    birthdate: new Date(),
   }
 
   useEffect(() => {
     if (isNew === false) {
       axios
-        .get(`http://localhost:5001/api/clients/${id}`)
+        .get(`http://localhost:5001/api/articles/${id}`)
         .then((res) => {
           console.log(res)
           setData(res.data.data)
@@ -43,7 +32,7 @@ const ClientForm = ({ id }) => {
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
-        .post('http://localhost:5001/api/clients', data)
+        .post('http://localhost:5001/api/articles', data)
         .then((res) => {
           setData(defaultData)
           setError({ isSuccess: true, isError: false, message: 'Success' })
@@ -53,7 +42,7 @@ const ClientForm = ({ id }) => {
         })
     } else {
       axios
-        .put(`http://localhost:5001/api/clients/${data._id}`, data)
+        .put(`http://localhost:5001/api/articles/${data._id}`, data)
         .then((res) => {
           setError({ isSuccess: true, isError: false, message: 'Success' })
         })
@@ -79,7 +68,7 @@ const ClientForm = ({ id }) => {
       <Grid item xs={12}>
         <form>
           <Grid container spacing={1}>
-            <Grid xs={12} sm={6} item>
+            <Grid xs={12} sm={12} item>
               <TextField
                 name="name"
                 placeholder="Nom"
@@ -91,102 +80,41 @@ const ClientForm = ({ id }) => {
                 onChange={handleOnChange}
               />
             </Grid>
-            <Grid xs={12} sm={6} item>
+            <Grid item xs={12}>
               <TextField
-                name="firstname"
-                placeholder="Prénom"
-                label="Prénom"
-                value={data.firstname}
+                name="label"
+                placeholder="Label"
+                label="Label"
+                value={data.label}
                 variant="outlined"
                 fullWidth
                 required
                 onChange={handleOnChange}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  name="birthdate"
-                  label="Date de naissance"
-                  inputFormat="dd/MM/yyyy"
-                  value={data.birthdate}
-                  fullWidth
-                  onChange={handleChangeDate}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      required
-                      onChange={handleOnChange}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ClientType
-                id="clientType"
-                name="type"
-                value={data.type}
-                onChange={handleOnChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={6}>
               <TextField
-                name="email"
-                type="email"
-                placeholder="Email"
-                label="Email"
-                value={data.email}
-                variant="outlined"
-                fullWidth
-                onChange={handleOnChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="phone"
+                name="price"
                 type="number"
-                placeholder="Enter phone number"
-                label="Phone"
-                value={data.phone}
+                placeholder="Prix"
+                label="Prix"
+                value={data.price}
                 variant="outlined"
                 fullWidth
+                required
                 onChange={handleOnChange}
               />
             </Grid>
-            <Grid xs={12} sm={6} item>
+            <Grid item xs={6}>
               <TextField
-                name="city"
-                placeholder="Ville"
-                label="Ville"
-                value={data.city}
+                name="sessions"
+                type="number"
+                placeholder="Rendez-vous"
+                label="Rendez-vous"
+                value={data.sessions}
                 variant="outlined"
                 fullWidth
-                onChange={handleOnChange}
-              />
-            </Grid>
-            <Grid xs={12} sm={6} item>
-              <TextField
-                name="zip"
-                placeholder="Code postal"
-                label="Code postal"
-                value={data.zip}
-                variant="outlined"
-                fullWidth
-                onChange={handleOnChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="address"
-                label="Adresse"
-                value={data.address}
-                multiline
-                rows={4}
-                placeholder="Adresse"
-                variant="outlined"
-                fullWidth
+                required
                 onChange={handleOnChange}
               />
             </Grid>
@@ -200,6 +128,7 @@ const ClientForm = ({ id }) => {
                 placeholder="Description"
                 variant="outlined"
                 fullWidth
+                required
                 onChange={handleOnChange}
               />
             </Grid>
@@ -229,4 +158,4 @@ const ClientForm = ({ id }) => {
   )
 }
 
-export default ClientForm
+export default ArticleForm
