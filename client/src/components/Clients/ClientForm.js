@@ -1,17 +1,11 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Alert, Button, TextField, Typography } from '@mui/material'
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import ClientType from './ClientType'
 
 const ClientForm = ({ id }) => {
   const isNew = id ? false : true
@@ -24,7 +18,9 @@ const ClientForm = ({ id }) => {
     address: '',
     city: '',
     zip: '',
-    comment: '',
+    address: '',
+    city: '',
+    description: '',
     birthdate: new Date(),
   }
 
@@ -72,6 +68,7 @@ const ClientForm = ({ id }) => {
 
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
+    console.log(data)
   }
   const handleChangeDate = (newValue) => {
     setData({ ...data, birthdate: newValue })
@@ -117,12 +114,11 @@ const ClientForm = ({ id }) => {
                 onChange={handleOnChange}
               />
             </Grid>
-
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   name="birthdate"
-                  label="Date desktop"
+                  label="Date de naissance"
                   inputFormat="dd/MM/yyyy"
                   value={data.birthdate}
                   fullWidth
@@ -135,7 +131,6 @@ const ClientForm = ({ id }) => {
                 />
               </LocalizationProvider>
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 name="email"
@@ -163,13 +158,59 @@ const ClientForm = ({ id }) => {
               />
             </Grid>
             <Grid item xs={12}>
+              <ClientType
+                id="clientType"
+                name="type"
+                value={data.type}
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid xs={12} sm={6} item>
               <TextField
-                name="comment"
-                label="Commentaire"
-                value={data.comment}
+                name="city"
+                placeholder="Ville"
+                label="Ville"
+                value={data.city}
+                variant="outlined"
+                fullWidth
+                required
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid xs={12} sm={6} item>
+              <TextField
+                name="zip"
+                placeholder="Code postal"
+                label="Code postal"
+                value={data.zip}
+                variant="outlined"
+                fullWidth
+                required
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="address"
+                label="Adresse"
+                value={data.address}
                 multiline
                 rows={4}
-                placeholder="Type your comment here"
+                placeholder="Adresse"
+                variant="outlined"
+                fullWidth
+                required
+                onChange={handleOnChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="description"
+                label="Description"
+                value={data.description}
+                multiline
+                rows={4}
+                placeholder="Description"
                 variant="outlined"
                 fullWidth
                 required

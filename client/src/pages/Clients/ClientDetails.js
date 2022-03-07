@@ -36,28 +36,33 @@ const ClientDetails = () => {
       )}
       {!isLoading && (
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <Typography variant="h6" component="div">
               Fiche client
             </Typography>
-            <Grid
-              container
-              rowSpacing={1}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
-              <Grid item xs={6}>
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1 }}>
+              <Grid item xs={12} lg={6}>
                 Nom: {data.name}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} lg={6}>
                 Prénom: {data.firstname}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} lg={6}>
                 Email: {data.email}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} lg={6}>
+                Tel: {data.phone}
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                Ville: {data.city}
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                Code postal: {data.zip}
+              </Grid>
+              <Grid item xs={12} lg={6}>
                 Adresse: {data.address}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} lg={6}>
                 Date de naissance: {data.birthdate}
               </Grid>
             </Grid>
