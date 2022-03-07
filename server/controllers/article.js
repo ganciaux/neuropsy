@@ -1,0 +1,8 @@
+const Article = require('../models/article')
+const factory = require('./handlerFactory')
+
+exports.getAllArticles = factory.getAll(Article)
+exports.getArticle = factory.getOne(Article)
+exports.createArticle = factory.createOne(Article)
+exports.updateArticle = factory.updateOne(Article)
+exports.deleteArticle = factory.deleteOne(Article)
