@@ -6,20 +6,31 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein }
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
+import { Link } from '@mui/material'
+import axios from 'axios'
 
 export default function PaymentTable({ data }) {
+  const [error, setError] = React.useState({ isError: false, message: '' })
+  const [payments, setPayments] = React.useState(data)
+
+  console.log(payments, data)
+
+  const handleDelete = (row) => {
+    console.log(row)
+    axios
+      .delete(`http://localhost:5001/api/payments/${row._id}`)
+      .then((res) => {
+        setError({ isSuccess: true, isError: false, message: 'Success' })
+        const newPayments = payments.filter((item) => payments.id !== row._id)
+        setPayments(newPayments)
+      })
+      .catch((err) => {
+        setError({ isError: true, message: err.response.data.message })
+      })
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -31,12 +42,13 @@ export default function PaymentTable({ data }) {
             <TableCell>Type</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Description</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {payments.map((row, index) => (
             <TableRow
-              key={row.name}
+              key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -47,6 +59,16 @@ export default function PaymentTable({ data }) {
               <TableCell>{row.type}</TableCell>
               <TableCell>{row.status}</TableCell>
               <TableCell>{row.description}</TableCell>
+              <TableCell>
+                <Link href={`/payments/edit/${row._id}`} underline="hover">
+                  <EditIcon size="small">Modifier</EditIcon>
+                </Link>
+                <DeleteForeverIcon
+                  sx={{ cursor: 'pointer' }}
+                  color="error"
+                  onClick={(e) => handleDelete(row)}
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

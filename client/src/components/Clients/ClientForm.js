@@ -18,8 +18,6 @@ const ClientForm = ({ id }) => {
     address: '',
     city: '',
     zip: '',
-    address: '',
-    city: '',
     description: '',
     birthdate: new Date(),
   }

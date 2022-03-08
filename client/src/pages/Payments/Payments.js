@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid'
-import BasicCard from '../../components/common/BasicCard/BasicCard'
 import axios from 'axios'
-import { TextField, Typography } from '@mui/material'
+import { TextField } from '@mui/material'
 import { Box } from '@mui/system'
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
-import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone'
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import EuroIcon from '@mui/icons-material/Euro'
 import Header from '../../components/common/Header/Header'
-import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
-import DataLineAction from '../../components/common/DataLine/DataLineAction'
 import PaymentTable from '../../components/Payments/PaymentTable'
 
 const Payments = () => {
@@ -30,25 +22,28 @@ const Payments = () => {
   }, [])
 
   const handleFilter = (e) => {
-    const result = payments.filter(
-      (client) =>
-        client.name.includes(e.target.value) ||
-        client.firstname.includes(e.target.value) ||
-        client.email.includes(e.target.value),
-    )
+    const pattern = e.target.value.toLowerCase()
+    const result = payments.filter((payment) => {
+      console.log(payment)
+      return (
+        payment.clientId?._name?.toLowerCase().includes(pattern) ||
+        payment.price.toString().toLowerCase().includes(pattern)
+      )
+    })
+    console.log(result)
     setPaymentsFiltered(result)
   }
 
   return (
     <Box>
       <Header
-        title="Liste des paiments"
+        title="Liste des paiements"
         href="/payments/add"
         action="Ajouter"
       />
       <TextField
         name="search"
-        placeholder="Recherche dans le nom, le prénom, l'email et le prix"
+        placeholder="Recherche dans le nom et le prix"
         label="Filtre de recherche"
         variant="outlined"
         fullWidth

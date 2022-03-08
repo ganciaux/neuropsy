@@ -7,9 +7,7 @@ const CommonGridForm = ({ children }) => {
       <Grid item xs={12}>
         <form>
           <Grid container spacing={1}>
-            <Grid xs={12} sm={6} item>
-              {children}
-            </Grid>
+            {children}
           </Grid>
         </form>
       </Grid>

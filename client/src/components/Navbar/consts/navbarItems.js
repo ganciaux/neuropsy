@@ -29,7 +29,7 @@ export const mainNavbarItems = [
   {
     id: 3,
     icon: <EuroIcon />,
-    label: 'Paiments',
+    label: 'Paiements',
     route: 'payments',
   },
   {

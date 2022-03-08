@@ -48,7 +48,7 @@ const Clients = () => {
         <DataLineIcon icon={<AlternateEmailIcon />} text={client.email} />
         <DataLineIcon icon={<PhoneIphoneIcon />} text={client.phone} />
         <DataLineIcon icon={<CalendarTodayIcon />} text="Rendez-vous..." />
-        <DataLineIcon icon={<EuroIcon />} text="Paiments..." />
+        <DataLineIcon icon={<EuroIcon />} text="Paiements..." />
       </>
     )
   }

@@ -3,7 +3,7 @@ const factory = require('./handlerFactory')
 
 exports.getAllPayments = factory.getAll(Payment, {
   path: 'clientId',
-  select: 'firstname, name',
+  select: 'firstname name',
 })
 exports.getPayment = factory.getOne(Payment)
 exports.createPayment = factory.createOne(Payment)

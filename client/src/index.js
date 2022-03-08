@@ -14,6 +14,8 @@ import ArticleEdit from './pages/Articles/ArticleEdit'
 import ArticleDetails from './pages/Articles/ArticleDetails'
 import Payments from './pages/Payments/Payments'
 import PaymentAdd from './pages/Payments/PaymentAdd'
+import PaymentEdit from './pages/Payments/PaymentEdit'
+
 import { ThemeProvider } from '@mui/styles'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -32,6 +34,7 @@ ReactDOM.render(
           <Route path="articles/details/:id" element={<ArticleDetails />} />
           <Route path="payments" element={<Payments />} />
           <Route path="payments/add" element={<PaymentAdd />} />
+          <Route path="payments/edit/:id" element={<PaymentEdit />} />
         </Route>
       </Routes>
     </BrowserRouter>
