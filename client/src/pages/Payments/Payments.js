@@ -34,7 +34,6 @@ const Payments = () => {
   }
 
   const handleDelete = (row) => {
-    console.log(row)
     axios
       .delete(`${process.env.REACT_APP_API_URL}/payments/${row._id}`)
       .then((res) => {

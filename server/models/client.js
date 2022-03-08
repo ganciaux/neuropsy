@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const slug = require('mongoose-slug-updater')
 const { isEmail } = require('validator')
 const utils = require('../utils/utils')
+const Payment = require('./payment')
 
 mongoose.plugin(slug)
 
@@ -90,6 +91,20 @@ clientSchema.virtual('_age').get(function () {
     return ''
   }
 })
+
+/*
+clientSchema.virtual('_payments').get(async function () {
+  const payments = this.constructor.payments(this.id)
+  return payments
+})
+
+clientSchema.statics.payments = async function (clientId) {
+  const payments = await Payment.findOne({ clientId: clientId })
+  console.log('statics:', clientId)
+  console.log(payments)
+  return payments
+}
+*/
 
 const ClientModel = mongoose.model('Client', clientSchema)
 

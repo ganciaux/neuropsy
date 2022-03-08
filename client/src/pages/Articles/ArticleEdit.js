@@ -5,7 +5,6 @@ import Header from '../../components/common/Header/Header'
 
 const ArticleEdit = () => {
   const { id } = useParams()
-  console.log('ArticleEdit', id)
   return (
     <>
       <Header title="Modification article" />

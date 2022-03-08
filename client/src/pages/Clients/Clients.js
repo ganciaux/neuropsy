@@ -22,7 +22,6 @@ const Clients = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/clients`)
       .then((res) => {
-        console.log(res)
         setClients(res.data.data)
         setClientsFiltered(res.data.data)
       })

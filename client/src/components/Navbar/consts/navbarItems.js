@@ -1,7 +1,5 @@
-import PeopleIcon from '@mui/icons-material/People'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import HomeIcon from '@mui/icons-material/Home'
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EuroIcon from '@mui/icons-material/Euro'
 import TodayIcon from '@mui/icons-material/Today'
 import ArticleIcon from '@mui/icons-material/Article'

@@ -3,6 +3,7 @@ const Article = require('./article')
 const Client = require('./client')
 const Reference = require('./reference')
 const utils = require('../utils/utils')
+const slug = require('mongoose-slug-updater')
 
 const orderSchema = new mongoose.Schema(
   {
@@ -28,6 +29,12 @@ const orderSchema = new mongoose.Schema(
         validator: Number.isInteger,
         message: '{VALUE} is not an integer value',
       },
+    },
+    slug: {
+      type: String,
+      slug: 'refId',
+      unique: true,
+      slugPaddingSize: 3,
     },
     ref: {
       type: String,

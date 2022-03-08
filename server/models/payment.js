@@ -1,9 +1,19 @@
 const mongoose = require('mongoose')
 const Client = require('./client')
 const utils = require('../utils/utils')
+const slug = require('mongoose-slug-updater')
 
 const paymentSchema = new mongoose.Schema(
   {
+    slug: {
+      type: String,
+      slug: 'type',
+      unique: true,
+      slugPaddingSize: 3,
+      transform: (v) => {
+        return 'payment'
+      },
+    },
     clientId: {
       type: mongoose.Schema.ObjectId,
       ref: 'Client',
@@ -51,6 +61,14 @@ const paymentSchema = new mongoose.Schema(
 paymentSchema.virtual('_date').get(function () {
   if (this.date) return utils.formatDate(this.date)
   else {
+    return ''
+  }
+})
+
+paymentSchema.virtual('_date').get(function () {
+  if (this.date) {
+    return utils.formatDate(this.date)
+  } else {
     return ''
   }
 })

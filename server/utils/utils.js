@@ -36,6 +36,10 @@ const formatDate = (date) => {
   return datefns.format(Date.parse(date), 'dd-MM-yyyy')
 }
 
+const getDateYear = () => {
+  return datefns.getYear(new Date())
+}
+
 const getDateInfo = (date) => {
   const newDate = Date.parse(date)
   return {
@@ -70,7 +74,7 @@ const getAge = (date) => {
       }
     }
   } catch (err) {
-    console.log('getAge(): error')
+    console.log('utils.js: getAge(): error')
   }
 
   return age
@@ -81,3 +85,4 @@ exports.getReference = getReference
 exports.getArticlesPrice = getArticlesPrice
 exports.formatDate = formatDate
 exports.getAge = getAge
+exports.getDateYear = getDateYear

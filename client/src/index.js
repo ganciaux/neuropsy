@@ -15,7 +15,9 @@ import ArticleDetails from './pages/Articles/ArticleDetails'
 import Payments from './pages/Payments/Payments'
 import PaymentAdd from './pages/Payments/PaymentAdd'
 import PaymentEdit from './pages/Payments/PaymentEdit'
-
+import Sessions from './pages/Sessions/Sessions'
+import SessionAdd from './pages/Sessions/SessionAdd'
+import SessionEdit from './pages/Sessions/SessionEdit'
 import { ThemeProvider } from '@mui/styles'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -35,6 +37,9 @@ ReactDOM.render(
           <Route path="payments" element={<Payments />} />
           <Route path="payments/add" element={<PaymentAdd />} />
           <Route path="payments/edit/:id" element={<PaymentEdit />} />
+          <Route path="sessions" element={<Sessions />} />
+          <Route path="sessions/add" element={<SessionAdd />} />
+          <Route path="sessions/edit/:id" element={<SessionEdit />} />
         </Route>
       </Routes>
     </BrowserRouter>
