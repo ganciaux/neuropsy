@@ -16,9 +16,8 @@ const ArticleForm = ({ id }) => {
   useEffect(() => {
     if (isNew === false) {
       axios
-        .get(`http://localhost:5001/api/articles/${id}`)
+        .get(`${process.env.REACT_APP_API_URL}/articles/${id}`)
         .then((res) => {
-          console.log(res)
           setData(res.data.data)
         })
         .catch((err) => {
@@ -32,7 +31,7 @@ const ArticleForm = ({ id }) => {
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
-        .post('http://localhost:5001/api/articles', data)
+        .post(`${process.env.REACT_APP_API_URL}/articles`, data)
         .then((res) => {
           setData(defaultData)
           setError({ isSuccess: true, isError: false, message: 'Success' })
@@ -42,7 +41,7 @@ const ArticleForm = ({ id }) => {
         })
     } else {
       axios
-        .put(`http://localhost:5001/api/articles/${data._id}`, data)
+        .put(`${process.env.REACT_APP_API_URL}/articles/${data._id}`, data)
         .then((res) => {
           setError({ isSuccess: true, isError: false, message: 'Success' })
         })
@@ -57,7 +56,6 @@ const ArticleForm = ({ id }) => {
 
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
-    console.log(data)
   }
   const handleChangeDate = (newValue) => {
     setData({ ...data, birthdate: newValue })

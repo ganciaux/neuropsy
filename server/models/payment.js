@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Client = require('./client')
-const Order = require('./order')
+const utils = require('../utils/utils')
 
 const paymentSchema = new mongoose.Schema(
   {
@@ -43,8 +43,17 @@ const paymentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 )
+
+paymentSchema.virtual('_date').get(function () {
+  if (this.date) return utils.formatDate(this.date)
+  else {
+    return ''
+  }
+})
 
 const Payment = mongoose.model('Payment', paymentSchema)
 

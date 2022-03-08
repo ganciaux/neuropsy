@@ -5,7 +5,7 @@ const DataLineIcon = ({ icon, text }) => {
   return (
     <Stack direction="row" alignItems="center" gap={1} sx={{ padding: '5px' }}>
       {icon}
-      <Typography variant="body1">{text}</Typography>
+      <Typography variant="body2">{text}</Typography>
     </Stack>
   )
 }

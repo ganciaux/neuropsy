@@ -8,10 +8,11 @@ import PaymentTable from '../../components/Payments/PaymentTable'
 const Payments = () => {
   const [payments, setPayments] = useState([])
   const [paymentsFiltered, setPaymentsFiltered] = useState([])
+  const [error, setError] = React.useState({ isError: false, message: '' })
 
   useEffect(() => {
     axios
-      .get('http://localhost:5001/api/payments')
+      .get(`${process.env.REACT_APP_API_URL}/payments`)
       .then((res) => {
         setPayments(res.data.data)
         setPaymentsFiltered(res.data.data)
@@ -24,14 +25,28 @@ const Payments = () => {
   const handleFilter = (e) => {
     const pattern = e.target.value.toLowerCase()
     const result = payments.filter((payment) => {
-      console.log(payment)
       return (
         payment.clientId?._name?.toLowerCase().includes(pattern) ||
         payment.price.toString().toLowerCase().includes(pattern)
       )
     })
-    console.log(result)
     setPaymentsFiltered(result)
+  }
+
+  const handleDelete = (row) => {
+    console.log(row)
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/payments/${row._id}`)
+      .then((res) => {
+        setError({ isSuccess: true, isError: false, message: 'Success' })
+        const newPayments = paymentsFiltered.filter((payment) => {
+          return payment._id !== row._id
+        })
+        setPaymentsFiltered(newPayments)
+      })
+      .catch((err) => {
+        setError({ isError: true, message: err.response.data.message })
+      })
   }
 
   return (
@@ -49,7 +64,7 @@ const Payments = () => {
         fullWidth
         onChange={handleFilter}
       />
-      <PaymentTable data={paymentsFiltered} />
+      <PaymentTable data={paymentsFiltered} handleDelete={handleDelete} />
     </Box>
   )
 }

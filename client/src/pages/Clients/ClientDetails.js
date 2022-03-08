@@ -15,17 +15,10 @@ const ClientDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/clients/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/clients/${id}`)
       .then((res) => {
         setIsLoading(false)
         setData(res.data.data)
-        setData({
-          ...data,
-          birthdateStr: format(
-            new Date(parseISO(res.data.data.birthdate)),
-            'dd-MM-yyyy',
-          ),
-        })
       })
       .catch((err) => {
         setIsLoading(false)
@@ -50,7 +43,8 @@ const ClientDetails = () => {
           <CommonGridLine label="Ville" value={data.city} />
           <CommonGridLine label="Code postal" value={data.zip} />
           <CommonGridLine label="Adresse" value={data.address} />
-          <CommonGridLine label="Date de naissance" value={data.birthdateStr} />
+          <CommonGridLine label="Date de naissance" value={data._birthdate} />
+          <CommonGridLine label="Age" value={data._age} />
           <CommonGridLine label="Description" value={data.name} />
         </CommonGrid>
       )}

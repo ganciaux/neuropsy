@@ -25,9 +25,8 @@ const ClientForm = ({ id }) => {
   useEffect(() => {
     if (isNew === false) {
       axios
-        .get(`http://localhost:5001/api/clients/${id}`)
+        .get(`${process.env.REACT_APP_API_URL}/clients/${id}`)
         .then((res) => {
-          console.log(res)
           setData(res.data.data)
         })
         .catch((err) => {
@@ -41,7 +40,7 @@ const ClientForm = ({ id }) => {
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
-        .post('http://localhost:5001/api/clients', data)
+        .post(`${process.env.REACT_APP_API_URL}/clients`, data)
         .then((res) => {
           setData(defaultData)
           setError({ isSuccess: true, isError: false, message: 'Success' })
@@ -51,7 +50,7 @@ const ClientForm = ({ id }) => {
         })
     } else {
       axios
-        .put(`http://localhost:5001/api/clients/${data._id}`, data)
+        .put(`${process.env.REACT_APP_API_URL}/clients/${data._id}`, data)
         .then((res) => {
           setError({ isSuccess: true, isError: false, message: 'Success' })
         })
@@ -66,7 +65,6 @@ const ClientForm = ({ id }) => {
 
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
-    console.log(data)
   }
   const handleChangeDate = (newValue) => {
     setData({ ...data, birthdate: newValue })

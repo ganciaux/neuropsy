@@ -23,6 +23,10 @@ const clientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    type: {
+      type: Number,
+      default: 0,
+    },
     phone: {
       type: String,
       trim: true,
@@ -72,8 +76,17 @@ clientSchema.virtual('_address').get(function () {
 })
 
 clientSchema.virtual('_birthdate').get(function () {
-  if (this.birthdate) return utils.formatDate(this.birthdate)
-  else {
+  if (this.birthdate) {
+    return utils.formatDate(this.birthdate)
+  } else {
+    return ''
+  }
+})
+
+clientSchema.virtual('_age').get(function () {
+  if (this.birthdate) {
+    return utils.getAge(this.birthdate)
+  } else {
     return ''
   }
 })

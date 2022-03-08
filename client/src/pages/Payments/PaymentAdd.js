@@ -6,7 +6,7 @@ import ClientForm from '../../components/Clients/ClientForm'
 const PaymentAdd = () => {
   return (
     <>
-      <Header title="Ajouter un Payment" />
+      <Header title="Ajouter un paiement" />
       <PaymentForm />
     </>
   )

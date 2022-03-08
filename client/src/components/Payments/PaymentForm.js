@@ -5,9 +5,12 @@ import { Alert, Button, TextField } from '@mui/material'
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import frLocale from 'date-fns/locale/fr'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { paymentStatus } from './consts/paymentStatus'
+import { paymentTypes } from './consts/paymentTypes'
+import { format, parseISO } from 'date-fns'
 
 const PaymentForm = ({ id }) => {
   const isNew = id ? false : true
@@ -25,7 +28,7 @@ const PaymentForm = ({ id }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/clients`)
+      .get(`${process.env.REACT_APP_API_URL}/clients`)
       .then((res) => {
         res.data.data.push({ _id: '-1', value: '-1', _name: 'Aucun' })
         setClients(
@@ -33,8 +36,6 @@ const PaymentForm = ({ id }) => {
             return { id: data._id, value: data._id, label: data._name }
           }),
         )
-        console.log('clients:')
-        console.log(clients)
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -44,7 +45,7 @@ const PaymentForm = ({ id }) => {
   useEffect(() => {
     if (isNew === false) {
       axios
-        .get(`http://localhost:5001/api/payments/${id}`)
+        .get(`${process.env.REACT_APP_API_URL}/payments/${id}`)
         .then((res) => {
           setData(res.data.data)
         })
@@ -59,7 +60,7 @@ const PaymentForm = ({ id }) => {
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
-        .post('http://localhost:5001/api/payments', data)
+        .post(`${process.env.REACT_APP_API_URL}/payments`, data)
         .then((res) => {
           setData(defaultData)
           setError({ isSuccess: true, isError: false, message: 'Success' })
@@ -69,7 +70,7 @@ const PaymentForm = ({ id }) => {
         })
     } else {
       axios
-        .put(`http://localhost:5001/api/payments/${data._id}`, data)
+        .put(`${process.env.REACT_APP_API_URL}/payments/${data._id}`, data)
         .then((res) => {
           setError({ isSuccess: true, isError: false, message: 'Success' })
         })
@@ -81,11 +82,9 @@ const PaymentForm = ({ id }) => {
 
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
-    console.log('change:')
-    console.log(data)
   }
   const handleChangeDate = (newValue) => {
-    setData({ ...data, birthdate: newValue })
+    setData({ ...data, date: newValue })
   }
 
   return (
@@ -100,13 +99,13 @@ const PaymentForm = ({ id }) => {
           onChange={handleOnChange}
         />
       </Grid>
-      <Grid item xs={6} sm={4}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Grid item xs={6} sm={6} md={3}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
           <DesktopDatePicker
             name="date"
             label="Date du paiement"
             inputFormat="dd/MM/yyyy"
-            value={data.birthdate}
+            value={data.date}
             fullWidth
             onChange={handleChangeDate}
             renderInput={(params) => (
@@ -120,7 +119,7 @@ const PaymentForm = ({ id }) => {
           />
         </LocalizationProvider>
       </Grid>
-      <Grid item xs={6} sm={4}>
+      <Grid item xs={6} sm={6} md={3}>
         <TextField
           name="price"
           label="Montant"
@@ -131,7 +130,17 @@ const PaymentForm = ({ id }) => {
           onChange={handleOnChange}
         />
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={6} sm={6} md={3}>
+        <CommonSelect
+          id="type"
+          label="Type"
+          value={data.type}
+          name="type"
+          data={paymentTypes}
+          onChange={handleOnChange}
+        />
+      </Grid>
+      <Grid item xs={6} sm={6} md={3}>
         <CommonSelect
           id="status"
           label="Statut"

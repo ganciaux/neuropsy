@@ -8,15 +8,15 @@ import EuroIcon from '@mui/icons-material/Euro'
 import BasicCard from '../../components/common/BasicCard/BasicCard'
 import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
 import Header from '../../components/common/Header/Header'
+import DataLineHeader from '../../components/common/DataLine/DataLineHeader'
 
 const Articles = () => {
   const [articles, setArticles] = useState([])
 
   useEffect(() => {
     axios
-      .get('http://localhost:5001/api/articles')
+      .get(`${process.env.REACT_APP_API_URL}/articles`)
       .then((res) => {
-        console.log(res)
         setArticles(res.data.data)
       })
       .catch((err) => {
@@ -27,9 +27,7 @@ const Articles = () => {
   const getContent = (article) => {
     return (
       <>
-        <Typography variant="h6" gutterBottom>
-          {article.name}
-        </Typography>
+        <DataLineHeader title={article.name} />
         <DataLineIcon icon={<EuroIcon />} text={article.price.toFixed(2)} />
         <DataLineIcon icon={<CalendarTodayIcon />} text={article.sessions} />
       </>

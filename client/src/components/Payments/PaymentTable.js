@@ -9,28 +9,9 @@ import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import { Link } from '@mui/material'
-import axios from 'axios'
+import { getTypeLabel } from './utils/paymentUtils'
 
-export default function PaymentTable({ data }) {
-  const [error, setError] = React.useState({ isError: false, message: '' })
-  const [payments, setPayments] = React.useState(data)
-
-  console.log(payments, data)
-
-  const handleDelete = (row) => {
-    console.log(row)
-    axios
-      .delete(`http://localhost:5001/api/payments/${row._id}`)
-      .then((res) => {
-        setError({ isSuccess: true, isError: false, message: 'Success' })
-        const newPayments = payments.filter((item) => payments.id !== row._id)
-        setPayments(newPayments)
-      })
-      .catch((err) => {
-        setError({ isError: true, message: err.response.data.message })
-      })
-  }
-
+export default function PaymentTable({ data, handleDelete }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -46,17 +27,17 @@ export default function PaymentTable({ data }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {payments.map((row, index) => (
+          {data.map((row, index) => (
             <TableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.date}
+                {row._date}
               </TableCell>
               <TableCell>{row.clientId?._name}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              <TableCell>{row.type}</TableCell>
+              <TableCell>{getTypeLabel(row.type)}</TableCell>
               <TableCell>{row.status}</TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>

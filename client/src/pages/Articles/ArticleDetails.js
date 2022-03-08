@@ -14,7 +14,7 @@ const ArticleDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/articles/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/articles/${id}`)
       .then((res) => {
         setIsLoading(false)
         setData(res.data.data)

@@ -8,9 +8,11 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EuroIcon from '@mui/icons-material/Euro'
+import CakeIcon from '@mui/icons-material/Cake'
 import Header from '../../components/common/Header/Header'
 import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
 import DataLineAction from '../../components/common/DataLine/DataLineAction'
+import DataLineHeader from '../../components/common/DataLine/DataLineHeader'
 
 const Clients = () => {
   const [clients, setClients] = useState([])
@@ -18,7 +20,7 @@ const Clients = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5001/api/clients')
+      .get(`${process.env.REACT_APP_API_URL}/clients`)
       .then((res) => {
         console.log(res)
         setClients(res.data.data)
@@ -42,9 +44,8 @@ const Clients = () => {
   const getContent = (client) => {
     return (
       <>
-        <Typography variant="h6" gutterBottom>
-          {client.name} {client.firstname}
-        </Typography>
+        <DataLineHeader title={`${client.name} ${client.firstname}`} />
+        <DataLineIcon icon={<CakeIcon />} text={client._age} />
         <DataLineIcon icon={<AlternateEmailIcon />} text={client.email} />
         <DataLineIcon icon={<PhoneIphoneIcon />} text={client.phone} />
         <DataLineIcon icon={<CalendarTodayIcon />} text="Rendez-vous..." />
