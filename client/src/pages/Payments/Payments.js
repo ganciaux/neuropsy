@@ -1,15 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { TextField } from '@mui/material'
+import { TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Header from '../../components/common/Header/Header'
 import PaymentTable from '../../components/Payments/PaymentTable'
-
+import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 const Payments = () => {
+  const [total, setTotal] = useState(0)
   const [payments, setPayments] = useState([])
   const [paymentsFiltered, setPaymentsFiltered] = useState([])
   const [error, setError] = React.useState({ isError: false, message: '' })
+  const [open, setOpen] = React.useState(false)
+  const [data, setData] = React.useState({})
 
+  const handleCloseOk = () => {
+    setOpen(false)
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/payments/${data._id}`)
+      .then((res) => {
+        setError({ isSuccess: true, isError: false, message: 'Success' })
+        const newPayments = paymentsFiltered.filter((payment) => {
+          setTotal(total - data.price)
+          return payment._id !== data._id
+        })
+        setPaymentsFiltered(newPayments)
+      })
+      .catch((err) => {
+        setError({ isError: true, message: err.response.data.message })
+      })
+  }
+
+  const handleCloseCancel = () => {
+    setOpen(false)
+  }
+
+  const getContent = () => {
+    return (
+      <>
+        <div>Date: {data._date}</div>
+        <div>Nom: {data.clientId?._name}</div>
+        <div>Montant: {data.price}</div>
+      </>
+    )
+  }
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/payments`)
@@ -23,29 +56,24 @@ const Payments = () => {
   }, [])
 
   const handleFilter = (e) => {
+    let paymentTotal = 0.0
     const pattern = e.target.value.toLowerCase()
     const result = payments.filter((payment) => {
-      return (
+      if (
         payment.clientId?._name?.toLowerCase().includes(pattern) ||
         payment.price.toString().toLowerCase().includes(pattern)
-      )
+      ) {
+        paymentTotal += payment.price
+        return true
+      } else return false
     })
+    setTotal(paymentTotal)
     setPaymentsFiltered(result)
   }
 
   const handleDelete = (row) => {
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/payments/${row._id}`)
-      .then((res) => {
-        setError({ isSuccess: true, isError: false, message: 'Success' })
-        const newPayments = paymentsFiltered.filter((payment) => {
-          return payment._id !== row._id
-        })
-        setPaymentsFiltered(newPayments)
-      })
-      .catch((err) => {
-        setError({ isError: true, message: err.response.data.message })
-      })
+    setOpen(true)
+    setData(row)
   }
 
   return (
@@ -55,15 +83,28 @@ const Payments = () => {
         href="/payments/add"
         action="Ajouter"
       />
-      <TextField
-        name="search"
-        placeholder="Recherche dans le nom et le prix"
-        label="Filtre de recherche"
-        variant="outlined"
-        fullWidth
-        onChange={handleFilter}
-      />
-      <PaymentTable data={paymentsFiltered} handleDelete={handleDelete} />
+      {payments.length === 0 && <Typography>Aucun paiements</Typography>}
+      {payments.length > 0 && (
+        <>
+          <TextField
+            name="search"
+            placeholder="Recherche dans le nom et le prix"
+            label="Filtre de recherche"
+            variant="outlined"
+            fullWidth
+            onChange={handleFilter}
+          />
+          <Typography>Total: {total}</Typography>
+          <PaymentTable data={paymentsFiltered} handleDelete={handleDelete} />
+          <CommonDialog
+            title="Supprimer le paiement ?"
+            open={open}
+            content={getContent}
+            handleCloseOk={handleCloseOk}
+            handleCloseCancel={handleCloseCancel}
+          />
+        </>
+      )}
     </Box>
   )
 }

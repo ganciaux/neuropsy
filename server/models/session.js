@@ -1,19 +1,15 @@
 const mongoose = require('mongoose')
 const Client = require('./client')
 const Order = require('./order')
-const slug = require('mongoose-slug-updater')
+const Reference = require('./reference')
 const utils = require('../utils/utils')
 
 const sessionSchema = new mongoose.Schema(
   {
-    slug: {
+    ref: {
       type: String,
-      slug: 'type',
+      trim: true,
       unique: true,
-      slugPaddingSize: 3,
-      transform: (v) => {
-        return 'session'
-      },
     },
     clientId: {
       type: mongoose.Schema.ObjectId,
@@ -58,10 +54,20 @@ const sessionSchema = new mongoose.Schema(
 
 sessionSchema.virtual('_date').get(function () {
   if (this.date) {
-    return utils.formatDate(this.date)
+    return utils.formatTime(this.date)
   } else {
     return ''
   }
+})
+
+sessionSchema.pre('save', async function (next) {
+  const doc = await Reference.getNewReference(
+    'session',
+    'refId',
+    this.date.getFullYear(),
+  )
+  this.ref = utils.getReference(this.date, doc.count, 'session-')
+  next()
 })
 
 const Session = mongoose.model('Session', sessionSchema)

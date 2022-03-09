@@ -2,15 +2,11 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
 import { Alert, Button, TextField } from '@mui/material'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import frLocale from 'date-fns/locale/fr'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { paymentStatus } from './consts/paymentStatus'
 import { paymentTypes } from './consts/paymentTypes'
-import { format, parseISO } from 'date-fns'
+import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
 
 const PaymentForm = ({ id }) => {
   const isNew = id ? false : true
@@ -100,24 +96,13 @@ const PaymentForm = ({ id }) => {
         />
       </Grid>
       <Grid item xs={6} sm={6} md={3}>
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
-          <DesktopDatePicker
-            name="date"
-            label="Date du paiement"
-            inputFormat="dd/MM/yyyy"
-            value={data.date}
-            fullWidth
-            onChange={handleChangeDate}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                required
-                onChange={handleOnChange}
-              />
-            )}
-          />
-        </LocalizationProvider>
+        <CommontDatePicker
+          name="date"
+          label="Date du paiement"
+          value={data.date}
+          handleOnChange={handleOnChange}
+          handleChangeDate={handleChangeDate}
+        />
       </Grid>
       <Grid item xs={6} sm={6} md={3}>
         <TextField

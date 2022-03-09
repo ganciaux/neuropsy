@@ -27,13 +27,11 @@ const getArticlesPrice = (articles) => {
 }
 
 const formatDate = (date) => {
-  /*
-  return `${date.getFullYear()}/${charPad(date.getMonth() + 1, 2)}/${charPad(
-    date.getDay(),
-    2,
-  )}`
-  */
   return datefns.format(Date.parse(date), 'dd-MM-yyyy')
+}
+
+const formatTime = (date) => {
+  return datefns.format(Date.parse(date), 'dd-MM-yyyy HH:mm')
 }
 
 const getDateYear = () => {
@@ -49,7 +47,7 @@ const getDateInfo = (date) => {
   }
 }
 const getAge = (date) => {
-  let age = '-'
+  let age = ''
   const start = getDateInfo(date)
   const end = getDateInfo(new Date())
   try {
@@ -57,7 +55,6 @@ const getAge = (date) => {
       start: new Date(start.year, start.month, start.day, 0, 0, 0),
       end: new Date(end.year, end.month, end.day, 0, 0, 0),
     })
-
     if (data.years > 0) {
       age = `${data.years} an`
       if (data.years > 1) {
@@ -84,5 +81,6 @@ exports.charPad = charPad
 exports.getReference = getReference
 exports.getArticlesPrice = getArticlesPrice
 exports.formatDate = formatDate
+exports.formatTime = formatTime
 exports.getAge = getAge
 exports.getDateYear = getDateYear

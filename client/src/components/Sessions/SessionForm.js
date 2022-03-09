@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
 import { Alert, Button, TextField } from '@mui/material'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import DateTimePicker from '@mui/lab/DateTimePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import frLocale from 'date-fns/locale/fr'
@@ -10,6 +10,7 @@ import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { sessionStatus } from './consts/sessionStatus'
 import { sessionTypes } from './consts/sessionTypes'
+import CommontDateTimePicker from '../common/CommonDatePicker/CommonDateTimePicker'
 
 const SessionForm = ({ id }) => {
   const isNew = id ? false : true
@@ -91,49 +92,38 @@ const SessionForm = ({ id }) => {
         <CommonSelect
           id="client"
           label="Client"
-          value={data.clientId}
+          value={data?.clientId}
           name="clientId"
           data={clients}
           onChange={handleOnChange}
         />
       </Grid>
-      <Grid item xs={6} sm={6} md={3}>
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
-          <DesktopDatePicker
-            name="date"
-            label="Date du rendez-vous"
-            inputFormat="dd/MM/yyyy"
-            value={data.date}
-            fullWidth
-            onChange={handleChangeDate}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                required
-                onChange={handleOnChange}
-              />
-            )}
-          />
-        </LocalizationProvider>
-      </Grid>
-      <Grid item xs={6} sm={6} md={3}>
-        <CommonSelect
-          id="type"
-          label="Type"
-          value={data.type}
-          name="type"
-          data={sessionTypes}
-          onChange={handleOnChange}
+      <Grid item xs={6} sm={6}>
+        <CommontDateTimePicker
+          name="date"
+          label="Date du rendez-vous"
+          value={data.date}
+          handleOnChange={handleOnChange}
+          handleChangeDate={handleChangeDate}
         />
       </Grid>
-      <Grid item xs={6} sm={6} md={3}>
+      <Grid item xs={6} sm={6}>
         <CommonSelect
           id="status"
           label="Statut"
           value={data.status}
           name="status"
           data={sessionStatus}
+          onChange={handleOnChange}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <CommonSelect
+          id="type"
+          label="Type"
+          value={data.type}
+          name="type"
+          data={sessionTypes}
           onChange={handleOnChange}
         />
       </Grid>
