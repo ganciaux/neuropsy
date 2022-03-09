@@ -41,8 +41,14 @@ const articleSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 )
+
+articleSchema.virtual('_name').get(function () {
+  return `${this.name} (${this.price})`
+})
 
 const Article = mongoose.model('Article', articleSchema)
 

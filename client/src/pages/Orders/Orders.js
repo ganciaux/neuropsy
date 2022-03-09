@@ -3,12 +3,11 @@ import axios from 'axios'
 import { TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Header from '../../components/common/Header/Header'
-import PaymentTable from '../../components/Payments/PaymentTable'
+import OrderTable from '../../components/Orders/OrderTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
-const Payments = () => {
-  const [total, setTotal] = useState(0)
-  const [payments, setPayments] = useState([])
-  const [paymentsFiltered, setPaymentsFiltered] = useState([])
+const Orders = () => {
+  const [orders, setOrders] = useState([])
+  const [ordersFiltered, setOrdersFiltered] = useState([])
   const [error, setError] = React.useState({ isError: false, message: '' })
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState({})
@@ -16,13 +15,13 @@ const Payments = () => {
   const handleCloseOk = () => {
     setOpen(false)
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/payments/${data._id}`)
+      .delete(`${process.env.REACT_APP_API_URL}/orders/${data._id}`)
       .then((res) => {
         setError({ isSuccess: true, isError: false, message: 'Success' })
-        const newPayments = paymentsFiltered.filter((payment) => {
-          return payment._id !== data._id
+        const newOrders = ordersFiltered.filter((order) => {
+          return order._id !== data._id
         })
-        setPaymentsFiltered(newPayments)
+        setOrdersFiltered(newOrders)
       })
       .catch((err) => {
         setError({ isError: true, message: err.response.data.message })
@@ -44,10 +43,10 @@ const Payments = () => {
   }
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/payments`)
+      .get(`${process.env.REACT_APP_API_URL}/orders`)
       .then((res) => {
-        setPayments(res.data.data)
-        setPaymentsFiltered(res.data.data)
+        setOrders(res.data.data)
+        setOrdersFiltered(res.data.data)
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -56,13 +55,13 @@ const Payments = () => {
 
   const handleFilter = (e) => {
     const pattern = e.target.value.toLowerCase()
-    const result = payments.filter((payment) => {
+    const result = orders.filter((order) => {
       return (
-        payment.clientId?._name?.toLowerCase().includes(pattern) ||
-        payment.price.toString().toLowerCase().includes(pattern)
+        order.clientId?._name?.toLowerCase().includes(pattern) ||
+        order.price.toString().toLowerCase().includes(pattern)
       )
     })
-    setPaymentsFiltered(result)
+    setOrdersFiltered(result)
   }
 
   const handleDelete = (row) => {
@@ -72,13 +71,9 @@ const Payments = () => {
 
   return (
     <Box>
-      <Header
-        title="Liste des paiements"
-        href="/payments/add"
-        action="Ajouter"
-      />
-      {payments.length === 0 && <Typography>Aucun paiements</Typography>}
-      {payments.length > 0 && (
+      <Header title="Liste des commandes" href="/orders/add" action="Ajouter" />
+      {orders.length === 0 && <Typography>Aucune commande</Typography>}
+      {orders.length > 0 && (
         <>
           <TextField
             name="search"
@@ -88,9 +83,9 @@ const Payments = () => {
             fullWidth
             onChange={handleFilter}
           />
-          <PaymentTable data={paymentsFiltered} handleDelete={handleDelete} />
+          <OrderTable data={ordersFiltered} handleDelete={handleDelete} />
           <CommonDialog
-            title="Supprimer le paiement ?"
+            title="Supprimer la commande ?"
             open={open}
             content={getContent}
             handleCloseOk={handleCloseOk}
@@ -102,4 +97,4 @@ const Payments = () => {
   )
 }
 
-export default Payments
+export default Orders

@@ -6,14 +6,14 @@ const charPad = (num, places, char) => {
   return String(num).padStart(places, defaultChar)
 }
 
-const getReference = (date, count, pattern) => {
+const getReference = (date, count, pattern, useMonth = true) => {
   let defaultPattern = ''
   if (pattern) defaultPattern = pattern
   const year = date.getFullYear()
-  return `${defaultPattern}${year}${charPad(date.getMonth() + 1, 2)}${charPad(
-    count,
-    4,
-  )}`
+  const month = date.getMonth() + 1
+  if (useMonth == true)
+    return `${defaultPattern}${year}${charPad(month, 2)}${charPad(count, 4)}`
+  else return `${defaultPattern}${year}${charPad(count, 4)}`
   //throw new Error(`Can't set new ${model} reference (${year})`);
 }
 

@@ -5,6 +5,11 @@ const Reference = require('./reference')
 
 const paymentSchema = new mongoose.Schema(
   {
+    slug: {
+      type: String,
+      trim: true,
+      unique: true,
+    },
     clientId: {
       type: mongoose.Schema.ObjectId,
       ref: 'Client',
@@ -62,7 +67,7 @@ paymentSchema.pre('save', async function (next) {
     'refId',
     this.date.getFullYear(),
   )
-  this.ref = utils.getReference(this.date, doc.count, 'payment-')
+  this.slug = utils.getReference(this.date, doc.count, 'payment-', false)
   next()
 })
 

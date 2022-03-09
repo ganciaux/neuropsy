@@ -1,42 +1,29 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
-import { Alert, Button, TextField } from '@mui/material'
+import { Alert, Button, InputAdornment, TextField } from '@mui/material'
+import EuroIcon from '@mui/icons-material/Euro'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { paymentStatus } from './consts/paymentStatus'
 import { paymentTypes } from './consts/paymentTypes'
 import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
+import CommonSelectData from '../common/CommonSelect/CommonSelectData'
 
 const PaymentForm = ({ id }) => {
   const isNew = id ? false : true
   const defaultData = {
     clientId: '-1',
     price: 0.0,
-    type: 0,
-    status: 0,
+    type: '-1',
+    status: '-1',
     description: '',
     date: new Date(),
   }
-  const [clients, setClients] = React.useState([])
+
   const [data, setData] = React.useState(defaultData)
   const [error, setError] = React.useState({ isError: false, message: '' })
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/clients`)
-      .then((res) => {
-        res.data.data.push({ _id: '-1', value: '-1', _name: 'Aucun' })
-        setClients(
-          res.data.data.map((data) => {
-            return { id: data._id, value: data._id, label: data._name }
-          }),
-        )
-      })
-      .catch((err) => {
-        console.log(err.response.data)
-      })
-  }, [])
+  const [isLoading, setIsLoading] = React.useState(true)
 
   useEffect(() => {
     if (isNew === false) {
@@ -86,13 +73,15 @@ const PaymentForm = ({ id }) => {
   return (
     <CommonGridForm>
       <Grid item xs={12}>
-        <CommonSelect
+        <CommonSelectData
           id="client"
           label="Client"
-          value={data.clientId}
           name="clientId"
-          data={clients}
+          value={data.clientId}
           onChange={handleOnChange}
+          setIsLoading={setIsLoading}
+          model="clients"
+          placeHolder="<Choisir un client>"
         />
       </Grid>
       <Grid item xs={6} sm={6} md={3}>
@@ -112,7 +101,15 @@ const PaymentForm = ({ id }) => {
           placeholder="Montant"
           variant="outlined"
           fullWidth
+          sx={{ textAlign: 'right' }}
           onChange={handleOnChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <EuroIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </Grid>
       <Grid item xs={6} sm={6} md={3}>
@@ -121,6 +118,7 @@ const PaymentForm = ({ id }) => {
           label="Type"
           value={data.type}
           name="type"
+          placeHolder="<Choisir un type>"
           data={paymentTypes}
           onChange={handleOnChange}
         />
@@ -131,6 +129,7 @@ const PaymentForm = ({ id }) => {
           label="Statut"
           value={data.status}
           name="status"
+          placeHolder="<Choisir un statut>"
           data={paymentStatus}
           onChange={handleOnChange}
         />

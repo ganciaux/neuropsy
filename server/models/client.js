@@ -34,10 +34,15 @@ const clientSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
-      validate: [isEmail],
+      validate: {
+        validator: (value) => {
+          if (value === '') {
+            return true
+          }
+          return isEmail(value)
+        },
+      },
       lowercase: true,
-      unique: true,
       trim: true,
     },
     address: {

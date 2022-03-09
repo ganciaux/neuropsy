@@ -6,7 +6,7 @@ const utils = require('../utils/utils')
 
 const sessionSchema = new mongoose.Schema(
   {
-    ref: {
+    slug: {
       type: String,
       trim: true,
       unique: true,
@@ -66,7 +66,7 @@ sessionSchema.pre('save', async function (next) {
     'refId',
     this.date.getFullYear(),
   )
-  this.ref = utils.getReference(this.date, doc.count, 'session-')
+  this.slug = utils.getReference(this.date, doc.count, 'session-', false)
   next()
 })
 

@@ -5,14 +5,16 @@ import { Alert, Button, TextField, Typography } from '@mui/material'
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import ClientType from './ClientType'
+import { clientTypes } from '../Clients/consts/clientTypes'
+import CommonSelect from '../common/CommonSelect/CommonSelect'
+import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
 
 const ClientForm = ({ id }) => {
   const isNew = id ? false : true
   const defaultData = {
     name: '',
     firstname: '',
-    type: 0,
+    type: '-1',
     email: '',
     phone: '',
     address: '',
@@ -100,30 +102,22 @@ const ClientForm = ({ id }) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  name="birthdate"
-                  label="Date de naissance"
-                  inputFormat="dd/MM/yyyy"
-                  value={data.birthdate}
-                  fullWidth
-                  onChange={handleChangeDate}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      required
-                      onChange={handleOnChange}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
+              <CommontDatePicker
+                name="birthdate"
+                label="Date du naissance"
+                value={data.birthdate}
+                handleOnChange={handleOnChange}
+                handleChangeDate={handleChangeDate}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <ClientType
+              <CommonSelect
                 id="clientType"
+                label="Type"
                 name="type"
+                data={clientTypes}
                 value={data.type}
+                placeHolder="<Choisir un type>"
                 onChange={handleOnChange}
               />
             </Grid>

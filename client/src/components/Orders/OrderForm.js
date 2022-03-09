@@ -4,42 +4,45 @@ import Grid from '@mui/material/Grid'
 import { Alert, Button, TextField } from '@mui/material'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
-import { sessionStatus } from './consts/sessionStatus'
-import { sessionTypes } from './consts/sessionTypes'
-import CommontDateTimePicker from '../common/CommonDatePicker/CommonDateTimePicker'
+import { orderStatus } from './consts/orderStatus'
+import OrderLines from './OrderLines'
+import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
+import CommonSelectData from '../common/CommonSelect/CommonSelectData'
+import CommonGrid from '../common/CommonGrid/CommonGrid'
 
-const SessionForm = ({ id }) => {
+const OrderForm = ({ id }) => {
   const isNew = id ? false : true
   const defaultData = {
     clientId: '-1',
-    type: '-1',
+    price: 0.0,
     status: '-1',
     description: '',
     date: new Date(),
+    lines: [
+      { id: 1, label: 'line 1', quantity: 1, price: 10 },
+      { id: 2, label: 'line 2', quantity: 2, price: 20 },
+    ],
   }
-  const [clients, setClients] = React.useState([])
+
   const [data, setData] = React.useState(defaultData)
   const [error, setError] = React.useState({ isError: false, message: '' })
+  const [isLoading, setIsLoading] = React.useState(true)
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/clients`)
-      .then((res) => {
-        setClients(
-          res.data.data.map((data) => {
-            return { id: data._id, value: data._id, label: data._name }
-          }),
-        )
-      })
-      .catch((err) => {
-        console.log(err.response.data)
-      })
-  }, [])
+  const handleDelete = (e) => {
+    console.log('handleDelete...')
+  }
+
+  const handleOnChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value })
+  }
+  const handleChangeDate = (newValue) => {
+    setData({ ...data, date: newValue })
+  }
 
   useEffect(() => {
     if (isNew === false) {
       axios
-        .get(`${process.env.REACT_APP_API_URL}/sessions/${id}`)
+        .get(`${process.env.REACT_APP_API_URL}/orders/${id}`)
         .then((res) => {
           setData(res.data.data)
         })
@@ -54,7 +57,7 @@ const SessionForm = ({ id }) => {
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
-        .post(`${process.env.REACT_APP_API_URL}/sessions`, data)
+        .post(`${process.env.REACT_APP_API_URL}/orders`, data)
         .then((res) => {
           setData(defaultData)
           setError({ isSuccess: true, isError: false, message: 'Success' })
@@ -64,7 +67,7 @@ const SessionForm = ({ id }) => {
         })
     } else {
       axios
-        .put(`${process.env.REACT_APP_API_URL}/sessions/${data._id}`, data)
+        .put(`${process.env.REACT_APP_API_URL}/orders/${data._id}`, data)
         .then((res) => {
           setError({ isSuccess: true, isError: false, message: 'Success' })
         })
@@ -74,30 +77,24 @@ const SessionForm = ({ id }) => {
     }
   }
 
-  const handleOnChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-  const handleChangeDate = (newValue) => {
-    setData({ ...data, date: newValue })
-  }
-
   return (
     <CommonGridForm>
       <Grid item xs={12}>
-        <CommonSelect
+        <CommonSelectData
           id="client"
           label="Client"
-          value={data?.clientId}
           name="clientId"
-          data={clients}
-          placeHolder="<Choisir un client>"
+          value={data.clientId}
           onChange={handleOnChange}
+          setIsLoading={setIsLoading}
+          model="clients"
+          placeHolder="<Choisir un client>"
         />
       </Grid>
       <Grid item xs={6} sm={6}>
-        <CommontDateTimePicker
+        <CommontDatePicker
           name="date"
-          label="Date du rendez-vous"
+          label="Date de la commande"
           value={data.date}
           handleOnChange={handleOnChange}
           handleChangeDate={handleChangeDate}
@@ -109,19 +106,8 @@ const SessionForm = ({ id }) => {
           label="Statut"
           value={data.status}
           name="status"
-          data={sessionStatus}
-          placeHolder="<Choisir un status>"
-          onChange={handleOnChange}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <CommonSelect
-          id="type"
-          label="Type"
-          value={data.type}
-          name="type"
-          placeHolder="<Choisir un type>"
-          data={sessionTypes}
+          placeHolder="<Choisir un statut>"
+          data={orderStatus}
           onChange={handleOnChange}
         />
       </Grid>
@@ -153,8 +139,19 @@ const SessionForm = ({ id }) => {
         {error.isError && <Alert severity="error">{error.message}</Alert>}
         {error.isSuccess && <Alert severity="success">{error.message}</Alert>}
       </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Grid container spacing={1}>
+            <OrderLines
+              lines={data.lines}
+              handleDelete={handleDelete}
+              setIsLoading={setIsLoading}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
     </CommonGridForm>
   )
 }
 
-export default SessionForm
+export default OrderForm

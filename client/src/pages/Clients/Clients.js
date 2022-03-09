@@ -9,14 +9,17 @@ import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EuroIcon from '@mui/icons-material/Euro'
 import CakeIcon from '@mui/icons-material/Cake'
+import { ThreeDots } from 'react-loader-spinner'
 import Header from '../../components/common/Header/Header'
 import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
 import DataLineAction from '../../components/common/DataLine/DataLineAction'
 import DataLineHeader from '../../components/common/DataLine/DataLineHeader'
+import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 
 const Clients = () => {
   const [clients, setClients] = useState([])
   const [clientsFiltered, setClientsFiltered] = useState([])
+  const [isLoading, setIsLoading] = React.useState(true)
 
   useEffect(() => {
     axios
@@ -24,6 +27,7 @@ const Clients = () => {
       .then((res) => {
         setClients(res.data.data)
         setClientsFiltered(res.data.data)
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log(err.response.data)
@@ -60,6 +64,10 @@ const Clients = () => {
         <DataLineAction url="/clients/edit" id={id} label="Modifier" />
       </>
     )
+  }
+
+  if (isLoading) {
+    return <CommonLoader />
   }
 
   return (

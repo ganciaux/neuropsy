@@ -7,6 +7,7 @@ import Header from '../../components/common/Header/Header'
 import CommonGrid from '../../components/common/CommonGrid/CommonGrid'
 import CommonGridLine from '../../components/common/CommonGrid/CommonGridLine'
 import { format, parseISO } from 'date-fns'
+import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 
 const ClientDetails = () => {
   const { id } = useParams()
@@ -26,28 +27,25 @@ const ClientDetails = () => {
       })
   }, [id])
 
+  if (isLoading) {
+    return <CommonLoader />
+  }
+
   return (
     <Box>
-      <Header title="Details clients" />
-      {isLoading && (
-        <Box sx={{ display: 'flex' }}>
-          <CircularProgress />
-        </Box>
-      )}
-      {!isLoading && (
-        <CommonGrid title="Fiche article">
-          <CommonGridLine label="Nom" value={data.name} />
-          <CommonGridLine label="Prénom" value={data.firstname} />
-          <CommonGridLine label="Email" value={data.email} />
-          <CommonGridLine label="Téléphone" value={data.phone} />
-          <CommonGridLine label="Ville" value={data.city} />
-          <CommonGridLine label="Code postal" value={data.zip} />
-          <CommonGridLine label="Adresse" value={data.address} />
-          <CommonGridLine label="Date de naissance" value={data._birthdate} />
-          <CommonGridLine label="Age" value={data._age} />
-          <CommonGridLine label="Description" value={data.name} />
-        </CommonGrid>
-      )}
+      <Header title="Détails clients" />
+      <CommonGrid title="Fiche client">
+        <CommonGridLine label="Nom" value={data.name} />
+        <CommonGridLine label="Prénom" value={data.firstname} />
+        <CommonGridLine label="Email" value={data.email} />
+        <CommonGridLine label="Téléphone" value={data.phone} />
+        <CommonGridLine label="Ville" value={data.city} />
+        <CommonGridLine label="Code postal" value={data.zip} />
+        <CommonGridLine label="Adresse" value={data.address} />
+        <CommonGridLine label="Date de naissance" value={data._birthdate} />
+        <CommonGridLine label="Age" value={data._age} />
+        <CommonGridLine label="Description" value={data.name} />
+      </CommonGrid>
     </Box>
   )
 }
