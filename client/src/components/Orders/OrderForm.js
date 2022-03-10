@@ -8,19 +8,23 @@ import { orderStatus } from './consts/orderStatus'
 import OrderLines from './OrderLines'
 import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
 import CommonSelectData from '../common/CommonSelect/CommonSelectData'
-import CommonGrid from '../common/CommonGrid/CommonGrid'
 
 const OrderForm = ({ id }) => {
   const isNew = id ? false : true
   const defaultData = {
     clientId: '-1',
+    parentId: '-1',
     price: 0.0,
-    status: '-1',
+    status: 0,
     description: '',
     date: new Date(),
-    lines: [
-      { id: 1, label: 'line 1', quantity: 1, price: 10 },
-      { id: 2, label: 'line 2', quantity: 2, price: 20 },
+    articles: [
+      {
+        articleId: '-1',
+        description: 'line 1',
+        quantity: 1,
+        unitCost: 0,
+      },
     ],
   }
 
@@ -28,13 +32,19 @@ const OrderForm = ({ id }) => {
   const [error, setError] = React.useState({ isError: false, message: '' })
   const [isLoading, setIsLoading] = React.useState(true)
 
-  const handleDelete = (e) => {
-    console.log('handleDelete...')
-  }
-
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
+
+  const handleLineOnChange = (articles) => {
+    setData({
+      ...data,
+      articles,
+    })
+    console.log('Form on change:')
+    console.log(data.articles)
+  }
+
   const handleChangeDate = (newValue) => {
     setData({ ...data, date: newValue })
   }
@@ -124,6 +134,11 @@ const OrderForm = ({ id }) => {
           onChange={handleOnChange}
         />
       </Grid>
+      <OrderLines
+        lines={data.articles}
+        handleOnChange={handleLineOnChange}
+        setIsLoading={setIsLoading}
+      />
       <Grid item xs={12}>
         <Button
           type="submit"
@@ -138,17 +153,6 @@ const OrderForm = ({ id }) => {
       <Grid item xs={12}>
         {error.isError && <Alert severity="error">{error.message}</Alert>}
         {error.isSuccess && <Alert severity="success">{error.message}</Alert>}
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Grid container spacing={1}>
-            <OrderLines
-              lines={data.lines}
-              handleDelete={handleDelete}
-              setIsLoading={setIsLoading}
-            />
-          </Grid>
-        </Grid>
       </Grid>
     </CommonGridForm>
   )

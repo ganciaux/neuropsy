@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
-import { Link, Typography } from '@mui/material'
+import { Link } from '@mui/material'
 import { getTypeLabel, getStatusLabel } from './utils/paymentUtils'
 
 export default function PaymentTable({ data, handleDelete }) {
