@@ -101,7 +101,7 @@ const PaymentForm = ({ id }) => {
           placeholder="Montant"
           variant="outlined"
           fullWidth
-          sx={{ textAlign: 'right' }}
+          sx={{ input: { textAlign: 'right' } }}
           onChange={handleOnChange}
           InputProps={{
             endAdornment: (

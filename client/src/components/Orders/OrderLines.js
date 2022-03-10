@@ -2,59 +2,45 @@ import React, { useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import { InputAdornment, Stack, TextField, Typography } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro'
-import CommonSelectData from '../common/CommonSelect/CommonSelectData'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import axios from 'axios'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 
 const OrderLines = ({ lines, handleOnChange, setIsLoading }) => {
-  const [data, setData] = React.useState(lines)
   const [articles, setArticles] = React.useState([])
   const [articlesSelect, setArticeSelect] = React.useState([])
-
   const handleAddLine = (e) => {
-    data.push({
+    lines.articles.push({
       articleId: '-1',
       description: 'line 1',
       quantity: 1,
       unitCost: 0,
       price: 0,
     })
-    setData(data)
-    handleOnChange(data)
+    handleOnChange(lines.articles)
   }
 
   const onChange = (e, index) => {
-    data[index] = {
-      ...data[index],
+    lines.articles[index] = {
+      ...lines.articles[index],
       [e.target.name]: e.target.value,
     }
-    setData(data)
-    handleOnChange(data)
-  }
-
-  const onChangeArticle = (e, index) => {
-    data[index] = {
-      ...data[index],
-      [e.target.name]: e.target.value,
-    }
+    let unitCost = lines.articles[index].unitCost
     const article = articles.filter((article) => article.id === e.target.value)
-    if (article) {
-      data[index] = {
-        ...data[index],
-        price: article.price * data[index].quantity,
-        unitCost: article.price,
-      }
+    if (article.length === 1) {
+      unitCost = article[0].price
     }
-    setData(data)
-    handleOnChange(data)
+    lines.articles[index] = {
+      ...lines.articles[index],
+      price: parseInt(unitCost) * parseInt(lines.articles[index].quantity),
+      unitCost: parseInt(unitCost),
+    }
+    handleOnChange(lines.articles)
   }
 
   const handleDelete = (index) => {
-    console.log('delete...', data.splice(index, 1))
-    setData(data)
-    handleOnChange(data)
+    handleOnChange(lines.articles.splice(index, 1))
   }
 
   useEffect(() => {
@@ -77,47 +63,67 @@ const OrderLines = ({ lines, handleOnChange, setIsLoading }) => {
     <>
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ marginTop: '10px' }}>
-          Détails:
+          Détails: {}
           <AddCircleIcon size="small" onClick={handleAddLine} />
         </Typography>
       </Grid>
-      {data?.map((line, index) => {
+      {lines.articles?.map((line, index) => {
         return (
           <Grid container spacing={1} key={index} sx={{ marginTop: '5px' }}>
-            <Grid item xs={12} sm={12} md={7}>
+            <Grid item xs={12} sm={12} md={6}>
               <CommonSelect
                 id="article"
                 label="Article"
                 name="articleId"
                 value={line.articleId}
                 data={articlesSelect}
-                onChange={(e) => onChangeArticle(e, index)}
+                onChange={(e) => onChange(e, index)}
                 setIsLoading={setIsLoading}
                 placeHolder="<Choisir un article>"
               />
             </Grid>
-            <Grid item xs={6} sm={6} md={2}>
+            <Grid item xs={3} sm={3} md={2}>
               <TextField
                 name={`quantity`}
                 label="Quantité"
+                type="number"
                 value={line.quantity}
                 placeholder="Montant"
                 variant="outlined"
                 fullWidth
-                sx={{ textAlign: 'right' }}
+                sx={{ input: { textAlign: 'right' } }}
                 onChange={(e) => onChange(e, index)}
               />
             </Grid>
-            <Grid item xs={6} sm={6} md={3}>
+            <Grid item xs={4} sm={4} md={2}>
+              <TextField
+                name={`unitCost`}
+                label="Prix unitaire"
+                value={line.unitCost}
+                placeholder="Prix unitaire"
+                variant="outlined"
+                fullWidth
+                sx={{ input: { textAlign: 'right' } }}
+                onChange={(e) => onChange(e, index)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <EuroIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={5} sm={5} md={2}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <TextField
-                  name={`unitCost`}
-                  label="Montant"
-                  value={line.unitCost}
-                  placeholder="Montant"
+                  name={`price`}
+                  label="Total"
+                  value={line.price}
+                  placeholder="Total"
                   variant="outlined"
                   fullWidth
-                  sx={{ textAlign: 'right' }}
+                  sx={{ input: { textAlign: 'right' } }}
                   onChange={(e) => onChange(e, index)}
                   InputProps={{
                     endAdornment: (

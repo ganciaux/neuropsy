@@ -8,5 +8,6 @@ router.get('/:id', order.getOrder)
 router.post('/', order.createOrder)
 router.put('/:id', order.updateOrder)
 router.delete('/:id', order.deleteOrder)
+router.get('/print/:id', order.print)
 
 module.exports = router

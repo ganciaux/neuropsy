@@ -38,7 +38,7 @@ const Payments = () => {
       <>
         <div>Date: {data._date}</div>
         <div>Nom: {data.clientId?._name}</div>
-        <div>Montant: {data.price}</div>
+        <div>Montant: {data.price} €</div>
       </>
     )
   }

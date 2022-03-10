@@ -13,7 +13,6 @@ const OrderForm = ({ id }) => {
   const isNew = id ? false : true
   const defaultData = {
     clientId: '-1',
-    parentId: '-1',
     price: 0.0,
     status: 0,
     description: '',
@@ -21,9 +20,10 @@ const OrderForm = ({ id }) => {
     articles: [
       {
         articleId: '-1',
-        description: 'line 1',
+        description: '',
         quantity: 1,
         unitCost: 0,
+        price: 0,
       },
     ],
   }
@@ -41,8 +41,8 @@ const OrderForm = ({ id }) => {
       ...data,
       articles,
     })
-    console.log('Form on change:')
-    console.log(data.articles)
+    //console.log('Form on change:')
+    //console.log(data.articles)
   }
 
   const handleChangeDate = (newValue) => {
@@ -64,10 +64,20 @@ const OrderForm = ({ id }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    const order = {
+      ...data,
+      articles: data.articles.map((article) => {
+        if (article.articleId === '-1') {
+          delete article.articleId
+        }
+        return article
+      }),
+    }
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
-        .post(`${process.env.REACT_APP_API_URL}/orders`, data)
+        .post(`${process.env.REACT_APP_API_URL}/orders`, order)
         .then((res) => {
           setData(defaultData)
           setError({ isSuccess: true, isError: false, message: 'Success' })
@@ -77,7 +87,7 @@ const OrderForm = ({ id }) => {
         })
     } else {
       axios
-        .put(`${process.env.REACT_APP_API_URL}/orders/${data._id}`, data)
+        .put(`${process.env.REACT_APP_API_URL}/orders/${data._id}`, order)
         .then((res) => {
           setError({ isSuccess: true, isError: false, message: 'Success' })
         })
@@ -86,6 +96,8 @@ const OrderForm = ({ id }) => {
         })
     }
   }
+
+  console.log('Form:', data)
 
   return (
     <CommonGridForm>
@@ -135,7 +147,7 @@ const OrderForm = ({ id }) => {
         />
       </Grid>
       <OrderLines
-        lines={data.articles}
+        lines={data}
         handleOnChange={handleLineOnChange}
         setIsLoading={setIsLoading}
       />

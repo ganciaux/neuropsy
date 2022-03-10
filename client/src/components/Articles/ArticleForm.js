@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
-import { Alert, Button, TextField, Typography } from '@mui/material'
+import EuroIcon from '@mui/icons-material/Euro'
+import TodayIcon from '@mui/icons-material/Today'
+import {
+  Alert,
+  Button,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 const ArticleForm = ({ id }) => {
   const isNew = id ? false : true
@@ -100,7 +108,15 @@ const ArticleForm = ({ id }) => {
                 variant="outlined"
                 fullWidth
                 required
+                sx={{ input: { textAlign: 'right' } }}
                 onChange={handleOnChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <EuroIcon />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -113,7 +129,15 @@ const ArticleForm = ({ id }) => {
                 variant="outlined"
                 fullWidth
                 required
+                sx={{ input: { textAlign: 'right' } }}
                 onChange={handleOnChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <TodayIcon />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12}>

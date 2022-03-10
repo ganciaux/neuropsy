@@ -67,7 +67,10 @@ const orderSchema = new mongoose.Schema(
         articleId: {
           type: mongoose.Schema.ObjectId,
           ref: 'Article',
-          required: true,
+          null: true,
+          transform: (v) => {
+            return v ? v : '-1'
+          },
         },
         quantity: {
           type: Number,
@@ -83,6 +86,11 @@ const orderSchema = new mongoose.Schema(
           default: 0.0,
           required: true,
         },
+        price: {
+          type: Number,
+          default: 0.0,
+          required: true,
+        },
         description: {
           type: String,
           default: '',
@@ -93,6 +101,8 @@ const orderSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 )
 
@@ -111,6 +121,13 @@ orderSchema.pre('save', async function (next) {
 orderSchema.pre('findOneAndUpdate', function (next) {
   this._update.price = utils.getArticlesPrice(this._update.articles)
   next()
+})
+
+orderSchema.virtual('_date').get(function () {
+  if (this.date) return utils.formatDate(this.date)
+  else {
+    return ''
+  }
 })
 
 const Order = mongoose.model('Order', orderSchema)

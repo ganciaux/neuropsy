@@ -8,8 +8,14 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
-import { Link } from '@mui/material'
-import { getTypeLabel, getStatusLabel } from './utils/paymentUtils'
+import { Link, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+import {
+  getTypeLabel,
+  getTypeIcon,
+  getStatusLabel,
+  getStatusSeverity,
+} from './utils/paymentUtils'
+import CommonAlert from '../common/CommonAlert/CommonAlert'
 
 export default function PaymentTable({ data, handleDelete }) {
   return (
@@ -36,9 +42,19 @@ export default function PaymentTable({ data, handleDelete }) {
                 {row._date}
               </TableCell>
               <TableCell>{row.clientId?._name}</TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell>{getTypeLabel(row.type)}</TableCell>
-              <TableCell>{getStatusLabel(row.status)}</TableCell>
+              <TableCell align="right">{row.price.toFixed(2)} €</TableCell>
+              <TableCell>
+                <ListItem>
+                  <ListItemIcon>{getTypeIcon(row.type)}</ListItemIcon>
+                  <ListItemText primary={getTypeLabel(row.type)} />
+                </ListItem>
+              </TableCell>
+              <TableCell>
+                <CommonAlert
+                  severity={getStatusSeverity(row.status)}
+                  content={getStatusLabel(row.status)}
+                />
+              </TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>
                 <Link href={`/payments/edit/${row.slug}`} underline="hover">

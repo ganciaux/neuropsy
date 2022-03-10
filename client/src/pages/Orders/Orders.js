@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { TextField, Typography } from '@mui/material'
+import { Alert, Grid, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Header from '../../components/common/Header/Header'
 import OrderTable from '../../components/Orders/OrderTable'
@@ -37,7 +37,8 @@ const Orders = () => {
       <>
         <div>Date: {data._date}</div>
         <div>Nom: {data.clientId?._name}</div>
-        <div>Montant: {data.price}</div>
+        <div>Montant: {data.price}€</div>
+        <div>Description: {data.description}</div>
       </>
     )
   }
@@ -83,7 +84,12 @@ const Orders = () => {
             fullWidth
             onChange={handleFilter}
           />
-          <OrderTable data={ordersFiltered} handleDelete={handleDelete} />
+          <OrderTable
+            id={data._id}
+            data={ordersFiltered}
+            handleDelete={handleDelete}
+            setError={setError}
+          />
           <CommonDialog
             title="Supprimer la commande ?"
             open={open}
@@ -91,6 +97,12 @@ const Orders = () => {
             handleCloseOk={handleCloseOk}
             handleCloseCancel={handleCloseCancel}
           />
+          <Grid item xs={12}>
+            {error.isError && <Alert severity="error">{error.message}</Alert>}
+            {error.isSuccess && (
+              <Alert severity="success">{error.message}</Alert>
+            )}
+          </Grid>
         </>
       )}
     </Box>

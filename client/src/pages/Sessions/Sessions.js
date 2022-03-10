@@ -5,6 +5,8 @@ import axios from 'axios'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import ListAltIcon from '@mui/icons-material/ListAlt'
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark'
 import Header from '../../components/common/Header/Header'
 import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
 import DataLineAction from '../../components/common/DataLine/DataLineAction'
@@ -12,8 +14,10 @@ import DataLineHeader from '../../components/common/DataLine/DataLineHeader'
 import {
   getTypeLabel,
   getStatusLabel,
+  getStatusSeverity,
 } from '../../components/Sessions/utils/sessionUtils'
 import CommontDatePicker from '../../components/common/CommonDatePicker/CommontDatePicker'
+import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 
 const Sessions = () => {
   const [sessions, setSessions] = useState([])
@@ -50,6 +54,13 @@ const Sessions = () => {
   }
 
   const getContent = (session) => {
+    const status = (
+      <CommonAlert
+        severity={getStatusSeverity(session.status)}
+        content={getStatusLabel(session.status)}
+      />
+    )
+
     return (
       <>
         <DataLineHeader title={`${session._date}`} />
@@ -58,13 +69,10 @@ const Sessions = () => {
           text={`${session.clientId?._name}`}
         />
         <DataLineIcon
-          icon={<AssignmentIndIcon />}
+          icon={<ListAltIcon />}
           text={getTypeLabel(session.type)}
         />
-        <DataLineIcon
-          icon={<AssignmentIndIcon />}
-          text={getStatusLabel(session.status)}
-        />
+        <DataLineIcon text={status} />
       </>
     )
   }
