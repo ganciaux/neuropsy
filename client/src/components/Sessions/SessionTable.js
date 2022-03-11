@@ -8,12 +8,15 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import { Link } from '@mui/material'
-import { getStatusLabel, getStatusSeverity } from './utils/orderUtils'
+import {
+  getTypeLabel,
+  getStatusLabel,
+  getStatusSeverity,
+} from './utils/sessionUtils'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
+import { Link } from '@mui/material'
 
-export default function OrderTable({ data, handleDelete, handlePrint }) {
+export default function SessionTable({ data, handleDelete }) {
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -21,9 +24,8 @@ export default function OrderTable({ data, handleDelete, handlePrint }) {
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Client</TableCell>
-            <TableCell align="right">Montant</TableCell>
+            <TableCell>Type</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Réference</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
@@ -38,23 +40,18 @@ export default function OrderTable({ data, handleDelete, handlePrint }) {
                 {row._date}
               </TableCell>
               <TableCell>{row.clientId?._name}</TableCell>
-              <TableCell align="right">{row.price.toFixed(2)}€</TableCell>
+              <TableCell>{getTypeLabel(row.type)}</TableCell>
               <TableCell>
                 <CommonAlert
                   severity={getStatusSeverity(row.status)}
                   content={getStatusLabel(row.status)}
                 />
               </TableCell>
-              <TableCell>{row.ref}</TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>
-                <Link href={`/orders/edit/${row.slug}`} underline="hover">
-                  <EditIcon size="small">Modifier</EditIcon>
+                <Link href={`/sessions/edit/${row.slug}`} underline="hover">
+                  <EditIcon>Modifier</EditIcon>
                 </Link>
-                <PictureAsPdfIcon
-                  sx={{ cursor: 'pointer' }}
-                  onClick={(e) => handlePrint(row)}
-                />
                 <DeleteForeverIcon
                   sx={{ cursor: 'pointer' }}
                   color="error"

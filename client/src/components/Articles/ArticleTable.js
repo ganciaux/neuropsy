@@ -8,18 +8,18 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
-import { Link } from '@mui/material'
+import { Link, Stack } from '@mui/material'
 
 export default function ArticleTable({ data, handleDelete }) {
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
+        <TableHead sx={{ backgroundColor: '#eee' }}>
           <TableRow>
             <TableCell>Nom</TableCell>
             <TableCell>Label</TableCell>
             <TableCell align="right">Montant</TableCell>
-            <TableCell align="right">Nombre de rendez-vous</TableCell>
+            <TableCell align="right">Rendez-vous</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
@@ -34,18 +34,20 @@ export default function ArticleTable({ data, handleDelete }) {
                 {row.name}
               </TableCell>
               <TableCell>{row.label}</TableCell>
-              <TableCell align="right">{row.price.toFixed(2)} €</TableCell>
+              <TableCell align="right">{row.price.toFixed(2)}€</TableCell>
               <TableCell align="right">{row.sessions}</TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>
-                <Link href={`/articles/edit/${row.slug}`} underline="hover">
-                  <EditIcon size="small">Modifier</EditIcon>
-                </Link>
-                <DeleteForeverIcon
-                  sx={{ cursor: 'pointer' }}
-                  color="error"
-                  onClick={(e) => handleDelete(row)}
-                />
+                <Stack direction="row" gap={1}>
+                  <Link href={`/articles/edit/${row.slug}`} underline="hover">
+                    <EditIcon size="small">Modifier</EditIcon>
+                  </Link>
+                  <DeleteForeverIcon
+                    sx={{ cursor: 'pointer' }}
+                    color="error"
+                    onClick={(e) => handleDelete(row)}
+                  />
+                </Stack>
               </TableCell>
             </TableRow>
           ))}

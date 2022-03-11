@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import BasicCard from '../../components/common/BasicCard/BasicCard'
 import axios from 'axios'
-import { TextField } from '@mui/material'
+import { TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import ListAltIcon from '@mui/icons-material/ListAlt'
@@ -18,11 +18,15 @@ import {
 } from '../../components/Sessions/utils/sessionUtils'
 import CommontDatePicker from '../../components/common/CommonDatePicker/CommontDatePicker'
 import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
+import SessionTable from '../../components/Sessions/SessionTable'
+import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 
 const Sessions = () => {
   const [sessions, setSessions] = useState([])
   const [data, setData] = useState({ start: new Date(), end: new Date() })
   const [sessionsFiltered, setSessionsFiltered] = useState([])
+  const [error, setError] = React.useState({ isError: false, message: '' })
+  const [open, setOpen] = React.useState(false)
 
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
@@ -51,6 +55,40 @@ const Sessions = () => {
       session.clientId?._name?.toLowerCase().includes(pattern),
     )
     setSessionsFiltered(result)
+  }
+
+  const handleCloseOk = () => {
+    setOpen(false)
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/session/${data._id}`)
+      .then((res) => {
+        setError({ isSuccess: true, isError: false, message: 'Success' })
+        const newPayments = sessionsFiltered.filter((payment) => {
+          return payment._id !== data._id
+        })
+        setSessionsFiltered(newPayments)
+      })
+      .catch((err) => {
+        setError({ isError: true, message: err.response.data.message })
+      })
+  }
+
+  const handleCloseCancel = () => {
+    setOpen(false)
+  }
+
+  const handleDelete = (row) => {
+    setOpen(true)
+    setData(row)
+  }
+
+  const getContentSession = () => {
+    return (
+      <>
+        <div>Date: {data._date}</div>
+        <div>Nom: {data.clientId?._name}</div>
+      </>
+    )
   }
 
   const getContent = (session) => {
@@ -123,6 +161,22 @@ const Sessions = () => {
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
+        {sessionsFiltered.length === 0 && (
+          <Typography>Aucun rendez-vous</Typography>
+        )}
+        {sessionsFiltered.length > 0 && (
+          <>
+            <SessionTable data={sessionsFiltered} handleDelete={handleDelete} />
+            <CommonDialog
+              title="Supprimer le rendez-vous ?"
+              open={open}
+              content={getContentSession}
+              handleCloseOk={handleCloseOk}
+              handleCloseCancel={handleCloseCancel}
+            />
+          </>
+        )}
+        {/*
         {sessionsFiltered.map((session) => {
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={session.id}>
@@ -133,7 +187,9 @@ const Sessions = () => {
               ></BasicCard>
             </Grid>
           )
-        })}
+        })
+          }
+        */}
       </Grid>
     </Box>
   )

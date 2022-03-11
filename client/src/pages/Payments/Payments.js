@@ -38,7 +38,7 @@ const Payments = () => {
       <>
         <div>Date: {data._date}</div>
         <div>Nom: {data.clientId?._name}</div>
-        <div>Montant: {data.price} €</div>
+        <div>Montant: {data.price}€</div>
       </>
     )
   }
@@ -77,7 +77,7 @@ const Payments = () => {
         href="/payments/add"
         action="Ajouter"
       />
-      {payments.length === 0 && <Typography>Aucun paiements</Typography>}
+      {payments.length === 0 && <Typography>Aucun paiement</Typography>}
       {payments.length > 0 && (
         <>
           <TextField

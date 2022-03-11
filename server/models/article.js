@@ -47,7 +47,7 @@ const articleSchema = new mongoose.Schema(
 )
 
 articleSchema.virtual('_name').get(function () {
-  return `${this.name} (${this.price})`
+  return `${this.name}`
 })
 
 const Article = mongoose.model('Article', articleSchema)

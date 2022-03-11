@@ -3,6 +3,7 @@ const fs = require('fs')
 
 class orderGenerator {
   constructor(order) {
+    console.log('orderGenerator: start')
     this.order = order
   }
 
@@ -63,8 +64,8 @@ class orderGenerator {
         .text(item.articleId.name, itemCodeX, y)
         .text(item.description, descriptionX, y)
         .text(item.quantity, quantityX, y)
-        .text(`${item.unitCost} € `, priceX, y)
-        .text(`${item.price} € `, amountX, y)
+        .text(`${item.unitCost}€ `, priceX, y)
+        .text(`${item.price}€ `, amountX, y)
     }
 
     const offset = tableTop + 25 + i * 25
@@ -74,7 +75,7 @@ class orderGenerator {
       .text('', descriptionX, offset)
       .text('', quantityX, offset)
       .text('Total', priceX, offset)
-      .text(`${this.order.price} €`, amountX, offset)
+      .text(`${this.order.price}€`, amountX, offset)
   }
 
   generateFooter(doc) {
@@ -118,7 +119,9 @@ class orderGenerator {
     // write out file
     theOutput.end()
 
-    return { fileName, path }
+    console.log('orderGenerator: end')
+
+    return { fileName, path, fullName: `${path}${fileName}` }
   }
 }
 

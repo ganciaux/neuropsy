@@ -42,7 +42,7 @@ export default function PaymentTable({ data, handleDelete }) {
                 {row._date}
               </TableCell>
               <TableCell>{row.clientId?._name}</TableCell>
-              <TableCell align="right">{row.price.toFixed(2)} €</TableCell>
+              <TableCell align="right">{row.price.toFixed(2)}€</TableCell>
               <TableCell>
                 <ListItem>
                   <ListItemIcon>{getTypeIcon(row.type)}</ListItemIcon>

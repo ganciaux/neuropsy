@@ -13,10 +13,12 @@
     "cors": "^2.8.5",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
+    "easyinvoice": "^2.3.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.4",
     "mongoose-slug-updater": "^3.3.0",
     "nodemon": "^2.0.15",
+    "pdf-to-base64": "^1.0.3",
     "pdfkit": "^0.13.0",
     "slugify": "^1.6.5",
     "validator": "^13.7.0"

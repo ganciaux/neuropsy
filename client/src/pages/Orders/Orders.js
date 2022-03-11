@@ -5,8 +5,12 @@ import { Box } from '@mui/system'
 import Header from '../../components/common/Header/Header'
 import OrderTable from '../../components/Orders/OrderTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
+import CommonSelect from '../../components/common/CommonSelect/CommonSelect'
+import { orderStatus } from '../../components/Orders/consts/orderStatus'
+
 const Orders = () => {
   const [orders, setOrders] = useState([])
+  const [filters, setFilters] = useState({ pattern: '', status: '-1' })
   const [ordersFiltered, setOrdersFiltered] = useState([])
   const [error, setError] = React.useState({ isError: false, message: '' })
   const [open, setOpen] = React.useState(false)
@@ -54,12 +58,15 @@ const Orders = () => {
       })
   }, [])
 
-  const handleFilter = (e) => {
-    const pattern = e.target.value.toLowerCase()
+  const handleFilters = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value })
+    const pattern = filters.pattern.toLowerCase()
     const result = orders.filter((order) => {
       return (
         order.clientId?._name?.toLowerCase().includes(pattern) ||
-        order.price.toString().toLowerCase().includes(pattern)
+        order.price.toString().toLowerCase().includes(pattern) ||
+        (order.ref.toString().toLowerCase().includes(pattern) &&
+          (filters.status == order.status || filters.status == '-1'))
       )
     })
     setOrdersFiltered(result)
@@ -70,6 +77,19 @@ const Orders = () => {
     setData(row)
   }
 
+  const handlePrint = (row) => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/orders/print/${row._id}`)
+      .then((res) => {
+        console.log(res)
+        setError({ isSuccess: true, isError: false, message: 'Success' })
+      })
+      .catch((err) => {
+        console.log(err)
+        setError({ isError: true, message: err.response.data.message })
+      })
+  }
+
   return (
     <Box>
       <Header title="Liste des commandes" href="/orders/add" action="Ajouter" />
@@ -78,15 +98,25 @@ const Orders = () => {
         <>
           <TextField
             name="search"
-            placeholder="Recherche dans le nom et le prix"
+            placeholder="Recherche dans le nom, la référence  et le prix"
             label="Filtre de recherche"
             variant="outlined"
             fullWidth
-            onChange={handleFilter}
+            onChange={handleFilters}
+          />
+          <CommonSelect
+            id="status"
+            label="Statut"
+            value={data.status}
+            name="status"
+            placeHolder="<Choisir un statut>"
+            data={filters}
+            onChange={handleFilters}
           />
           <OrderTable
             id={data._id}
             data={ordersFiltered}
+            handlePrint={handlePrint}
             handleDelete={handleDelete}
             setError={setError}
           />

@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync')
 const orderGenerator = require('../utils/orderGenerator')
 var ObjectId = require('mongoose').Types.ObjectId
 const fs = require('fs')
+var path = require('path')
 
 exports.getAllOrders = factory.getAll(Order, [
   {
@@ -57,14 +58,24 @@ exports.print = catchAsync(async (req, res, next) => {
 
   if (Array.isArray(doc)) doc = doc[0]
 
+  console.log('order print: before call')
+
   const orderPdf = new orderGenerator(doc)
 
   const pdf = orderPdf.generate()
 
+  console.log('order print: before call', pdf.path, pdf.fullName)
+
+  /*
   res.status(200).json({
     status: 'success',
     data: pdf,
+  })*/
+  //res.status(200).attachment(pdf.fullName)
+  res.contentType('application/pdf')
+  res.download(path.join(__dirname, '../files/order-2022030001.pdf'), (err) => {
+    if (err) console.log(err)
   })
 
-  //res.download(filename)
+  //res.download(pdf.fullName)
 })

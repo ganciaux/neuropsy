@@ -21,6 +21,7 @@ import OrderEdit from './pages/Orders/OrderEdit'
 import Sessions from './pages/Sessions/Sessions'
 import SessionAdd from './pages/Sessions/SessionAdd'
 import SessionEdit from './pages/Sessions/SessionEdit'
+import Home from './pages/Home/Home'
 import { ThemeProvider } from '@mui/styles'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -29,6 +30,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route path="home" element={<Home />} />
           <Route path="clients" element={<Clients />} />
           <Route path="clients/add" element={<ClientAdd />} />
           <Route path="clients/edit/:id" element={<ClientEdit />} />

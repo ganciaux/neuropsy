@@ -38,7 +38,7 @@ const Articles = () => {
       <>
         <div>Nom: {data.name}</div>
         <div>Label: {data.label}</div>
-        <div>Montant: {data.price} €</div>
+        <div>Montant: {data.price}€</div>
       </>
     )
   }
@@ -78,7 +78,7 @@ const Articles = () => {
         href="/articles/add"
         action="Ajouter"
       />
-      {articles.length === 0 && <Typography>Aucun paiements</Typography>}
+      {articles.length === 0 && <Typography>Aucun article</Typography>}
       {articles.length > 0 && (
         <>
           <TextField
