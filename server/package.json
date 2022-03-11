@@ -15,11 +15,14 @@
     "dotenv": "^16.0.0",
     "easyinvoice": "^2.3.0",
     "express": "^4.17.3",
+    "html-pdf": "^3.0.1",
     "mongoose": "^6.2.4",
     "mongoose-slug-updater": "^3.3.0",
     "nodemon": "^2.0.15",
     "pdf-to-base64": "^1.0.3",
     "pdfkit": "^0.13.0",
+    "pdfkit-construct": "^1.2.3",
+    "pdfmake": "^0.2.4",
     "slugify": "^1.6.5",
     "validator": "^13.7.0"
   }

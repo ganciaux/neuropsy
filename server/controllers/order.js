@@ -5,6 +5,9 @@ const orderGenerator = require('../utils/orderGenerator')
 var ObjectId = require('mongoose').Types.ObjectId
 const fs = require('fs')
 var path = require('path')
+const pdf = require('html-pdf')
+
+const pdfTemplate = require('../utils/jsmastery')
 
 exports.getAllOrders = factory.getAll(Order, [
   {
@@ -62,7 +65,7 @@ exports.print = catchAsync(async (req, res, next) => {
 
   const orderPdf = new orderGenerator(doc)
 
-  const pdf = orderPdf.generate()
+  const pdf = await orderPdf.generateTest()
 
   console.log('order print: before call', pdf.path, pdf.fullName)
 
@@ -71,11 +74,35 @@ exports.print = catchAsync(async (req, res, next) => {
     status: 'success',
     data: pdf,
   })*/
-  //res.status(200).attachment(pdf.fullName)
+
   res.contentType('application/pdf')
-  res.download(path.join(__dirname, '../files/order-2022030001.pdf'), (err) => {
+  res.download(path.join(__dirname, '../files/order-2022030016.pdf'), (err) => {
     if (err) console.log(err)
   })
 
   //res.download(pdf.fullName)
+})
+
+exports.printPdf = catchAsync(async (req, res, next) => {
+  pdf
+    .create(
+      pdfTemplate({
+        name: 'ghis',
+        price1: '10',
+        price2: '11',
+        receiptId: '12',
+      }),
+      {},
+    )
+    .toFile(`${__dirname}/result.pdf`, (err) => {
+      if (err) {
+        res.send(Promise.reject())
+      }
+
+      res.send(Promise.resolve())
+    })
+})
+
+exports.fetchPdf = catchAsync(async (req, res, next) => {
+  res.sendFile(`${__dirname}/result.pdf`)
 })

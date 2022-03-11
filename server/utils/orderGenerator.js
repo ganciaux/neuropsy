@@ -5,6 +5,7 @@ class orderGenerator {
   constructor(order) {
     console.log('orderGenerator: start')
     this.order = order
+    this.table = 0
   }
 
   generateHeaders(doc) {
@@ -97,7 +98,7 @@ class orderGenerator {
       })
   }
 
-  generate() {
+  async generate() {
     let theOutput = new PDFGenerator()
 
     console.log(this.invoice)
@@ -106,7 +107,8 @@ class orderGenerator {
     const fileName = `order-${this.order.ref}.pdf`
 
     // pipe to a writable stream which would save the result into the same directory
-    theOutput.pipe(fs.createWriteStream(`${path}${fileName}`))
+    const stream = fs.createWriteStream(`${path}${fileName}`)
+    theOutput.pipe(stream)
 
     this.generateHeaders(theOutput)
 
@@ -118,6 +120,96 @@ class orderGenerator {
 
     // write out file
     theOutput.end()
+
+    await new Promise((resolve) => {
+      stream.on('finish', function () {
+        resolve()
+      })
+    })
+
+    console.log('orderGenerator: end')
+
+    return { fileName, path, fullName: `${path}${fileName}` }
+  }
+
+  async generateTest() {
+    let doc = new PDFGenerator({
+      bufferPages: true,
+      autoFirstPage: false,
+    })
+
+    doc.on('pageAdded', () => {
+      console.log('new page...', this.table)
+      if (this.table == 1) {
+      } else {
+      }
+    })
+
+    const path = `${__dirname}/../files/`
+    const fileName = `order-${this.order.ref}.pdf`
+
+    // pipe to a writable stream which would save the result into the same directory
+    const stream = fs.createWriteStream(`${path}${fileName}`)
+    doc.pipe(stream)
+    doc.addPage()
+
+    this.table = 1
+    for (let y = 0; y < 10; y++) {
+      console.log('y:', y)
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+    }
+
+    this.table = 2
+    for (let z = 0; z < 10; z++) {
+      console.log('z:', z)
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+      doc.text('Hello World').moveDown()
+    }
+
+    doc.addPage()
+    doc.text('Hello World2')
+    doc.addPage()
+    doc.text('Hello World3')
+
+    console.log('ici')
+    //Global Edits to All Pages (Header/Footer, etc)
+    let pages = doc.bufferedPageRange()
+    for (let i = 0; i < pages.count; i++) {
+      doc.switchToPage(i)
+
+      //Footer: Add page number
+      let oldBottomMargin = doc.page.margins.bottom
+      doc.page.margins.bottom = 0 //Dumb: Have to remove bottom margin in order to write into it
+      doc.text(
+        `Page: ${i + 1} of ${pages.count}`,
+        0,
+        doc.page.height - oldBottomMargin / 2, // Centered vertically in bottom margin
+        { align: 'center' },
+      )
+      doc.page.margins.bottom = oldBottomMargin // ReProtect bottom margin
+    }
+    doc.end()
+
+    await new Promise((resolve) => {
+      stream.on('finish', function () {
+        resolve()
+      })
+    })
 
     console.log('orderGenerator: end')
 

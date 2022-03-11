@@ -7,6 +7,7 @@ import OrderTable from '../../components/Orders/OrderTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 import CommonSelect from '../../components/common/CommonSelect/CommonSelect'
 import { orderStatus } from '../../components/Orders/consts/orderStatus'
+import { saveAs } from 'file-saver'
 
 const Orders = () => {
   const [orders, setOrders] = useState([])
@@ -29,6 +30,21 @@ const Orders = () => {
       })
       .catch((err) => {
         setError({ isError: true, message: err.response.data.message })
+      })
+  }
+
+  const createAndDownloadPdf = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/orders/create-pdf`)
+      .then(() =>
+        axios.get(`${process.env.REACT_APP_API_URL}/orders/fetch-pdf`, {
+          responseType: 'blob',
+        }),
+      )
+      .then((res) => {
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' })
+
+        saveAs(pdfBlob, 'newPdf.pdf')
       })
   }
 
@@ -79,10 +95,17 @@ const Orders = () => {
 
   const handlePrint = (row) => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/orders/print/${row._id}`)
+      .get(`${process.env.REACT_APP_API_URL}/orders/print/${row._id}`, {
+        responseType: 'blob',
+      })
       .then((res) => {
-        console.log(res)
-        setError({ isSuccess: true, isError: false, message: 'Success' })
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `order-${row.ref}.pdf`) //or any other extension
+        document.body.appendChild(link)
+        link.click()
+        //setError({ isSuccess: true, isError: false, message: 'Success' })
       })
       .catch((err) => {
         console.log(err)
@@ -93,6 +116,7 @@ const Orders = () => {
   return (
     <Box>
       <Header title="Liste des commandes" href="/orders/add" action="Ajouter" />
+      <button onClick={createAndDownloadPdf}>Download PDF</button>
       {orders.length === 0 && <Typography>Aucune commande</Typography>}
       {orders.length > 0 && (
         <>

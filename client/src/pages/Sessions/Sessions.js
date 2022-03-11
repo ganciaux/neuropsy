@@ -17,13 +17,15 @@ import {
   getStatusSeverity,
 } from '../../components/Sessions/utils/sessionUtils'
 import CommontDatePicker from '../../components/common/CommonDatePicker/CommontDatePicker'
+import CommonDateRange from '../../components/common/CommonDateRange/CommonDateRange'
 import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import SessionTable from '../../components/Sessions/SessionTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 
 const Sessions = () => {
   const [sessions, setSessions] = useState([])
-  const [data, setData] = useState({ start: new Date(), end: new Date() })
+  const [data, setData] = useState({})
+  const [dates, setDates] = useState([null, null])
   const [sessionsFiltered, setSessionsFiltered] = useState([])
   const [error, setError] = React.useState({ isError: false, message: '' })
   const [open, setOpen] = React.useState(false)
@@ -31,12 +33,11 @@ const Sessions = () => {
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
-  const handleChangeDateStart = (newValue) => {
-    setData({ ...data, start: newValue })
+
+  const handleOnChangeRange = (dates) => {
+    setDates(dates)
   }
-  const handleChangeDateEnd = (newValue) => {
-    setData({ ...data, end: newValue })
-  }
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/sessions?sort=-date`)
@@ -50,6 +51,7 @@ const Sessions = () => {
   }, [])
 
   const handleFilter = (e) => {
+    console.log(data)
     const pattern = e.target.value.toLowerCase()
     const result = sessions.filter((session) =>
       session.clientId?._name?.toLowerCase().includes(pattern),
@@ -78,6 +80,7 @@ const Sessions = () => {
   }
 
   const handleDelete = (row) => {
+    console.log('delete')
     setOpen(true)
     setData(row)
   }
@@ -141,23 +144,9 @@ const Sessions = () => {
             onChange={handleFilter}
           />
         </Grid>
+
         <Grid item xs={12} sm={4}>
-          <CommontDatePicker
-            name="start"
-            label="Début"
-            value={data.start}
-            handleOnChange={handleOnChange}
-            handleChangeDate={handleChangeDateStart}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <CommontDatePicker
-            name="end"
-            label="Fin"
-            value={data.end}
-            handleOnChange={handleOnChange}
-            handleChangeDate={handleChangeDateEnd}
-          />
+          <CommonDateRange onChange={handleOnChangeRange} dates={dates} />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ paddingTop: '20px' }}>
