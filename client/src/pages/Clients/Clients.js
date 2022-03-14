@@ -35,11 +35,12 @@ const Clients = () => {
   }, [])
 
   const handleFilter = (e) => {
+    const pattern = e.target.value.toLowerCase()
     const result = clients.filter(
       (client) =>
-        client.name.includes(e.target.value) ||
-        client.firstname.includes(e.target.value) ||
-        client.email.includes(e.target.value),
+        client.name.toLowerCase().includes(pattern) ||
+        client.firstname.toLowerCase().includes(pattern) ||
+        client.email.toLowerCase().includes(pattern),
     )
     setClientsFiltered(result)
   }

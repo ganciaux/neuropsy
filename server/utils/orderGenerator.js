@@ -136,11 +136,13 @@ class orderGenerator {
     let doc = new PDFGenerator({
       bufferPages: true,
       autoFirstPage: false,
+      margins: { top: 200, left: 10, right: 10, bottom: 75 },
     })
 
     doc.on('pageAdded', () => {
       console.log('new page...', this.table)
       if (this.table == 1) {
+        doc.text('Header').moveDown()
       } else {
       }
     })
