@@ -6,17 +6,21 @@ import { useFetchData } from '../../utils/useFetchData '
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 
 const OrderAdd = () => {
-  const { idClient } = useParams()
-  const [data, isLoading, error] = useFetchData(idClient, 'clients')
+  const { id, idClient } = useParams()
+  const [client, isLoadingOrder, errorOrder] = useFetchData(id, 'orders')
+  const [order, isLoadingClient, errorClients] = useFetchData(
+    idClient,
+    'clients',
+  )
 
-  if (isLoading) {
+  if (isLoadingOrder || isLoadingClient) {
     return <CommonLoader />
   }
 
   return (
     <>
       <Header title="Ajouter une commande" />
-      <OrderForm client={data} />
+      <OrderForm client={client} order={order} />
     </>
   )
 }

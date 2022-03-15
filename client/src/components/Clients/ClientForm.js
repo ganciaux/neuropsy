@@ -1,41 +1,22 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
-import { Alert, Button, TextField, Typography } from '@mui/material'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import { Alert, Button, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
+import { defaultData } from '../Clients/consts/defaultData'
+
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
+import { useFetchData } from '../../utils/useFetchData '
+import CommonLoader from '../common/CommonLoader/CommonLoader'
 
 const ClientForm = ({ id }) => {
   const isNew = id ? false : true
-  const defaultData = {
-    name: '',
-    firstname: '',
-    type: '-1',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    zip: '',
-    description: '',
-    birthdate: new Date(),
-  }
-
-  useEffect(() => {
-    if (isNew === false) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/clients/${id}`)
-        .then((res) => {
-          setData(res.data.data)
-        })
-        .catch((err) => {
-          console.log(err.response.data)
-        })
-    }
-  }, [id])
+  const [data, setData, isLoading, error, setError] = useFetchData(
+    id,
+    'clients',
+    defaultData,
+  )
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -62,14 +43,17 @@ const ClientForm = ({ id }) => {
     }
   }
 
-  const [data, setData] = React.useState(defaultData)
-  const [error, setError] = React.useState({ isError: false, message: '' })
-
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
   const handleChangeDate = (newValue) => {
     setData({ ...data, birthdate: newValue })
+  }
+
+  console.log('clientForm', isLoading, data)
+
+  if (isLoading) {
+    return <CommonLoader />
   }
 
   return (

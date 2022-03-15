@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import axios from 'axios'
 import Grid from '@mui/material/Grid'
-import { Alert, Button, TextField } from '@mui/material'
+import { Alert, Button, TextField, Typography } from '@mui/material'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { orderStatus } from './consts/orderStatus'
@@ -9,8 +9,10 @@ import OrderLines from './OrderLines'
 import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
 import CommonSelectData from '../common/CommonSelect/CommonSelectData'
 
-const OrderForm = ({ id }) => {
+const OrderForm = ({ id, client }) => {
   const isNew = id ? false : true
+
+  console.log('OrderForm:', client)
   const defaultData = {
     clientId: '-1',
     price: 0.0,
@@ -102,16 +104,19 @@ const OrderForm = ({ id }) => {
   return (
     <CommonGridForm>
       <Grid item xs={12}>
-        <CommonSelectData
-          id="client"
-          label="Client"
-          name="clientId"
-          value={data.clientId}
-          onChange={handleOnChange}
-          setIsLoading={setIsLoading}
-          model="clients"
-          placeHolder="<Choisir un client>"
-        />
+        {client && <Typography variant="h4">{client._name}</Typography>}
+        {!client && (
+          <CommonSelectData
+            id="client"
+            label="Client"
+            name="clientId"
+            value={data.clientId.id}
+            onChange={handleOnChange}
+            setIsLoading={setIsLoading}
+            model="clients"
+            placeHolder="<Choisir un client>"
+          />
+        )}
       </Grid>
       <Grid item xs={6} sm={6}>
         <CommontDatePicker
