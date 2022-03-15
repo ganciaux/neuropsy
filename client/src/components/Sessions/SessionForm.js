@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import Grid from '@mui/material/Grid'
 import { Alert, Button, TextField } from '@mui/material'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
@@ -7,91 +6,46 @@ import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { sessionStatus } from './consts/sessionStatus'
 import { sessionTypes } from './consts/sessionTypes'
 import CommontDateTimePicker from '../common/CommonDatePicker/CommonDateTimePicker'
+import { useParams } from 'react-router-dom'
+import { useFetchData } from '../../utils/useFetchData '
+import { useSetData } from '../../utils/useSetData'
+import { defaultData } from './consts/defaultData'
+import CommonLoader from '../common/CommonLoader/CommonLoader'
+import CommonSelectData from '../common/CommonSelect/CommonSelectData'
+import Header from '../common/Header/Header'
 
-const SessionForm = ({ id }) => {
-  const isNew = id ? false : true
-  const defaultData = {
-    clientId: '-1',
-    type: '-1',
-    status: '-1',
-    description: '',
-    date: new Date(),
-  }
-  const [clients, setClients] = React.useState([])
-  const [data, setData] = React.useState(defaultData)
-  const [error, setError] = React.useState({ isError: false, message: '' })
+const SessionForm = () => {
+  const { id } = useParams()
+  const [data, setData, isLoading, setIsLoading, error, setError] =
+    useFetchData(id, 'sessions', defaultData)
+  const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
+    data,
+    setData,
+    setError,
+    'sessions',
+    id,
+    defaultData,
+  )
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/clients`)
-      .then((res) => {
-        setClients(
-          res.data.data.map((data) => {
-            return { id: data._id, value: data._id, label: data._name }
-          }),
-        )
-      })
-      .catch((err) => {
-        console.log(err.response.data)
-      })
-  }, [])
-
-  useEffect(() => {
-    if (isNew === false) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/sessions/${id}`)
-        .then((res) => {
-          setData(res.data.data)
-        })
-        .catch((err) => {
-          console.log(err.response.data)
-        })
-    }
-  }, [id, isNew])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError({ isSuccess: false, isError: false, message: '' })
-    if (isNew) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/sessions`, data)
-        .then((res) => {
-          setData(defaultData)
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    } else {
-      axios
-        .put(`${process.env.REACT_APP_API_URL}/sessions/${data._id}`, data)
-        .then((res) => {
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    }
-  }
-
-  const handleOnChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-  const handleChangeDate = (newValue) => {
-    setData({ ...data, date: newValue })
+  if (isLoading) {
+    return <CommonLoader />
   }
 
   return (
     <CommonGridForm>
       <Grid item xs={12}>
-        <CommonSelect
+        <Header title="Gestion rendez-vous" />
+      </Grid>
+      <Grid item xs={12}>
+        <CommonSelectData
           id="client"
           label="Client"
-          value={data?.clientId}
           name="clientId"
-          data={clients}
-          placeHolder="<Choisir un client>"
+          value={data.clientId}
           onChange={handleOnChange}
+          setIsLoading={setIsLoading}
+          model="clients"
+          placeHolder="<Choisir un client>"
         />
       </Grid>
       <Grid item xs={6} sm={6}>
@@ -145,8 +99,8 @@ const SessionForm = ({ id }) => {
           color="primary"
           onClick={handleSubmit}
         >
-          {isNew && 'Ajouter'}
-          {!isNew && 'Modifier'}
+          {!id && 'Ajouter'}
+          {id && 'Modifier'}
         </Button>
       </Grid>
       <Grid item xs={12}>

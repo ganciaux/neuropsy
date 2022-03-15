@@ -43,8 +43,6 @@ const OrderForm = ({ id, client }) => {
       ...data,
       articles,
     })
-    //console.log('Form on change:')
-    //console.log(data.articles)
   }
 
   const handleChangeDate = (newValue) => {

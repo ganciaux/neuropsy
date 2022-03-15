@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import Grid from '@mui/material/Grid'
 import { Alert, Button, InputAdornment, TextField } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro'
@@ -7,71 +6,37 @@ import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { paymentStatus } from './consts/paymentStatus'
 import { paymentTypes } from './consts/paymentTypes'
+import { useFetchData } from '../../utils/useFetchData '
+import { useSetData } from '../../utils/useSetData'
+import { defaultData } from './consts/defaultData'
 import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
 import CommonSelectData from '../common/CommonSelect/CommonSelectData'
+import { useParams } from 'react-router-dom'
+import CommonLoader from '../common/CommonLoader/CommonLoader'
+import Header from '../common/Header/Header'
 
-const PaymentForm = ({ id }) => {
-  const isNew = id ? false : true
-  const defaultData = {
-    clientId: '-1',
-    price: 0.0,
-    type: '-1',
-    status: '-1',
-    description: '',
-    date: new Date(),
-  }
+const PaymentForm = () => {
+  const { id } = useParams()
+  const [data, setData, isLoading, setIsLoading, error, setError] =
+    useFetchData(id, 'payments', defaultData)
+  const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
+    data,
+    setData,
+    setError,
+    'payments',
+    id,
+    defaultData,
+  )
 
-  const [data, setData] = React.useState(defaultData)
-  const [error, setError] = React.useState({ isError: false, message: '' })
-  const [isLoading, setIsLoading] = React.useState(true)
-
-  useEffect(() => {
-    if (isNew === false) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/payments/${id}`)
-        .then((res) => {
-          setData(res.data.data)
-        })
-        .catch((err) => {
-          console.log(err.response.data)
-        })
-    }
-  }, [id, isNew])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError({ isSuccess: false, isError: false, message: '' })
-    if (isNew) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/payments`, data)
-        .then((res) => {
-          setData(defaultData)
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    } else {
-      axios
-        .put(`${process.env.REACT_APP_API_URL}/payments/${data._id}`, data)
-        .then((res) => {
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    }
-  }
-
-  const handleOnChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-  const handleChangeDate = (newValue) => {
-    setData({ ...data, date: newValue })
+  if (isLoading) {
+    return <CommonLoader />
   }
 
   return (
-    <CommonGridForm>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Header title="Gestion paiement" />
+      </Grid>
       <Grid item xs={12}>
         <CommonSelectData
           id="client"
@@ -154,15 +119,15 @@ const PaymentForm = ({ id }) => {
           color="primary"
           onClick={handleSubmit}
         >
-          {isNew && 'Ajouter'}
-          {!isNew && 'Modifier'}
+          {!id && 'Ajouter'}
+          {id && 'Modifier'}
         </Button>
       </Grid>
       <Grid item xs={12}>
         {error.isError && <Alert severity="error">{error.message}</Alert>}
         {error.isSuccess && <Alert severity="success">{error.message}</Alert>}
       </Grid>
-    </CommonGridForm>
+    </Grid>
   )
 }
 

@@ -1,76 +1,39 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import Grid from '@mui/material/Grid'
 import EuroIcon from '@mui/icons-material/Euro'
 import TodayIcon from '@mui/icons-material/Today'
-import {
-  Alert,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Alert, Button, InputAdornment, TextField } from '@mui/material'
+import { useParams } from 'react-router-dom'
+import { useFetchData } from '../../utils/useFetchData '
+import { useSetData } from '../../utils/useSetData'
+import { defaultData } from './consts/defaultData'
+import CommonLoader from '../common/CommonLoader/CommonLoader'
+import Header from '../common/Header/Header'
 
-const ArticleForm = ({ id }) => {
-  const isNew = id ? false : true
-  const defaultData = {
-    name: '',
-    label: '',
-    price: '',
-    sessions: '',
-    description: '',
+const ArticleForm = () => {
+  const { id } = useParams()
+  const [data, setData, isLoading, error, setError] = useFetchData(
+    id,
+    'articles',
+    defaultData,
+  )
+  const [handleSubmit, handleOnChange] = useSetData(
+    data,
+    setData,
+    setError,
+    'articles',
+    id,
+    defaultData,
+  )
+
+  if (isLoading) {
+    return <CommonLoader />
   }
-
-  useEffect(() => {
-    if (isNew === false) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/articles/${id}`)
-        .then((res) => {
-          setData(res.data.data)
-        })
-        .catch((err) => {
-          console.log(err.response.data)
-        })
-    }
-  }, [id])
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError({ isSuccess: false, isError: false, message: '' })
-    if (isNew) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/articles`, data)
-        .then((res) => {
-          setData(defaultData)
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    } else {
-      axios
-        .put(`${process.env.REACT_APP_API_URL}/articles/${data._id}`, data)
-        .then((res) => {
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    }
-  }
-
-  const [data, setData] = React.useState(defaultData)
-  const [error, setError] = React.useState({ isError: false, message: '' })
-
-  const handleOnChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-  const handleChangeDate = (newValue) => {
-    setData({ ...data, birthdate: newValue })
-  }
-
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Header title="Gestion article" />
+      </Grid>
       <Grid item xs={12}>
         <form>
           <Grid container spacing={1}>
@@ -161,8 +124,8 @@ const ArticleForm = ({ id }) => {
                 color="primary"
                 onClick={handleSubmit}
               >
-                {isNew && 'Ajouter'}
-                {!isNew && 'Modifier'}
+                {!id && 'Ajouter'}
+                {id && 'Modifier'}
               </Button>
               <Grid item xs={12}>
                 {error.isError && (

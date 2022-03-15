@@ -1,56 +1,31 @@
 import React from 'react'
-import axios from 'axios'
 import Grid from '@mui/material/Grid'
 import { Alert, Button, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
 import { defaultData } from '../Clients/consts/defaultData'
-
+import { useFetchData } from '../../utils/useFetchData '
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
-import { useFetchData } from '../../utils/useFetchData '
 import CommonLoader from '../common/CommonLoader/CommonLoader'
+import { useParams } from 'react-router-dom'
+import { useSetData } from '../../utils/useSetData'
+import Header from '../common/Header/Header'
 
-const ClientForm = ({ id }) => {
-  const isNew = id ? false : true
+const ClientForm = () => {
+  const { id } = useParams()
   const [data, setData, isLoading, error, setError] = useFetchData(
     id,
     'clients',
     defaultData,
   )
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError({ isSuccess: false, isError: false, message: '' })
-    if (isNew) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/clients`, data)
-        .then((res) => {
-          setData(defaultData)
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    } else {
-      axios
-        .put(`${process.env.REACT_APP_API_URL}/clients/${data._id}`, data)
-        .then((res) => {
-          setError({ isSuccess: true, isError: false, message: 'Success' })
-        })
-        .catch((err) => {
-          setError({ isError: true, message: err.response.data.message })
-        })
-    }
-  }
-
-  const handleOnChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-  const handleChangeDate = (newValue) => {
-    setData({ ...data, birthdate: newValue })
-  }
-
-  console.log('clientForm', isLoading, data)
+  const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
+    data,
+    setData,
+    setError,
+    'clients',
+    id,
+    defaultData,
+  )
 
   if (isLoading) {
     return <CommonLoader />
@@ -58,6 +33,9 @@ const ClientForm = ({ id }) => {
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Header title="Gestion client" />
+      </Grid>
       <Grid item xs={12}>
         <form>
           <Grid container spacing={1}>
@@ -184,8 +162,8 @@ const ClientForm = ({ id }) => {
                 color="primary"
                 onClick={handleSubmit}
               >
-                {isNew && 'Ajouter'}
-                {!isNew && 'Modifier'}
+                {!id && 'Ajouter'}
+                {id && 'Modifier'}
               </Button>
               <Grid item xs={12}>
                 {error.isError && (

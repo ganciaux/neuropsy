@@ -33,5 +33,5 @@ export const useFetchData = (id, path, defaultData) => {
     }
   }, [])
 
-  return [data, setData, isLoading, error, setError]
+  return [data, setData, isLoading, setIsLoading, error, setError]
 }
