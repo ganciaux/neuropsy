@@ -1,38 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Grid from '@mui/material/Grid'
 import BasicCard from '../../components/common/BasicCard/BasicCard'
-import axios from 'axios'
-import { TextField, Typography } from '@mui/material'
+import { TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EuroIcon from '@mui/icons-material/Euro'
 import CakeIcon from '@mui/icons-material/Cake'
-import { ThreeDots } from 'react-loader-spinner'
-import Header from '../../components/common/Header/Header'
 import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
 import DataLineAction from '../../components/common/DataLine/DataLineAction'
 import DataLineHeader from '../../components/common/DataLine/DataLineHeader'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
+import { useFetchDataList } from '../../utils/useFetchDataList'
+import Header from '../../components/common/Header/Header'
 
 const Clients = () => {
-  const [clients, setClients] = useState([])
-  const [clientsFiltered, setClientsFiltered] = useState([])
-  const [isLoading, setIsLoading] = React.useState(true)
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/clients`)
-      .then((res) => {
-        setClients(res.data.data)
-        setClientsFiltered(res.data.data)
-        setIsLoading(false)
-      })
-      .catch((err) => {
-        console.log(err.response.data)
-      })
-  }, [])
+  const [
+    clients,
+    setClients,
+    clientsFiltered,
+    setClientsFiltered,
+    isLoading,
+    error,
+    setError,
+  ] = useFetchDataList('clients')
 
   const handleFilter = (e) => {
     const pattern = e.target.value.toLowerCase()

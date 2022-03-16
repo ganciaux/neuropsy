@@ -6,12 +6,23 @@ import Header from '../../components/common/Header/Header'
 import ArticleTable from '../../components/Articles/ArticleTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 const Articles = () => {
-  const [total, setTotal] = useState(0)
   const [articles, setArticles] = useState([])
   const [articlesFiltered, setArticlesFiltered] = useState([])
   const [error, setError] = React.useState({ isError: false, message: '' })
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState({})
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/articles`)
+      .then((res) => {
+        setArticles(res.data.data)
+        setArticlesFiltered(res.data.data)
+      })
+      .catch((err) => {
+        console.log(err.response.data)
+      })
+  }, [])
 
   const handleCloseOk = () => {
     setOpen(false)
@@ -33,26 +44,10 @@ const Articles = () => {
     setOpen(false)
   }
 
-  const getContent = () => {
-    return (
-      <>
-        <div>Nom: {data.name}</div>
-        <div>Label: {data.label}</div>
-        <div>Montant: {data.price}€</div>
-      </>
-    )
+  const handleDelete = (row) => {
+    setOpen(true)
+    setData(row)
   }
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/articles`)
-      .then((res) => {
-        setArticles(res.data.data)
-        setArticlesFiltered(res.data.data)
-      })
-      .catch((err) => {
-        console.log(err.response.data)
-      })
-  }, [])
 
   const handleFilter = (e) => {
     const pattern = e.target.value.toLowerCase()
@@ -66,9 +61,14 @@ const Articles = () => {
     setArticlesFiltered(result)
   }
 
-  const handleDelete = (row) => {
-    setOpen(true)
-    setData(row)
+  const getContent = () => {
+    return (
+      <>
+        <div>Nom: {data.name}</div>
+        <div>Label: {data.label}</div>
+        <div>Montant: {data.price}€</div>
+      </>
+    )
   }
 
   return (

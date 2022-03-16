@@ -2,7 +2,7 @@ import React from 'react'
 import OrderForm from '../../components/Orders/OrderForm'
 import Header from '../../components/common/Header/Header'
 import { useParams } from 'react-router-dom'
-import { useFetchData } from '../../utils/useFetchData '
+import { useFetchData } from '../../utils/useFetchData'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 
 const OrderAdd = () => {

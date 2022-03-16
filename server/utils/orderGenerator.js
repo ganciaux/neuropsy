@@ -136,13 +136,11 @@ class orderGenerator {
     let doc = new PDFGenerator({
       bufferPages: true,
       autoFirstPage: false,
-      margins: { top: 200, left: 10, right: 10, bottom: 75 },
     })
 
     doc.on('pageAdded', () => {
       console.log('new page...', this.table)
       if (this.table == 1) {
-        doc.text('Header').moveDown()
       } else {
       }
     })
@@ -154,6 +152,55 @@ class orderGenerator {
     const stream = fs.createWriteStream(`${path}${fileName}`)
     doc.pipe(stream)
     doc.addPage()
+
+    doc
+      .image('./images/logo.jpg', 40, 40, { width: 100 })
+      .fillColor('#000')
+      .fontSize(10)
+      .text(`Numéro de commande: ${this.order.ref}`, 40, 150, {
+        align: 'right',
+      })
+      .text('BIGEREL Aurélie', 40, 170)
+      .text('Neuropsychologue', { oblique: true })
+      .moveDown()
+      .fontSize(10)
+      .text('150, route de Lorraine')
+      .text('54400 COSNES-ET-ROMAIN')
+      .text('06 08 62 89 96')
+      .text('N°SIRET : 880 648 159 00015')
+      .text('APE : 8690F')
+      .text('ADELI : 54 93 1096 9')
+      .text(`Date: ${this.order._date}`, { align: 'right' })
+      .moveDown()
+      .text(`A l’attention de ${this.order.clientId._name}`, {
+        align: 'right',
+      })
+      .moveDown()
+      .moveDown()
+      .text('Objet : Commande')
+
+    const tableTop = 370
+    const descriptionX = 40
+    const quantityX = 300
+    const priceX = 400
+    const amountX = 500
+
+    doc
+      .fontSize(10)
+      .text('Description', descriptionX, tableTop)
+      .text('Quantité', quantityX, tableTop)
+      .text('Prix unitaire', priceX, tableTop)
+      .text('Total', amountX, tableTop)
+      .stroke()
+      .text(
+        'Description gjftfdtuf zgi jgziigzgzigz gzz kgzigijzgizgjgz gikgkgk izgi gigz igzgkgz gz kgz ',
+        descriptionX,
+        tableTop + 25,
+      )
+      .text('Quantité', quantityX, tableTop + 25)
+      .text('Prix unitaire', priceX, tableTop + 25)
+      .text('Total', amountX, tableTop + 25)
+      .stroke()
 
     this.table = 1
     for (let y = 0; y < 10; y++) {
@@ -188,8 +235,8 @@ class orderGenerator {
     doc.addPage()
     doc.text('Hello World3')
 
-    console.log('ici')
     //Global Edits to All Pages (Header/Footer, etc)
+    /*
     let pages = doc.bufferedPageRange()
     for (let i = 0; i < pages.count; i++) {
       doc.switchToPage(i)
@@ -205,6 +252,7 @@ class orderGenerator {
       )
       doc.page.margins.bottom = oldBottomMargin // ReProtect bottom margin
     }
+    */
     doc.end()
 
     await new Promise((resolve) => {

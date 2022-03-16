@@ -1,14 +1,12 @@
-import axios from 'axios'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import CircularProgress from '@mui/material/CircularProgress'
 import { Box, Button, List } from '@mui/material'
 import Header from '../../components/common/Header/Header'
 import CommonGrid from '../../components/common/CommonGrid/CommonGrid'
 import CommonGridLine from '../../components/common/CommonGrid/CommonGridLine'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 import { navItems } from '../../components/Clients/consts/navItems'
-import { useFetchData } from '../../utils/useFetchData '
+import { useFetchData } from '../../utils/useFetchData'
 
 const ClientDetails = () => {
   const { id } = useParams()
