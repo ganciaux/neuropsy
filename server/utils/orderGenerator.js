@@ -104,7 +104,7 @@ class orderGenerator {
     console.log(this.invoice)
 
     const path = `${__dirname}/../files/`
-    const fileName = `order-${this.order.ref}.pdf`
+    const fileName = `orderTest.pdf`
 
     // pipe to a writable stream which would save the result into the same directory
     const stream = fs.createWriteStream(`${path}${fileName}`)
@@ -146,7 +146,7 @@ class orderGenerator {
     })
 
     const path = `${__dirname}/../files/`
-    const fileName = `order-${this.order.ref}.pdf`
+    const fileName = `order.pdf`
 
     // pipe to a writable stream which would save the result into the same directory
     const stream = fs.createWriteStream(`${path}${fileName}`)

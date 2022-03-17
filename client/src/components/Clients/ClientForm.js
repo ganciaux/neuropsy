@@ -25,6 +25,8 @@ const ClientForm = () => {
     'clients',
     id,
     defaultData,
+    null,
+    'birthdate',
   )
 
   if (isLoading) {

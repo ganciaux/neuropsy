@@ -13,7 +13,7 @@ import ArticleDetails from './pages/Articles/ArticleDetails'
 import Payment from './pages/Payments/Payment'
 import Payments from './pages/Payments/Payments'
 import Orders from './pages/Orders/Orders'
-import OrderAdd from './pages/Orders/OrderAdd'
+import Order from './pages/Orders/Order'
 import OrderEdit from './pages/Orders/OrderEdit'
 import Session from './pages/Sessions/Session'
 import Sessions from './pages/Sessions/Sessions'
@@ -42,9 +42,9 @@ ReactDOM.render(
           <Route path="sessions/add" element={<Session />} />
           <Route path="sessions/edit/:id" element={<Session />} />
           <Route path="orders" element={<Orders />} />
-          <Route path="orders/add" element={<OrderAdd />} />
+          <Route path="orders/add" element={<Order />} />
           <Route path="orders/edit/:id" element={<OrderEdit />} />
-          <Route path="orders/client/:idClient" element={<OrderAdd />} />
+          <Route path="orders/client/:idClient" element={<Order />} />
         </Route>
       </Routes>
     </BrowserRouter>

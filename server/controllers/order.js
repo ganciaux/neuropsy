@@ -2,6 +2,8 @@ const Order = require('../models/order')
 const factory = require('./handlerFactory')
 const catchAsync = require('../utils/catchAsync')
 const orderGenerator = require('../utils/orderGenerator')
+const pdfmake = require('../utils/pdfmake')
+
 var ObjectId = require('mongoose').Types.ObjectId
 const fs = require('fs')
 var path = require('path')
@@ -20,10 +22,7 @@ exports.getAllOrders = factory.getAll(Order, [
   },
 ])
 exports.getOrder = factory.getOne(Order, [
-  {
-    path: 'clientId',
-    select: 'firstname name',
-  },
+  'client',
   {
     path: 'articles.articleId',
     select: 'name price label',
@@ -70,13 +69,21 @@ exports.print = catchAsync(async (req, res, next) => {
   console.log('order print: before call', pdf.path, pdf.fullName)
 
   /*
+  const orderPdf = new pdfmake(doc)
+
+  const pdf = await orderPdf.generate()
+
+  console.log('order print: before call', pdf)
+*/
+
+  /*
   res.status(200).json({
     status: 'success',
     data: pdf,
   })*/
 
   res.contentType('application/pdf')
-  res.download(path.join(__dirname, '../files/order-2022030016.pdf'), (err) => {
+  res.download(path.join(__dirname, pdf.fullName), (err) => {
     if (err) console.log(err)
   })
 

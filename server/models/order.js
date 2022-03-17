@@ -130,6 +130,11 @@ orderSchema.virtual('_date').get(function () {
   }
 })
 
+orderSchema.virtual('client', {
+  ref: 'Client',
+  localField: 'clientId',
+  foreignField: '_id',
+})
 const Order = mongoose.model('Order', orderSchema)
 
 module.exports = Order

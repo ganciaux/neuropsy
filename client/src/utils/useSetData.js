@@ -1,9 +1,23 @@
 import axios from 'axios'
 
-export const useSetData = (data, setData, setError, path, id, defaultData) => {
+export const useSetData = (
+  data,
+  setData,
+  setError,
+  path,
+  id,
+  defaultData,
+  formatData = null,
+  date = 'date',
+) => {
   const isNew = id ? false : true
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    if (formatData) {
+      data = formatData(data)
+    }
+
     setError({ isSuccess: false, isError: false, message: '' })
     if (isNew) {
       axios
@@ -31,7 +45,7 @@ export const useSetData = (data, setData, setError, path, id, defaultData) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
   const handleChangeDate = (newValue) => {
-    setData({ ...data, birthdate: newValue })
+    setData({ ...data, [date]: newValue })
   }
 
   return [handleSubmit, handleOnChange, handleChangeDate]
