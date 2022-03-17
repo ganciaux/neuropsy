@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
-import BasicCard from '../../components/common/BasicCard/BasicCard'
 import axios from 'axios'
-import { TextField, Typography } from '@mui/material'
+import { TextField, Typography, Button } from '@mui/material'
 import { Box } from '@mui/system'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import ListAltIcon from '@mui/icons-material/ListAlt'
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark'
 import Header from '../../components/common/Header/Header'
 import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
 import DataLineAction from '../../components/common/DataLine/DataLineAction'
@@ -16,7 +14,6 @@ import {
   getStatusLabel,
   getStatusSeverity,
 } from '../../components/Sessions/utils/sessionUtils'
-import CommontDatePicker from '../../components/common/CommonDatePicker/CommontDatePicker'
 import CommonDateRange from '../../components/common/CommonDateRange/CommonDateRange'
 import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import SessionTable from '../../components/Sessions/SessionTable'
@@ -29,33 +26,44 @@ const Sessions = () => {
   const [sessionsFiltered, setSessionsFiltered] = useState([])
   const [error, setError] = React.useState({ isError: false, message: '' })
   const [open, setOpen] = React.useState(false)
+  const [search, setSearch] = React.useState(true)
 
-  const handleOnChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
+  const handleSearch = (e) => {
+    setSearch(true)
   }
 
   const handleOnChangeRange = (dates) => {
+    console.log('handleOnChangeRange')
     setDates(dates)
   }
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/sessions?sort=-date`)
-      .then((res) => {
-        setSessions(res.data.data)
-        setSessionsFiltered(res.data.data)
-      })
-      .catch((err) => {
-        console.log(err.response.data)
-      })
-  }, [])
+    let options = ''
+    if (search === true) {
+      if (dates[0] != undefined && dates[1] != undefined) {
+        options += `&date[gte]=${new Date(date[0]).getTime()}`
+        options += `&date[lte]=${new Date(date[1]).getTime()}`
+      }
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/sessions?sort=-date${options}`)
+        .then((res) => {
+          setSessions(res.data.data)
+          setSessionsFiltered(res.data.data)
+          setSearch(false)
+        })
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+    }
+  }, [search])
 
   const handleFilter = (e) => {
     console.log(data)
     const pattern = e.target.value.toLowerCase()
-    const result = sessions.filter((session) =>
-      session.clientId?._name?.toLowerCase().includes(pattern),
-    )
+    const result = sessions.filter((session) => {
+      console.log(session)
+      return session.clientId?._name?.toLowerCase().includes(pattern)
+    })
     setSessionsFiltered(result)
   }
 
@@ -65,10 +73,10 @@ const Sessions = () => {
       .delete(`${process.env.REACT_APP_API_URL}/session/${data._id}`)
       .then((res) => {
         setError({ isSuccess: true, isError: false, message: 'Success' })
-        const newPayments = sessionsFiltered.filter((payment) => {
-          return payment._id !== data._id
+        const newSessions = sessionsFiltered.filter((session) => {
+          return session._id !== session._id
         })
-        setSessionsFiltered(newPayments)
+        setSessionsFiltered(newSessions)
       })
       .catch((err) => {
         setError({ isError: true, message: err.response.data.message })
@@ -147,6 +155,16 @@ const Sessions = () => {
 
         <Grid item xs={12} sm={4}>
           <CommonDateRange onChange={handleOnChangeRange} dates={dates} />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={handleSearch}
+          >
+            Chercher
+          </Button>
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ paddingTop: '20px' }}>

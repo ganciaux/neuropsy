@@ -60,6 +60,7 @@ exports.print = catchAsync(async (req, res, next) => {
 
   if (Array.isArray(doc)) doc = doc[0]
 
+  /*
   console.log('order print: before call')
 
   const orderPdf = new orderGenerator(doc)
@@ -68,24 +69,28 @@ exports.print = catchAsync(async (req, res, next) => {
 
   console.log('order print: before call', pdf.path, pdf.fullName)
 
-  /*
+  res.contentType('application/pdf')
+  res.download(path.join(__dirname, pdf.fullName), (err) => {
+    if (err) console.log(err)
+  })
+*/
+
   const orderPdf = new pdfmake(doc)
 
   const pdf = await orderPdf.generate()
 
   console.log('order print: before call', pdf)
-*/
+
+  res.contentType('application/pdf')
+  res.download(pdf, (err) => {
+    if (err) console.log(err)
+  })
 
   /*
   res.status(200).json({
     status: 'success',
     data: pdf,
   })*/
-
-  res.contentType('application/pdf')
-  res.download(path.join(__dirname, pdf.fullName), (err) => {
-    if (err) console.log(err)
-  })
 
   //res.download(pdf.fullName)
 })

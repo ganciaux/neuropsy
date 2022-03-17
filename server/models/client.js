@@ -110,6 +110,23 @@ clientSchema.statics.payments = async function (clientId) {
   return payments
 }
 */
+clientSchema.virtual('orders', {
+  ref: 'Order',
+  localField: 'clientId',
+  foreignField: '_id',
+})
+
+clientSchema.virtual('payments', {
+  ref: 'Payment',
+  localField: 'clientId',
+  foreignField: '_id',
+})
+
+clientSchema.virtual('sessions', {
+  ref: 'Session',
+  localField: 'clientId',
+  foreignField: '_id',
+})
 
 const ClientModel = mongoose.model('Client', clientSchema)
 

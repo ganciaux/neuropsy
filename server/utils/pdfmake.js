@@ -2,6 +2,7 @@ var PdfPrinter = require('pdfmake')
 var Roboto = require('../fonts/Roboto')
 var printer = new PdfPrinter(Roboto)
 var fs = require('fs')
+var path = require('path')
 
 class pdfGenerator {
   constructor(order) {
@@ -323,9 +324,9 @@ class pdfGenerator {
 
     this.FooterPageSet(pdfDoc)
 
-    const path = `${__dirname}/../files/`
+    const relative = `../files/`
     const fileName = `order.pdf`
-    const fullName = `${path}${fileName}`
+    const fullName = path.join(__dirname, `${relative}${fileName}`)
 
     console.log('pdfmake:', fullName)
 

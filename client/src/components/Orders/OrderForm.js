@@ -14,7 +14,8 @@ import { useSetData } from '../../utils/useSetData'
 import CommonLoader from '../common/CommonLoader/CommonLoader'
 
 const OrderForm = () => {
-  const { id } = useParams()
+  const { id, idClient } = useParams()
+
   const formatData = (data) => {
     return {
       ...data,
@@ -27,7 +28,7 @@ const OrderForm = () => {
     }
   }
   const [data, setData, isLoading, setIsLoading, error, setError] =
-    useFetchData(id, 'orders', defaultData)
+    useFetchData(id, 'orders', defaultData, { clientId: idClient })
   const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
     data,
     setData,

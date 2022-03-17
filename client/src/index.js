@@ -14,7 +14,6 @@ import Payment from './pages/Payments/Payment'
 import Payments from './pages/Payments/Payments'
 import Orders from './pages/Orders/Orders'
 import Order from './pages/Orders/Order'
-import OrderEdit from './pages/Orders/OrderEdit'
 import Session from './pages/Sessions/Session'
 import Sessions from './pages/Sessions/Sessions'
 import Home from './pages/Home/Home'
@@ -43,7 +42,7 @@ ReactDOM.render(
           <Route path="sessions/edit/:id" element={<Session />} />
           <Route path="orders" element={<Orders />} />
           <Route path="orders/add" element={<Order />} />
-          <Route path="orders/edit/:id" element={<OrderEdit />} />
+          <Route path="orders/edit/:id" element={<Order />} />
           <Route path="orders/client/:idClient" element={<Order />} />
         </Route>
       </Routes>
