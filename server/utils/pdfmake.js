@@ -5,8 +5,11 @@ var fs = require('fs')
 var path = require('path')
 
 class pdfGenerator {
-  constructor(order) {
-    console.log('orderGenerator: start')
+  constructor(order, data = {}) {
+    this.data = data
+    this.template = data.template || 'file'
+    this.object = data.object || 'file'
+
     this.order = order
     this.pdf = {
       content: [],
@@ -45,7 +48,7 @@ class pdfGenerator {
           [
             { image: __dirname + '/../images/logo.jpg', fit: [100, 100] },
             {
-              text: 'Facture n° 2022-03-0047',
+              text: `${this.template} n° ${this.order.ref}`,
               alignment: 'right',
               margin: [0, 80, 0, 0],
             },
@@ -99,7 +102,12 @@ class pdfGenerator {
         alignment: 'right',
       },
       {
-        text: `A l’attention de xxx`,
+        text: `A l’attention de ${this.order.client._name}`,
+        alignment: 'right',
+        margin: [0, 20, 0, 0],
+      },
+      {
+        text: this.order.clientId._address,
         alignment: 'right',
         margin: [0, 20, 0, 0],
       },
@@ -108,7 +116,7 @@ class pdfGenerator {
 
   DataSet() {
     this.pdf.content.push({
-      text: 'Objet : Commande',
+      text: `Objet : ${this.object}`,
       margin: [0, 30, 0, 0],
     })
 
@@ -154,48 +162,23 @@ class pdfGenerator {
               fillColor: 'gray',
             },
           ],
-          [
-            {
-              text: 'Bilan psychométrique\nPatient : CARMINATI Julien\nNé le 19 août 2015\nDu 7 janvier au 4 février 2022. (Soit 3 séances réalisées)\nForfait séances de suivi – Plateforme PCO',
-              margin: [5, 5, 5, 5],
-            },
-            {
-              text: '',
-              alignment: 'right',
-              italics: true,
-              color: 'gray',
-              margin: [5, 5, 5, 5],
-            },
-            {
-              text: '2',
-              alignment: 'right',
-              italics: true,
-              color: 'gray',
-              margin: [5, 5, 5, 5],
-            },
-            {
-              text: '250,00 €',
-              alignment: 'right',
-              italics: true,
-              color: 'gray',
-              margin: [5, 5, 5, 5],
-            },
-            {
-              text: '500,00 €',
-              alignment: 'right',
-              italics: true,
-              color: 'gray',
-              margin: [5, 5, 5, 5],
-            },
-          ],
         ],
       },
     }
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < this.order.articles.length; i++) {
+      let text = `${this.order.articles[i].articleId.name}`
+      console.log(this.order.client)
+      if (i === 0) {
+        text += `\nPatient : ${this.order.client[0]._name}`
+        text += `\nNé le  : ${this.order.client[0]._birthdate}`
+      }
+
+      //Du 7 janvier au 4 février 2022. (Soit 3 séances réalisées)
+
       data.table.body.push([
         {
-          text: 'aaaa tly the specified width fixed-width cells have exactly the specified width fixed-width cells have exactly the specified width fixed-width cells have exactly the specified width',
+          text: text,
           margin: [5, 5, 5, 5],
         },
         {
@@ -206,21 +189,21 @@ class pdfGenerator {
           margin: [5, 5, 5, 5],
         },
         {
-          text: '2',
+          text: this.order.articles[i].quantity,
           alignment: 'right',
           italics: true,
           color: 'gray',
           margin: [5, 5, 5, 5],
         },
         {
-          text: '250,00 €',
+          text: `${this.order.articles[i].unitCost} €`,
           alignment: 'right',
           italics: true,
           color: 'gray',
           margin: [5, 5, 5, 5],
         },
         {
-          text: '500,00 €',
+          text: `${this.order.articles[i].price} €`,
           alignment: 'right',
           italics: true,
           color: 'gray',
@@ -234,7 +217,7 @@ class pdfGenerator {
       { text: '', border: [false, false, false, false] },
       { text: 'Reste à payer', bold: true, fillColor: 'gray' },
       {
-        text: '150,00 €',
+        text: `${this.order.price} €`,
         bold: true,
         alignment: 'right',
         fillColor: 'gray',

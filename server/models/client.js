@@ -3,6 +3,8 @@ const slug = require('mongoose-slug-updater')
 const { isEmail } = require('validator')
 const utils = require('../utils/utils')
 const Payment = require('./payment')
+const Session = require('./session')
+const Order = require('./order')
 
 mongoose.plugin(slug)
 
@@ -78,7 +80,21 @@ clientSchema.virtual('_name').get(function () {
 })
 
 clientSchema.virtual('_address').get(function () {
-  return `${this.address} ${this.zip} ${this.city}`
+  let address = ''
+  if (this.address != undefined) address += this.address
+  if (this.zip != undefined) {
+    if (address.length > 0) {
+      address += ' '
+    }
+    address += this.zip
+  }
+  if (this.city != undefined) {
+    if (address.length > 0) {
+      address += ' '
+    }
+    address += this.city
+  }
+  return address
 })
 
 clientSchema.virtual('_birthdate').get(function () {
@@ -97,35 +113,22 @@ clientSchema.virtual('_age').get(function () {
   }
 })
 
-/*
-clientSchema.virtual('_payments').get(async function () {
-  const payments = this.constructor.payments(this.id)
-  return payments
-})
-
-clientSchema.statics.payments = async function (clientId) {
-  const payments = await Payment.findOne({ clientId: clientId })
-  console.log('statics:', clientId)
-  console.log(payments)
-  return payments
-}
-*/
 clientSchema.virtual('orders', {
   ref: 'Order',
-  localField: 'clientId',
-  foreignField: '_id',
+  localField: '_id',
+  foreignField: 'clientId',
 })
 
 clientSchema.virtual('payments', {
   ref: 'Payment',
-  localField: 'clientId',
-  foreignField: '_id',
+  localField: '_id',
+  foreignField: 'clientId',
 })
 
 clientSchema.virtual('sessions', {
   ref: 'Session',
-  localField: 'clientId',
-  foreignField: '_id',
+  localField: '_id',
+  foreignField: 'clientId',
 })
 
 const ClientModel = mongoose.model('Client', clientSchema)

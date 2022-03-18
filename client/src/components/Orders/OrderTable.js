@@ -12,8 +12,12 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { Link } from '@mui/material'
 import { getStatusLabel, getStatusSeverity } from './utils/orderUtils'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
+import CommonLoader from '../common/CommonLoader/CommonLoader'
 
 export default function OrderTable({ data, handleDelete, handlePrint }) {
+  if (!data) {
+    return <CommonLoader />
+  }
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -51,15 +55,19 @@ export default function OrderTable({ data, handleDelete, handlePrint }) {
                 <Link href={`/orders/edit/${row.slug}`} underline="hover">
                   <EditIcon size="small">Modifier</EditIcon>
                 </Link>
-                <PictureAsPdfIcon
-                  sx={{ cursor: 'pointer' }}
-                  onClick={(e) => handlePrint(row)}
-                />
-                <DeleteForeverIcon
-                  sx={{ cursor: 'pointer' }}
-                  color="error"
-                  onClick={(e) => handleDelete(row)}
-                />
+                {handlePrint && (
+                  <PictureAsPdfIcon
+                    sx={{ cursor: 'pointer' }}
+                    onClick={(e) => handlePrint(row)}
+                  />
+                )}
+                {handleDelete && (
+                  <DeleteForeverIcon
+                    sx={{ cursor: 'pointer' }}
+                    color="error"
+                    onClick={(e) => handleDelete(row)}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}

@@ -13,11 +13,8 @@ import Header from '../common/Header/Header'
 
 const ClientForm = () => {
   const { id } = useParams()
-  const [data, setData, isLoading, error, setError] = useFetchData(
-    id,
-    'clients',
-    defaultData,
-  )
+  const [data, setData, isLoading, setIsLoading, error, setError] =
+    useFetchData(id, 'clients', defaultData)
   const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
     data,
     setData,

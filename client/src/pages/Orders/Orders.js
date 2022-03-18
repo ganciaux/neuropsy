@@ -33,21 +33,6 @@ const Orders = () => {
       })
   }
 
-  const createAndDownloadPdf = () => {
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/orders/create-pdf`)
-      .then(() =>
-        axios.get(`${process.env.REACT_APP_API_URL}/orders/fetch-pdf`, {
-          responseType: 'blob',
-        }),
-      )
-      .then((res) => {
-        const pdfBlob = new Blob([res.data], { type: 'application/pdf' })
-
-        saveAs(pdfBlob, 'newPdf.pdf')
-      })
-  }
-
   const handleCloseCancel = () => {
     setOpen(false)
   }
@@ -116,7 +101,6 @@ const Orders = () => {
   return (
     <Box>
       <Header title="Liste des commandes" href="/orders/add" action="Ajouter" />
-      <button onClick={createAndDownloadPdf}>Download PDF</button>
       {orders.length === 0 && <Typography>Aucune commande</Typography>}
       {orders.length > 0 && (
         <>

@@ -15,8 +15,12 @@ import {
 } from './utils/sessionUtils'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
 import { Link } from '@mui/material'
+import CommonLoader from '../common/CommonLoader/CommonLoader'
 
 export default function SessionTable({ data, handleDelete }) {
+  if (!data) {
+    return <CommonLoader />
+  }
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -52,11 +56,13 @@ export default function SessionTable({ data, handleDelete }) {
                 <Link href={`/sessions/edit/${row.slug}`} underline="hover">
                   <EditIcon>Modifier</EditIcon>
                 </Link>
-                <DeleteForeverIcon
-                  sx={{ cursor: 'pointer' }}
-                  color="error"
-                  onClick={(e) => handleDelete(row)}
-                />
+                {!handleDelete && (
+                  <DeleteForeverIcon
+                    sx={{ cursor: 'pointer' }}
+                    color="error"
+                    onClick={(e) => handleDelete(row)}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}

@@ -41,8 +41,8 @@ const Sessions = () => {
     let options = ''
     if (search === true) {
       if (dates[0] != undefined && dates[1] != undefined) {
-        options += `&date[gte]=${new Date(date[0]).getTime()}`
-        options += `&date[lte]=${new Date(date[1]).getTime()}`
+        options += `&date[gte]=${new Date(dates[0]).getTime()}`
+        options += `&date[lte]=${new Date(dates[1]).getTime()}`
       }
       axios
         .get(`${process.env.REACT_APP_API_URL}/sessions?sort=-date${options}`)
