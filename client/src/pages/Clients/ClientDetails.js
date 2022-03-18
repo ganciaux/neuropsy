@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Box, Button, List, Typography } from '@mui/material'
+import { Box, Button, List, Paper, Typography } from '@mui/material'
 import Header from '../../components/common/Header/Header'
 import CommonGrid from '../../components/common/CommonGrid/CommonGrid'
 import CommonGridLine from '../../components/common/CommonGrid/CommonGridLine'
@@ -46,18 +46,28 @@ const ClientDetails = () => {
         <CommonGridLine label="Description" value={data.description} />
       </CommonGrid>
 
-      <Typography variant="h6" component="div">
+      <Typography variant="h6" component="div" sx={{ paddingTop: '10px' }}>
         Rendez-vous: {data.sessions.length}
         <Button onClick={(e) => handleToggle(e, 'sessions')}>toggle</Button>
-        <SessionTable data={data.sessions} />
+        {toggle.sessions && (
+          <Paper elevation={3}>
+            <SessionTable data={data.sessions} />
+          </Paper>
+        )}
       </Typography>
-      <Typography variant="h6" component="div">
+      <Typography variant="h6" component="div" sx={{ paddingTop: '10px' }}>
         Paiments: {data.payments.length}
-        <PaymentTable data={data.payments} />
+        {toggle.payments && (
+          <Paper elevation={3}>
+            <PaymentTable data={data.payments} />
+          </Paper>
+        )}
       </Typography>
-      <Typography variant="h6" component="div">
+      <Typography variant="h6" component="div" sx={{ paddingTop: '10px' }}>
         Commandes: {data.orders.length}
-        <OrderTable data={data.orders} />
+        <Paper elevation={3}>
+          {toggle.orders && <OrderTable data={data.orders} />}
+        </Paper>
       </Typography>
       <List>
         {navItems.map((item, index) => (

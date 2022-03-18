@@ -16,8 +16,19 @@ import {
 import CommonAlert from '../common/CommonAlert/CommonAlert'
 import { Link } from '@mui/material'
 import CommonLoader from '../common/CommonLoader/CommonLoader'
+import { makeStyles } from '@mui/styles'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: 'lightgrey',
+    '& .MuiTableCell-head': {
+      fontWeight: '700!important',
+    },
+  },
+}))
 
 export default function SessionTable({ data, handleDelete }) {
+  const classes = useStyles()
   if (!data) {
     return <CommonLoader />
   }
@@ -25,7 +36,7 @@ export default function SessionTable({ data, handleDelete }) {
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.root}>
             <TableCell>Date</TableCell>
             <TableCell>Client</TableCell>
             <TableCell>Type</TableCell>
