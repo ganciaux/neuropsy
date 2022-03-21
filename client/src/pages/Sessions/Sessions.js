@@ -3,19 +3,8 @@ import Grid from '@mui/material/Grid'
 import axios from 'axios'
 import { TextField, Typography, Button } from '@mui/material'
 import { Box } from '@mui/system'
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
-import ListAltIcon from '@mui/icons-material/ListAlt'
 import Header from '../../components/common/Header/Header'
-import DataLineIcon from '../../components/common/DataLine/DataLineIcon'
-import DataLineAction from '../../components/common/DataLine/DataLineAction'
-import DataLineHeader from '../../components/common/DataLine/DataLineHeader'
-import {
-  getTypeLabel,
-  getStatusLabel,
-  getStatusSeverity,
-} from '../../components/Sessions/utils/sessionUtils'
 import CommonDateRange from '../../components/common/CommonDateRange/CommonDateRange'
-import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import SessionTable from '../../components/Sessions/SessionTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 
@@ -40,7 +29,7 @@ const Sessions = () => {
   useEffect(() => {
     let options = ''
     if (search === true) {
-      if (dates[0] != undefined && dates[1] != undefined) {
+      if (dates[0] !== undefined && dates[1] !== undefined) {
         options += `&date[gte]=${new Date(dates[0]).getTime()}`
         options += `&date[lte]=${new Date(dates[1]).getTime()}`
       }
@@ -61,7 +50,6 @@ const Sessions = () => {
     console.log(data)
     const pattern = e.target.value.toLowerCase()
     const result = sessions.filter((session) => {
-      console.log(session)
       return session.clientId?._name?.toLowerCase().includes(pattern)
     })
     setSessionsFiltered(result)
@@ -70,11 +58,11 @@ const Sessions = () => {
   const handleCloseOk = () => {
     setOpen(false)
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/session/${data._id}`)
+      .delete(`${process.env.REACT_APP_API_URL}/sessions/${data._id}`)
       .then((res) => {
         setError({ isSuccess: true, isError: false, message: 'Success' })
         const newSessions = sessionsFiltered.filter((session) => {
-          return session._id !== session._id
+          return session._id !== data._id
         })
         setSessionsFiltered(newSessions)
       })
@@ -88,7 +76,6 @@ const Sessions = () => {
   }
 
   const handleDelete = (row) => {
-    console.log('delete')
     setOpen(true)
     setData(row)
   }
@@ -98,38 +85,6 @@ const Sessions = () => {
       <>
         <div>Date: {data._date}</div>
         <div>Nom: {data.clientId?._name}</div>
-      </>
-    )
-  }
-
-  const getContent = (session) => {
-    const status = (
-      <CommonAlert
-        severity={getStatusSeverity(session.status)}
-        content={getStatusLabel(session.status)}
-      />
-    )
-
-    return (
-      <>
-        <DataLineHeader title={`${session._date}`} />
-        <DataLineIcon
-          icon={<AssignmentIndIcon />}
-          text={`${session.clientId?._name}`}
-        />
-        <DataLineIcon
-          icon={<ListAltIcon />}
-          text={getTypeLabel(session.type)}
-        />
-        <DataLineIcon text={status} />
-      </>
-    )
-  }
-
-  const getAction = (id) => {
-    return (
-      <>
-        <DataLineAction url="/sessions/edit" id={id} label="Modifier" />
       </>
     )
   }
@@ -187,20 +142,6 @@ const Sessions = () => {
               />
             </>
           )}
-          {/*
-        {sessionsFiltered.map((session) => {
-          return (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={session.id}>
-              <BasicCard
-                header=""
-                content={getContent(session)}
-                actions={getAction(session.slug)}
-              ></BasicCard>
-            </Grid>
-          )
-        })
-          }
-        */}
         </Grid>
       </Grid>
     </Box>
