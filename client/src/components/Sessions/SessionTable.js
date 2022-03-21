@@ -14,31 +14,25 @@ import {
   getStatusSeverity,
 } from './utils/sessionUtils'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
-import { Link } from '@mui/material'
+import { Alert, Link } from '@mui/material'
 import CommonLoader from '../common/CommonLoader/CommonLoader'
-import { makeStyles } from '@mui/styles'
+import { tableStyle } from '../../styles/tableStyles'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: 'lightgrey',
-    '& .MuiTableCell-head': {
-      fontWeight: '700!important',
-    },
-  },
-}))
-
-export default function SessionTable({ data, handleDelete }) {
-  const classes = useStyles()
+export default function SessionTable({ data, name, handleDelete }) {
+  const classes = tableStyle()
   if (!data) {
     return <CommonLoader />
+  }
+  if (data.length === 0) {
+    return <CommonAlert title="" content="Aucun rendez-vous" severity="info" />
   }
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
-          <TableRow className={classes.root}>
+          <TableRow className={classes.headers}>
             <TableCell>Date</TableCell>
-            <TableCell>Client</TableCell>
+            {!name && <TableCell>Client</TableCell>}
             <TableCell>Type</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Description</TableCell>
@@ -54,7 +48,7 @@ export default function SessionTable({ data, handleDelete }) {
               <TableCell component="th" scope="row">
                 {row._date}
               </TableCell>
-              <TableCell>{row.clientId?._name}</TableCell>
+              {!name && <TableCell>{row.clientId?._name}</TableCell>}
               <TableCell>{getTypeLabel(row.type)}</TableCell>
               <TableCell>
                 <CommonAlert
@@ -67,7 +61,7 @@ export default function SessionTable({ data, handleDelete }) {
                 <Link href={`/sessions/edit/${row.slug}`} underline="hover">
                   <EditIcon>Modifier</EditIcon>
                 </Link>
-                {!handleDelete && (
+                {handleDelete && (
                   <DeleteForeverIcon
                     sx={{ cursor: 'pointer' }}
                     color="error"

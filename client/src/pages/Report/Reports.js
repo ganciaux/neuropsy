@@ -19,7 +19,7 @@ import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import SessionTable from '../../components/Sessions/SessionTable'
 import CommonDialog from '../../components/common/CommonDialog/CommonDialog'
 
-const Sessions = () => {
+const Reports = () => {
   const [sessions, setSessions] = useState([])
   const [data, setData] = useState({})
   const [dates, setDates] = useState([null, null])
@@ -102,57 +102,10 @@ const Sessions = () => {
     )
   }
 
-  const getContent = (session) => {
-    const status = (
-      <CommonAlert
-        severity={getStatusSeverity(session.status)}
-        content={getStatusLabel(session.status)}
-      />
-    )
-
-    return (
-      <>
-        <DataLineHeader title={`${session._date}`} />
-        <DataLineIcon
-          icon={<AssignmentIndIcon />}
-          text={`${session.clientId?._name}`}
-        />
-        <DataLineIcon
-          icon={<ListAltIcon />}
-          text={getTypeLabel(session.type)}
-        />
-        <DataLineIcon text={status} />
-      </>
-    )
-  }
-
-  const getAction = (id) => {
-    return (
-      <>
-        <DataLineAction url="/sessions/edit" id={id} label="Modifier" />
-      </>
-    )
-  }
-
   return (
     <Box>
-      <Header
-        title="Liste des rendez-vous"
-        href="/sessions/add"
-        action="Ajouter"
-      />
+      <Header title="Rapport" />
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            name="search"
-            placeholder="Recherche dans le nom, le prénom et l'email"
-            label="Filtre de recherche"
-            variant="outlined"
-            fullWidth
-            onChange={handleFilter}
-          />
-        </Grid>
-
         <Grid item xs={12} sm={4}>
           <CommonDateRange onChange={handleOnChangeRange} dates={dates} />
         </Grid>
@@ -178,13 +131,6 @@ const Sessions = () => {
                 data={sessionsFiltered}
                 handleDelete={handleDelete}
               />
-              <CommonDialog
-                title="Supprimer le rendez-vous ?"
-                open={open}
-                content={getContentSession}
-                handleCloseOk={handleCloseOk}
-                handleCloseCancel={handleCloseCancel}
-              />
             </>
           )}
           {/*
@@ -207,4 +153,4 @@ const Sessions = () => {
   )
 }
 
-export default Sessions
+export default Reports

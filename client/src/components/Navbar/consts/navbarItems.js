@@ -4,6 +4,7 @@ import EuroIcon from '@mui/icons-material/Euro'
 import TodayIcon from '@mui/icons-material/Today'
 import ArticleIcon from '@mui/icons-material/Article'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import AssessmentIcon from '@mui/icons-material/Assessment'
 
 export const mainNavbarItems = [
   {
@@ -41,5 +42,11 @@ export const mainNavbarItems = [
     icon: <ArticleIcon />,
     label: 'Articles',
     route: 'articles',
+  },
+  {
+    id: 6,
+    icon: <AssessmentIcon />,
+    label: 'Rapports',
+    route: 'reports',
   },
 ]

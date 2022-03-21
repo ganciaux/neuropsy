@@ -102,7 +102,7 @@ class pdfGenerator {
         alignment: 'right',
       },
       {
-        text: `A l’attention de ${this.order.client._name}`,
+        text: `A l’attention de ${this.order.client[0]._name}`,
         alignment: 'right',
         margin: [0, 20, 0, 0],
       },

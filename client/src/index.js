@@ -19,6 +19,7 @@ import Sessions from './pages/Sessions/Sessions'
 import Home from './pages/Home/Home'
 import { ThemeProvider } from '@mui/styles'
 import { dashboardTheme } from './dashboardTheme'
+import Reports from './pages/Report/Reports'
 
 ReactDOM.render(
   <ThemeProvider theme={dashboardTheme}>
@@ -30,6 +31,15 @@ ReactDOM.render(
           <Route path="clients/add" element={<Client />} />
           <Route path="clients/edit/:id" element={<Client />} />
           <Route path="clients/details/:id" element={<ClientDetails />} />
+          <Route
+            path="clients/details/session/:idClient"
+            element={<Session />}
+          />
+          <Route
+            path="clients/details/payment/:idClient"
+            element={<Payment />}
+          />
+          <Route path="clients/details/order/:idClient" element={<Order />} />
           <Route path="articles" element={<Articles />} />
           <Route path="articles/add" element={<Article />} />
           <Route path="articles/edit/:id" element={<Article />} />
@@ -43,7 +53,7 @@ ReactDOM.render(
           <Route path="orders" element={<Orders />} />
           <Route path="orders/add" element={<Order />} />
           <Route path="orders/edit/:id" element={<Order />} />
-          <Route path="orders/client/:idClient" element={<Order />} />
+          <Route path="reports" element={<Reports />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -8,7 +8,13 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
-import { Link, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+import {
+  Alert,
+  Link,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material'
 import {
   getTypeLabel,
   getTypeIcon,
@@ -17,18 +23,24 @@ import {
 } from './utils/paymentUtils'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
 import CommonLoader from '../common/CommonLoader/CommonLoader'
+import { tableStyle } from '../../styles/tableStyles'
 
-export default function PaymentTable({ data, handleDelete }) {
+export default function PaymentTable({ data, handleDelete, name }) {
+  const classes = tableStyle()
+
   if (!data) {
     return <CommonLoader />
+  }
+  if (data.length === 0) {
+    return <CommonAlert title="" content="Aucun paiement" severity="info" />
   }
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.headers}>
             <TableCell>Date</TableCell>
-            <TableCell>Client</TableCell>
+            {!name && <TableCell>Client</TableCell>}
             <TableCell align="right">Montant</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Status</TableCell>
@@ -45,7 +57,7 @@ export default function PaymentTable({ data, handleDelete }) {
               <TableCell component="th" scope="row">
                 {row._date}
               </TableCell>
-              <TableCell>{row.clientId?._name}</TableCell>
+              {!name && <TableCell>{row.clientId?._name}</TableCell>}
               <TableCell align="right">{row.price?.toFixed(2)}€</TableCell>
               <TableCell>
                 <ListItem>

@@ -9,13 +9,15 @@ import Paper from '@mui/material/Paper'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import { Link, Stack } from '@mui/material'
+import { tableStyle } from '../../styles/tableStyles'
 
 export default function ArticleTable({ data, handleDelete }) {
+  const classes = tableStyle()
   return (
     <TableContainer sx={{ marginTop: '20px' }} component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead sx={{ backgroundColor: '#eee' }}>
-          <TableRow>
+        <TableHead>
+          <TableRow className={classes.headers}>
             <TableCell>Nom</TableCell>
             <TableCell>Label</TableCell>
             <TableCell align="right">Montant</TableCell>

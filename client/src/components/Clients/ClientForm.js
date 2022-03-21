@@ -10,6 +10,7 @@ import CommonLoader from '../common/CommonLoader/CommonLoader'
 import { useParams } from 'react-router-dom'
 import { useSetData } from '../../utils/useSetData'
 import Header from '../common/Header/Header'
+import CommonBack from '../common/CommonBack/CommonBack'
 
 const ClientForm = () => {
   const { id } = useParams()
@@ -26,6 +27,9 @@ const ClientForm = () => {
     'birthdate',
   )
 
+  if (error.isError === true) {
+    return <Alert severity="error">{error.message}</Alert>
+  }
   if (isLoading) {
     return <CommonLoader />
   }
@@ -164,6 +168,11 @@ const ClientForm = () => {
                 {!id && 'Ajouter'}
                 {id && 'Modifier'}
               </Button>
+              <CommonBack
+                id={id}
+                path={`/clients/details/${data.slug}`}
+                label="Retour"
+              />
               <Grid item xs={12}>
                 {error.isError && (
                   <Alert severity="error">{error.message}</Alert>

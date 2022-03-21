@@ -1,4 +1,5 @@
 const datefns = require('date-fns')
+const frLocale = require('date-fns/locale/fr')
 
 const charPad = (num, places, char) => {
   let defaultChar = '0'
@@ -27,11 +28,13 @@ const getArticlesPrice = (articles) => {
 }
 
 const formatDate = (date) => {
-  return datefns.format(Date.parse(date), 'dd-MM-yyyy')
+  return datefns.format(Date.parse(date), 'dd-MMMM-yyyy', { locale: frLocale })
 }
 
 const formatTime = (date) => {
-  return datefns.format(Date.parse(date), 'dd-MM-yyyy HH:mm')
+  return datefns.format(Date.parse(date), 'dd-MM-yyyy HH:mm', {
+    locale: frLocale,
+  })
 }
 
 const getDateYear = () => {

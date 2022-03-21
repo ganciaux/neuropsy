@@ -1,6 +1,6 @@
 import React from 'react'
 import Grid from '@mui/material/Grid'
-import { Alert, Button, TextField } from '@mui/material'
+import { Alert, Button, TextField, Typography } from '@mui/material'
 import CommonGridForm from '../common/CommonGrid/CommonGridForm'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { orderStatus } from './consts/orderStatus'
@@ -12,9 +12,17 @@ import { defaultData } from './consts/defaultData'
 import { useFetchData } from '../../utils/useFetchData'
 import { useSetData } from '../../utils/useSetData'
 import CommonLoader from '../common/CommonLoader/CommonLoader'
+import Header from '../common/Header/Header'
+import CommonHeader from '../common/CommonHeader/CommonHeader'
+import CommonBack from '../common/CommonBack/CommonBack'
 
 const OrderForm = () => {
   const { id, idClient } = useParams()
+  const [client, setClient, isLoadingClient] = useFetchData(idClient, 'clients')
+
+  if (idClient) {
+    defaultData.clientId = client?.id
+  }
 
   const formatData = (data) => {
     return {
@@ -28,7 +36,7 @@ const OrderForm = () => {
     }
   }
   const [data, setData, isLoading, setIsLoading, error, setError] =
-    useFetchData(id, 'orders', defaultData, { clientId: idClient })
+    useFetchData(id, 'orders', defaultData)
   const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
     data,
     setData,
@@ -47,23 +55,33 @@ const OrderForm = () => {
     })
   }
 
-  if (isLoading) {
+  if (error.isError === true) {
+    return <Alert severity="error">{error.message}</Alert>
+  }
+
+  if (isLoading || isLoadingClient) {
     return <CommonLoader />
   }
 
   return (
     <CommonGridForm>
       <Grid item xs={12}>
-        <CommonSelectData
-          id="client"
-          label="Client"
-          name="clientId"
-          value={data.clientId}
-          onChange={handleOnChange}
-          setIsLoading={setIsLoading}
-          model="clients"
-          placeHolder="<Choisir un client>"
-        />
+        <Header title="Gestion commande" />
+      </Grid>
+      <Grid item xs={12}>
+        {idClient && <CommonHeader title={client._name} />}
+        {!idClient && (
+          <CommonSelectData
+            id="client"
+            label="Client"
+            name="clientId"
+            value={data.clientId}
+            onChange={handleOnChange}
+            setIsLoading={setIsLoading}
+            model="clients"
+            placeHolder="<Choisir un client>"
+          />
+        )}
       </Grid>
       <Grid item xs={6} sm={6}>
         <CommontDatePicker
@@ -113,6 +131,11 @@ const OrderForm = () => {
           {!id && 'Ajouter'}
           {id && 'Modifier'}
         </Button>
+        <CommonBack
+          id={idClient}
+          path={`/clients/details/${client.slug}`}
+          label="Retour"
+        />
       </Grid>
       <Grid item xs={12}>
         {error.isError && <Alert severity="error">{error.message}</Alert>}

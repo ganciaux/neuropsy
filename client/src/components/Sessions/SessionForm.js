@@ -13,9 +13,12 @@ import { defaultData } from './consts/defaultData'
 import CommonLoader from '../common/CommonLoader/CommonLoader'
 import CommonSelectData from '../common/CommonSelect/CommonSelectData'
 import Header from '../common/Header/Header'
+import CommonHeader from '../common/CommonHeader/CommonHeader'
+import CommonBack from '../common/CommonBack/CommonBack'
 
 const SessionForm = () => {
-  const { id } = useParams()
+  const { id, idClient } = useParams()
+  const [client, setClient, isLoadingClient] = useFetchData(idClient, 'clients')
   const [data, setData, isLoading, setIsLoading, error, setError] =
     useFetchData(id, 'sessions', defaultData)
   const [handleSubmit, handleOnChange, handleChangeDate] = useSetData(
@@ -26,8 +29,13 @@ const SessionForm = () => {
     id,
     defaultData,
   )
-
-  if (isLoading) {
+  if (idClient) {
+    defaultData.clientId = client?.id
+  }
+  if (error.isError === true) {
+    return <Alert severity="error">{error.message}</Alert>
+  }
+  if (isLoading || isLoadingClient) {
     return <CommonLoader />
   }
 
@@ -37,16 +45,19 @@ const SessionForm = () => {
         <Header title="Gestion rendez-vous" />
       </Grid>
       <Grid item xs={12}>
-        <CommonSelectData
-          id="client"
-          label="Client"
-          name="clientId"
-          value={data.clientId}
-          onChange={handleOnChange}
-          setIsLoading={setIsLoading}
-          model="clients"
-          placeHolder="<Choisir un client>"
-        />
+        {idClient && <CommonHeader title={client._name} />}
+        {!idClient && (
+          <CommonSelectData
+            id="client"
+            label="Client"
+            name="clientId"
+            value={data.clientId}
+            onChange={handleOnChange}
+            setIsLoading={setIsLoading}
+            model="clients"
+            placeHolder="<Choisir un client>"
+          />
+        )}
       </Grid>
       <Grid item xs={6} sm={6}>
         <CommontDateTimePicker
@@ -102,6 +113,11 @@ const SessionForm = () => {
           {!id && 'Ajouter'}
           {id && 'Modifier'}
         </Button>
+        <CommonBack
+          id={idClient}
+          path={`/clients/details/${client.slug}`}
+          label="Retour"
+        />
       </Grid>
       <Grid item xs={12}>
         {error.isError && <Alert severity="error">{error.message}</Alert>}

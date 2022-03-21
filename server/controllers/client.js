@@ -4,6 +4,8 @@ const Session = require('../models/session')
 const Order = require('../models/order')
 const catchAsync = require('../utils/catchAsync')
 const factory = require('./handlerFactory')
+const AppError = require('../utils/appError')
+
 var ObjectId = require('mongoose').Types.ObjectId
 
 exports.getAllClients = factory.getAll(Client)

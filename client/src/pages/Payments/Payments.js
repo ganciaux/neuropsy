@@ -77,27 +77,22 @@ const Payments = () => {
         href="/payments/add"
         action="Ajouter"
       />
-      {payments.length === 0 && <Typography>Aucun paiement</Typography>}
-      {payments.length > 0 && (
-        <>
-          <TextField
-            name="search"
-            placeholder="Recherche dans le nom et le prix"
-            label="Filtre de recherche"
-            variant="outlined"
-            fullWidth
-            onChange={handleFilter}
-          />
-          <PaymentTable data={paymentsFiltered} handleDelete={handleDelete} />
-          <CommonDialog
-            title="Supprimer le paiement ?"
-            open={open}
-            content={getContent}
-            handleCloseOk={handleCloseOk}
-            handleCloseCancel={handleCloseCancel}
-          />
-        </>
-      )}
+      <TextField
+        name="search"
+        placeholder="Recherche dans le nom et le prix"
+        label="Filtre de recherche"
+        variant="outlined"
+        fullWidth
+        onChange={handleFilter}
+      />
+      <PaymentTable data={paymentsFiltered} handleDelete={handleDelete} />
+      <CommonDialog
+        title="Supprimer le paiement ?"
+        open={open}
+        content={getContent}
+        handleCloseOk={handleCloseOk}
+        handleCloseCancel={handleCloseCancel}
+      />
     </Box>
   )
 }

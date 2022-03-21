@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-export const useFetchData = (id, path, defaultData, options = {}) => {
+export const useFetchData = (id, path, defaultData = {}, options = {}) => {
   const [error, setError] = useState({ isError: false, message: '' })
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -26,7 +26,7 @@ export const useFetchData = (id, path, defaultData, options = {}) => {
         })
         .catch((err) => {
           console.log(err.response.data)
-          setError(err)
+          setError({ isError: true, message: err.response.data.message })
         })
     }
 
