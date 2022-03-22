@@ -6,13 +6,13 @@ import EditIcon from '@mui/icons-material/Edit'
 export const columns = [
   {
     field: 'firstname',
-    headerName: 'First name',
+    headerName: 'Nom',
     minWidth: 90,
     flex: 1,
   },
   {
     field: 'name',
-    headerName: 'Last name',
+    headerName: 'Prénom',
     minWidth: 90,
     flex: 1,
   },
@@ -24,16 +24,6 @@ export const columns = [
     flex: 1,
     align: 'right',
     headerAlign: 'right',
-  },
-  {
-    field: '_name',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    minWidth: 90,
-    flex: 2,
-    valueGetter: (params) =>
-      `${params.row.firstname || ''} ${params.row.name || ''}`,
   },
   {
     field: 'action',

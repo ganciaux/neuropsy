@@ -29,7 +29,6 @@ const SessionForm = () => {
     id,
     defaultData,
   )
-  const path = idClient ? `/clients/details/${client.slug}` : `/sessions`
   if (idClient) {
     defaultData.clientId = client?.id
   }
@@ -39,7 +38,7 @@ const SessionForm = () => {
   if (isLoading || isLoadingClient) {
     return <CommonLoader />
   }
-
+  const path = idClient ? `/clients/details/${client.slug}` : `/sessions`
   return (
     <CommonGridForm>
       <Grid item xs={12}>

@@ -167,7 +167,7 @@ const ClientForm = () => {
                 {!id && 'Ajouter'}
                 {id && 'Modifier'}
               </Button>
-              <CommonBack path={path} label="Retour" />
+              <CommonBack path={path} label="Fiche client" />
               <Grid item xs={12}>
                 {error.isError && (
                   <Alert severity="error">{error.message}</Alert>

@@ -6,9 +6,9 @@ import {
   getTypeLabel,
   getStatusLabel,
   getStatusSeverity,
-} from '..//utils/sessionUtils'
+} from '../utils/sessionUtils'
 
-export const columns = (handleDelete) => [
+export const columns = (name, handleDelete) => [
   {
     field: '_date',
     headerName: 'Date',
@@ -66,9 +66,13 @@ export const columns = (handleDelete) => [
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
     renderCell: (params) => {
+      console.log(params)
+      const path = name
+        ? `/clients/details/${params.row.clientId.slug}/session/${params.row.slug}`
+        : `/sessions/edit/${params.row.slug}`
       return (
         <Stack direction="row" gap={1}>
-          <Link href={`/sessions/edit/${params.row.slug}`} underline="hover">
+          <Link href={path} underline="hover">
             <EditIcon>Modifier</EditIcon>
           </Link>
           {handleDelete && (

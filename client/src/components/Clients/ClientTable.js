@@ -22,6 +22,26 @@ export default function ClientTable({ data }) {
         columns={columns}
         rowsPerPageOptions={[10, 50, 100]}
         components={{ Toolbar: GridToolbar }}
+        disableSelectionOnClick
+        sx={{
+          '.MuiDataGrid-columnSeparator': {
+            display: 'none',
+          },
+          '&.MuiDataGrid-root': {
+            border: '1px solid #efefef',
+            borderRadius: '5px',
+            marginTop: '20px',
+          },
+          '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within ': {
+            outline: 'none !important',
+          },
+          '&.MuiDataGrid-root .MuiDataGrid-columnHeaders': {
+            backgroundColor: '#efefef',
+            fontSize: '20px',
+            backgroundColor: '#efefef',
+            outline: 'none',
+          },
+        }}
       />
     </div>
   )
