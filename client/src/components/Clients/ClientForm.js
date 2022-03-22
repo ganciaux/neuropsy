@@ -26,14 +26,13 @@ const ClientForm = () => {
     null,
     'birthdate',
   )
-
+  const path = data ? `/clients/details/${data.slug}` : `/clients`
   if (error.isError === true) {
     return <Alert severity="error">{error.message}</Alert>
   }
   if (isLoading) {
     return <CommonLoader />
   }
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -168,11 +167,7 @@ const ClientForm = () => {
                 {!id && 'Ajouter'}
                 {id && 'Modifier'}
               </Button>
-              <CommonBack
-                id={id}
-                path={`/clients/details/${data.slug}`}
-                label="Retour"
-              />
+              <CommonBack path={path} label="Retour" />
               <Grid item xs={12}>
                 {error.isError && (
                   <Alert severity="error">{error.message}</Alert>

@@ -43,21 +43,21 @@ const ClientDetails = () => {
       <CommonToggle
         title="Rendez-vous"
         data={data.sessions}
-        path={`session/${id}`}
+        path={`${id}/session`}
         table={<SessionTable data={data.sessions} name={data.name} />}
       />
 
       <CommonToggle
         title="Paiments"
         data={data.payments}
-        path={`payment/${id}`}
+        path={`${id}/payment`}
         table={<PaymentTable data={data.payments} name={data.name} />}
       />
 
       <CommonToggle
         title="Commandes"
         data={data.orders}
-        path={`order/${id}`}
+        path={`${id}/order`}
         table={<OrderTable data={data.orders} name={data.name} />}
       />
     </Box>

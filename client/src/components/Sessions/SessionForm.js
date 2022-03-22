@@ -29,6 +29,7 @@ const SessionForm = () => {
     id,
     defaultData,
   )
+  const path = idClient ? `/clients/details/${client.slug}` : `/sessions`
   if (idClient) {
     defaultData.clientId = client?.id
   }
@@ -113,11 +114,7 @@ const SessionForm = () => {
           {!id && 'Ajouter'}
           {id && 'Modifier'}
         </Button>
-        <CommonBack
-          id={idClient}
-          path={`/clients/details/${client.slug}`}
-          label="Retour"
-        />
+        <CommonBack path={path} label="Retour" />
       </Grid>
       <Grid item xs={12}>
         {error.isError && <Alert severity="error">{error.message}</Alert>}

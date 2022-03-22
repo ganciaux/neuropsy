@@ -29,7 +29,7 @@ const Sessions = () => {
   useEffect(() => {
     let options = ''
     if (search === true) {
-      if (dates[0] !== undefined && dates[1] !== undefined) {
+      if (dates[0] != undefined && dates[1] != undefined) {
         options += `&date[gte]=${new Date(dates[0]).getTime()}`
         options += `&date[lte]=${new Date(dates[1]).getTime()}`
       }

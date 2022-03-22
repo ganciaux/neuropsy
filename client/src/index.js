@@ -23,7 +23,7 @@ import Reports from './pages/Report/Reports'
 
 ReactDOM.render(
   <ThemeProvider theme={dashboardTheme}>
-    <BrowserRouter>
+    <BrowserRouter forceRefresh={true}>
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="home" element={<Home />} />
@@ -32,14 +32,26 @@ ReactDOM.render(
           <Route path="clients/edit/:id" element={<Client />} />
           <Route path="clients/details/:id" element={<ClientDetails />} />
           <Route
-            path="clients/details/session/:idClient"
+            path="clients/details/:idClient/session"
             element={<Session />}
           />
           <Route
-            path="clients/details/payment/:idClient"
+            path="clients/details/:idClient/session/:id"
+            element={<Session />}
+          />
+          <Route
+            path="clients/details/:idClient/payment/:id"
             element={<Payment />}
           />
-          <Route path="clients/details/order/:idClient" element={<Order />} />
+          <Route
+            path="clients/details/:idClient/payment"
+            element={<Payment />}
+          />
+          <Route
+            path="clients/details/:idClient/order/:id"
+            element={<Order />}
+          />
+          <Route path="clients/details/:idClient/order" element={<Order />} />
           <Route path="articles" element={<Articles />} />
           <Route path="articles/add" element={<Article />} />
           <Route path="articles/edit/:id" element={<Article />} />

@@ -32,15 +32,13 @@ const PaymentForm = () => {
   if (idClient) {
     defaultData.clientId = client?.id
   }
-
+  const path = idClient ? `/clients/details/${client.slug}` : `/payments`
   if (error.isError === true) {
     return <Alert severity="error">{error.message}</Alert>
   }
-
   if (isLoading || isLoadingClient) {
     return <CommonLoader />
   }
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -134,11 +132,7 @@ const PaymentForm = () => {
           {!id && 'Ajouter'}
           {id && 'Modifier'}
         </Button>
-        <CommonBack
-          id={idClient}
-          path={`/clients/details/${client.slug}`}
-          label="Retour"
-        />
+        <CommonBack path={path} label="Retour" />
       </Grid>
       <Grid item xs={12}>
         {error.isError && <Alert severity="error">{error.message}</Alert>}
