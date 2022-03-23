@@ -70,8 +70,8 @@ const ClientForm = () => {
                 name="birthdate"
                 label="Date du naissance"
                 value={data.birthdate}
-                handleOnChange={handleOnChange}
-                handleChangeDate={handleChangeDate}
+                onChange={handleOnChange}
+                onChangeDate={handleChangeDate}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

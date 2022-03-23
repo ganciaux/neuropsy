@@ -5,6 +5,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Client from './pages/Clients/Client'
+import ClientEdit from './pages/Clients/ClientEdit'
 import Clients from './pages/Clients/Clients'
 import ClientDetails from './pages/Clients/ClientDetails'
 import Article from './pages/Articles/Article'
@@ -30,6 +31,7 @@ ReactDOM.render(
           <Route path="clients" element={<Clients />} />
           <Route path="clients/add" element={<Client />} />
           <Route path="clients/edit/:id" element={<Client />} />
+          <Route path="clients/edit2/:id" element={<ClientEdit />} />
           <Route path="clients/details/:id" element={<ClientDetails />} />
           <Route
             path="clients/details/:idClient/session"

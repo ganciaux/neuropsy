@@ -64,8 +64,8 @@ const PaymentForm = () => {
           name="date"
           label="Date du paiement"
           value={data.date}
-          handleOnChange={handleOnChange}
-          handleChangeDate={handleChangeDate}
+          onChange={handleOnChange}
+          onChangeDate={handleChangeDate}
         />
       </Grid>
       <Grid item xs={6} sm={6} md={3}>

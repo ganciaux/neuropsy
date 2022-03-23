@@ -86,8 +86,8 @@ const OrderForm = () => {
           name="date"
           label="Date de la commande"
           value={data.date}
-          handleOnChange={handleOnChange}
-          handleChangeDate={handleChangeDate}
+          onChange={handleOnChange}
+          onChangeDate={handleChangeDate}
         />
       </Grid>
       <Grid item xs={6} sm={6}>

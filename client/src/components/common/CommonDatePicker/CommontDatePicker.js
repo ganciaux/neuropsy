@@ -10,8 +10,8 @@ const CommontDatePicker = ({
   label,
   value,
   required = false,
-  handleOnChange,
-  handleChangeDate,
+  onChange,
+  onChangeDate,
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
@@ -21,13 +21,13 @@ const CommontDatePicker = ({
         inputFormat="dd/MM/yyyy"
         value={value}
         fullWidth
-        onChange={handleChangeDate}
+        onChange={onChangeDate}
         renderInput={(params) => (
           <TextField
             {...params}
             fullWidth
             required={required}
-            onChange={handleOnChange}
+            onChange={onChange}
           />
         )}
       />
