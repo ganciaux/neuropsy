@@ -33,7 +33,7 @@ export const columns = [
     renderCell: (params) => {
       return (
         <>
-          <Link href={`/clients/edit/${params.row.slug}`} underline="hover">
+          <Link href={`/clients2/edit2/${params.row.slug}`} underline="hover">
             <EditIcon>Modifier</EditIcon>
           </Link>
           <Link href={`/clients/details/${params.row.slug}`} underline="hover">

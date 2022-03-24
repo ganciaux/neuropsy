@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '../Header/Header'
+import { Grid } from '@mui/material'
 
 const CommonPageHeader = ({ title, children }) => {
   return (

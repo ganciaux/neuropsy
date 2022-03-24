@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Alert, Box } from '@mui/material'
 import Header from '../../components/common/Header/Header'
@@ -10,6 +10,8 @@ import PaymentTable from '../../components/Payments/PaymentTable'
 import SessionTable from '../../components/Sessions/SessionTable'
 import OrderTable from '../../components/Orders/OrderTable'
 import CommonToggle from '../../components/common/CommonToggle/CommonToggle'
+import ClientFormDetails from '../../components/Clients/ClientFormDetails'
+import ClientForm2 from '../../components/Clients/ClientForm2'
 
 const ClientDetails = () => {
   const { id } = useParams()
@@ -26,19 +28,8 @@ const ClientDetails = () => {
 
   return (
     <Box>
-      <Header title="Détails clients" />
-      <CommonGrid title="Fiche client" path={`/clients/edit/${data.slug}`}>
-        <CommonGridLine label="Nom" value={data.name} />
-        <CommonGridLine label="Prénom" value={data.firstname} />
-        <CommonGridLine label="Email" value={data.email} />
-        <CommonGridLine label="Téléphone" value={data.phone} />
-        <CommonGridLine label="Ville" value={data.city} />
-        <CommonGridLine label="Code postal" value={data.zip} />
-        <CommonGridLine label="Adresse" value={data.address} />
-        <CommonGridLine label="Date de naissance" value={data._birthdate} />
-        <CommonGridLine label="Age" value={data._age} />
-        <CommonGridLine label="Description" value={data.description} />
-      </CommonGrid>
+      <ClientFormDetails client={data} />
+      <ClientForm2 client={data} />
 
       <CommonToggle
         title="Rendez-vous"

@@ -1,17 +1,19 @@
-import { Button } from '@mui/material'
 import React from 'react'
-const CommonBack = ({ path, label }) => {
+import { Button } from '@mui/material'
+const CommonBack = ({ path, label, back }) => {
   return (
     <>
-      <Button
-        sx={{ marginLeft: '5px' }}
-        type="button"
-        variant="outlined"
-        color="primary"
-        href={path}
-      >
-        {label}
-      </Button>
+      {back && (
+        <Button
+          sx={{ marginLeft: '5px' }}
+          type="button"
+          variant="outlined"
+          color="primary"
+          href={path}
+        >
+          {label}
+        </Button>
+      )}
     </>
   )
 }

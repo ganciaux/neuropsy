@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm, Controller, useController } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import Grid from '@mui/material/Grid'
 import {
   Button,
@@ -14,8 +14,9 @@ import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import frLocale from 'date-fns/locale/fr'
+import CommonBack from '../../components/common/CommonBack/CommonBack'
 
-const ClientForm2 = ({ client, onSubmit }) => {
+const ClientForm2 = ({ client, onSubmit, back }) => {
   const { control, register, handleSubmit } = useForm({
     defaultValues: client,
   })
@@ -75,22 +76,25 @@ const ClientForm2 = ({ client, onSubmit }) => {
             label="type"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={value}
-                    label="Age"
-                    onChange={onChange}
-                  >
-                    <MenuItem value={1}>Ten</MenuItem>
-                    <MenuItem value={2}>Twenty</MenuItem>
-                    <MenuItem value={3}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </>
+              <FormControl fullWidth>
+                <InputLabel id="select-label">Age</InputLabel>
+                <Select
+                  labelId="select-label"
+                  id="select"
+                  value={value}
+                  label="Age"
+                  onChange={onChange}
+                >
+                  <MenuItem disabled value={-1}>
+                    <em>Choisir un type</em>
+                  </MenuItem>
+                  {clientTypes.map((type) => (
+                    <MenuItem key={type.id} value={type.value}>
+                      {type.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             )}
           />
         </Grid>
@@ -169,6 +173,7 @@ const ClientForm2 = ({ client, onSubmit }) => {
           >
             Sauvegarder
           </Button>
+          <CommonBack label="Fiche client" path="/clients2" back />
         </Grid>
       </Grid>
     </form>
