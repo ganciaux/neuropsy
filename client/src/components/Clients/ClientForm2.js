@@ -1,13 +1,23 @@
 import React from 'react'
+import { useForm, Controller, useController } from 'react-hook-form'
 import Grid from '@mui/material/Grid'
-import { Button, TextField } from '@mui/material'
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
-import CommonSelect from '../common/CommonSelect/CommonSelect'
-import CommontDatePicker from '../common/CommonDatePicker/CommontDatePicker'
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import frLocale from 'date-fns/locale/fr'
 
-const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
-  const { register, handleSubmit } = useForm({
-    defaultValues: { text: todo ? todo.text : '' },
+const ClientForm2 = ({ client, onSubmit }) => {
+  const { control, register, handleSubmit } = useForm({
+    defaultValues: client,
   })
 
   const submitHandler = handleSubmit((data) => {
@@ -22,11 +32,10 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             name="name"
             placeholder="Nom"
             label="Nom"
-            value={client.name}
             variant="outlined"
             fullWidth
             required
-            onChange={onChange}
+            {...register('name')}
           />
         </Grid>
         <Grid xs={12} sm={6} item>
@@ -34,31 +43,55 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             name="firstname"
             placeholder="Prénom"
             label="Prénom"
-            value={client.firstname}
+            {...register('firstname')}
             variant="outlined"
             fullWidth
             required
-            onChange={onChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <CommontDatePicker
+          <Controller
+            control={control}
             name="birthdate"
-            label="Date du naissance"
-            value={client.birthdate}
-            onChange={onChange}
-            onChangeDate={onChangeDate}
+            render={({ field: { onChange, value } }) => (
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                locale={frLocale}
+              >
+                <DesktopDatePicker
+                  inputFormat="dd/MM/yyyy"
+                  label="Date de naissance"
+                  value={value}
+                  onChange={onChange}
+                  renderInput={(params) => <TextField fullWidth {...params} />}
+                />
+              </LocalizationProvider>
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <CommonSelect
-            id="clientType"
-            label="Type"
+          <Controller
             name="type"
-            data={clientTypes}
-            value={client.type}
-            placeHolder="<Choisir un type>"
-            onChange={onChange}
+            label="type"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={value}
+                    label="Age"
+                    onChange={onChange}
+                  >
+                    <MenuItem value={1}>Ten</MenuItem>
+                    <MenuItem value={2}>Twenty</MenuItem>
+                    <MenuItem value={3}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </>
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -67,10 +100,9 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             type="email"
             placeholder="Email"
             label="Email"
-            value={client.email}
+            {...register('email')}
             variant="outlined"
             fullWidth
-            onChange={onChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -79,10 +111,9 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             type="number"
             placeholder="Enter phone number"
             label="Phone"
-            value={client.phone}
+            {...register('phone')}
             variant="outlined"
             fullWidth
-            onChange={onChange}
           />
         </Grid>
         <Grid xs={12} sm={6} item>
@@ -90,10 +121,9 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             name="city"
             placeholder="Ville"
             label="Ville"
-            value={client.city}
+            {...register('city')}
             variant="outlined"
             fullWidth
-            onChange={onChange}
           />
         </Grid>
         <Grid xs={12} sm={6} item>
@@ -101,36 +131,33 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             name="zip"
             placeholder="Code postal"
             label="Code postal"
-            value={client.zip}
+            {...register('zip')}
             variant="outlined"
             fullWidth
-            onChange={onChange}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             name="address"
             label="Adresse"
-            value={client.address}
+            {...register('address')}
             multiline
             rows={4}
             placeholder="Adresse"
             variant="outlined"
             fullWidth
-            onChange={onChange}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             name="description"
             label="Description"
-            value={client.description}
+            {...register('description')}
             multiline
             rows={4}
             placeholder="Description"
             variant="outlined"
             fullWidth
-            onChange={onChange}
           />
         </Grid>
         <Grid item xs={12}>
@@ -138,7 +165,7 @@ const ClientForm2 = ({ client, onChange, onChangeDate, onSubmit }) => {
             type="submit"
             variant="contained"
             color="primary"
-            onClick={onSubmit}
+            onClick={submitHandler}
           >
             Sauvegarder
           </Button>
