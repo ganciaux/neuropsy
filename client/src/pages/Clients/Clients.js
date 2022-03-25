@@ -1,23 +1,32 @@
-import React from 'react'
-import { Link, TextField } from '@mui/material'
-import { Box } from '@mui/system'
+import React, { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
+import { Button, TextField } from '@mui/material'
+import { getData } from '../../api/api'
+import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
-import { useFetchDataList } from '../../utils/useFetchDataList'
-import Header from '../../components/common/Header/Header'
 import ClientTable from '../../components/Clients/ClientTable'
-import ListAltIcon from '@mui/icons-material/ListAlt'
-import EditIcon from '@mui/icons-material/Edit'
+import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
 
 const Clients = () => {
-  const [
-    clients,
-    setClients,
-    clientsFiltered,
-    setClientsFiltered,
+  const [clientsFiltered, setClientsFiltered] = useState([])
+  const {
     isLoading,
     error,
-    setError,
-  ] = useFetchDataList('clients')
+    data: clients,
+    isSuccess,
+  } = useQuery('clients', () => getData('/clients'))
+
+  useEffect(() => {
+    setClientsFiltered(clients)
+  }, [clients])
+
+  if (isLoading) {
+    return <CommonLoader />
+  }
+  if (error)
+    return (
+      <CommonAlert title="An error has occurred:" content={error.message} />
+    )
 
   const handleFilter = (e) => {
     const pattern = e.target.value.toLowerCase()
@@ -30,13 +39,8 @@ const Clients = () => {
     setClientsFiltered(result)
   }
 
-  if (isLoading) {
-    return <CommonLoader />
-  }
-
   return (
-    <Box>
-      <Header title="Liste de clients" href="/clients/add" action="Ajouter" />
+    <CommonPageHeader title="Gestion client">
       <TextField
         name="search"
         placeholder="Recherche dans le nom, le prénom et l'email"
@@ -45,9 +49,18 @@ const Clients = () => {
         fullWidth
         onChange={handleFilter}
       />
+      <Button
+        sx={{ marginTop: '10px' }}
+        type="button"
+        variant="contained"
+        color="primary"
+        href="/clients/add"
+      >
+        Ajouter
+      </Button>
 
       <ClientTable data={clientsFiltered}></ClientTable>
-    </Box>
+    </CommonPageHeader>
   )
 }
 

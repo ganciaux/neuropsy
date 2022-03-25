@@ -1,12 +1,10 @@
 import React from 'react'
 import CommonGrid from '../common/CommonGrid/CommonGrid'
 import CommonGridLine from '../common/CommonGrid/CommonGridLine'
-import Header from '../common/Header/Header'
 
 const ClientFormDetails = ({ client }) => {
   return (
     <>
-      <Header title="Détails clients" />
       <CommonGrid title="Fiche client" path={`/clients/edit/${client.slug}`}>
         <CommonGridLine label="Nom" value={client.name} />
         <CommonGridLine label="Prénom" value={client.firstname} />

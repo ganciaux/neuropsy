@@ -1,9 +1,9 @@
-import { Typography } from '@mui/material'
 import React from 'react'
+import { Typography } from '@mui/material'
 
 const CommonHeader = ({ title }) => {
   return (
-    <Typography sx={{ marginBottom: '5px' }} variant="h5">
+    <Typography sx={{ marginBottom: '10px' }} variant="h5">
       {title}
     </Typography>
   )

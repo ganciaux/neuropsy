@@ -1,3 +1,4 @@
+import { TableRow, tableRowClasses } from '@mui/material'
 import axios from 'axios'
 
 export const getData = async (path, id) => {
@@ -27,6 +28,7 @@ export const createData = async (path, data) => {
     })
     .catch((err) => {
       console.log(err.response.data)
+      throw err.response.data
       return err.response.data
     })
 }
