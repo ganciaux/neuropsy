@@ -37,6 +37,7 @@ const ClientForm = ({
     formState: { isSubmitted, errors },
   } = useForm({
     defaultValues: client ? client : defaultData,
+    reValidateMode: 'onSubmit',
     resolver: yupResolver(schema),
   })
 
