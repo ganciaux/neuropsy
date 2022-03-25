@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './index.css'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -13,7 +14,6 @@ import ClientDetails from './pages/Clients/ClientDetails'
 import Home from './pages/Home/Home'
 import { dashboardTheme } from './dashboardTheme'
 
-/*
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -21,8 +21,8 @@ const queryClient = new QueryClient({
     },
   },
 })
-*/
-const queryClient = new QueryClient()
+
+//const queryClient = new QueryClient()
 
 ReactDOM.render(
   <ThemeProvider theme={dashboardTheme}>

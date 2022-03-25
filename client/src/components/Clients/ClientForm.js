@@ -1,21 +1,21 @@
-import React from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { Alert } from '@mui/material'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import frLocale from 'date-fns/locale/fr'
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Button, Grid, TextField } from '@mui/material'
+import { ErrorMessage } from '@hookform/error-message'
 import { clientTypes } from '../Clients/consts/clientTypes'
+import { defaultData } from './consts/defaultData'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
+import CommonDatePickerForm from '../common/CommonDatePickerForm/CommonDatePickerForm'
+import CommonSelectForm from '../common/CommonSelectForm/CommonSelectForm'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
+const schema = yup
+  .object({
+    name: yup.string().required(),
+    firstname: yup.string().required(),
+  })
+  .required()
 
 const ClientForm = ({
   client,
@@ -25,31 +25,68 @@ const ClientForm = ({
   isSuccess,
   error,
   href,
+  create = true,
 }) => {
-  const { control, register, handleSubmit } = useForm({
-    defaultValues: client,
+  console.log('client form: client:', client)
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    formState: { isSubmitted, errors },
+  } = useForm({
+    defaultValues: client ? client : defaultData,
+    resolver: yupResolver(schema),
   })
 
+  const handleOnClose = () => {
+    onClose()
+    clearErrors()
+  }
   const submitHandler = handleSubmit((data) => {
-    onSubmit(data)
+    onSubmit(data, {
+      onSuccess: (data, variables, context) => {
+        console.log('client form: mutate: onSuccess...')
+      },
+      onError: (error, variables, context) => {
+        console.log('client form: mutate: onError...')
+      },
+    })
   })
+
+  useEffect(() => {
+    if (isSuccess == true) {
+      console.log('client form: useEffect:', client)
+      reset(client ? client : defaultData)
+    }
+  }, [client])
+
+  console.log('client form: errors', isSubmitted, errors)
 
   return (
     <form>
       <Grid container spacing={1}>
         <Grid xs={12} item>
           {isSuccess && (
-            <Alert
-              sx={{ margintTop: '10px', marginBottom: '20px' }}
+            <CommonAlert
+              title="Sauvegarde réussie..."
+              severity="success"
               onClose={onClose}
-            >
-              This is a success alert — check it out!
-            </Alert>
+            />
           )}
           {error && (
             <CommonAlert
-              title="An error has occurred:"
+              title="Une erreur s'est produite:"
               content={error.message}
+              onClose={onClose}
+            />
+          )}
+          {Object.keys(errors).length > 0 && (
+            <CommonAlert
+              title="Une erreur s'est produite:"
+              errors={errors}
+              onClose={handleOnClose}
             />
           )}
         </Grid>
@@ -76,51 +113,20 @@ const ClientForm = ({
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Controller
+          <CommonDatePickerForm
             control={control}
             name="birthdate"
-            render={({ field: { onChange, value } }) => (
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                locale={frLocale}
-              >
-                <DesktopDatePicker
-                  inputFormat="dd/MM/yyyy"
-                  label="Date de naissance"
-                  value={value}
-                  onChange={onChange}
-                  renderInput={(params) => <TextField fullWidth {...params} />}
-                />
-              </LocalizationProvider>
-            )}
+            label="Date de naissance"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Controller
-            name="type"
-            label="type"
+          <CommonSelectForm
             control={control}
-            render={({ field: { onChange, value } }) => (
-              <FormControl fullWidth>
-                <InputLabel id="select-label">Type</InputLabel>
-                <Select
-                  labelId="select-label"
-                  id="select"
-                  value={value}
-                  label="Age"
-                  onChange={onChange}
-                >
-                  <MenuItem disabled value={-1}>
-                    <em>Choisir un type</em>
-                  </MenuItem>
-                  {clientTypes.map((type) => (
-                    <MenuItem key={type.id} value={type.value}>
-                      {type.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+            name="type"
+            label="Type"
+            id="select"
+            data={clientTypes}
+            defaultValue
           />
         </Grid>
         <Grid item xs={12} sm={6}>

@@ -1,10 +1,11 @@
 import React from 'react'
 import CommonGrid from '../common/CommonGrid/CommonGrid'
 import CommonGridLine from '../common/CommonGrid/CommonGridLine'
+import CommonPageHeader from '../common/CommonPageHeader/CommonPageHeader'
 
 const ClientFormDetails = ({ client }) => {
   return (
-    <>
+    <CommonPageHeader title="title">
       <CommonGrid title="Fiche client" path={`/clients/edit/${client.slug}`}>
         <CommonGridLine label="Nom" value={client.name} />
         <CommonGridLine label="Prénom" value={client.firstname} />
@@ -17,7 +18,7 @@ const ClientFormDetails = ({ client }) => {
         <CommonGridLine label="Age" value={client._age} />
         <CommonGridLine label="Description" value={client.description} />
       </CommonGrid>
-    </>
+    </CommonPageHeader>
   )
 }
 

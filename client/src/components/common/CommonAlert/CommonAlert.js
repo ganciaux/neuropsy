@@ -1,11 +1,22 @@
 import { Alert, AlertTitle } from '@mui/material'
 import React from 'react'
 
-const CommonAlert = ({ title, content, severity = 'error' }) => {
+const CommonAlert = ({
+  title,
+  content,
+  onClose,
+  errors = {},
+  severity = 'error',
+}) => {
+  const alertErrors = Object.entries(errors)
+  console.log('CommonAlert:', alertErrors)
   return (
-    <Alert severity={severity} sx={{ padding: '0px 6px' }}>
+    <Alert severity={severity} sx={{ marginBottom: '10px' }} onClose={onClose}>
       {title && <AlertTitle>{title}</AlertTitle>}
       {content}
+      {alertErrors.map((error) => (
+        <p key={error}>{error[1].message}</p>
+      ))}
     </Alert>
   )
 }

@@ -2,7 +2,6 @@ import React from 'react'
 import { useQueryClient, useMutation } from 'react-query'
 import { createData } from '../../api/api'
 import ClientForm from '../../components/Clients/ClientForm'
-import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
 
 const ClientAdd = () => {
@@ -15,27 +14,34 @@ const ClientAdd = () => {
     mutate,
     error,
   } = useMutation(
-    async (e) => {
-      const addedClient = await createData('/clients', e)
+    async (formData) => {
+      console.log('ClientAdd: useMutation:', formData)
+      const mutatedData = await createData('/clients', formData)
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('clients')
+      onSuccess: (data, variables, context) => {
+        console.log('ClientAdd: onSuccess: data:', data)
+        console.log('ClientAdd: onSuccess: variables:', variables)
+        console.log('ClientAdd: onSuccess: context:', context)
+      },
+      onError: (error, variables, context) => {
+        console.log('ClientAdd: onError: error:', error)
+        console.log('ClientAdd: onError: variables:', variables)
+        console.log('ClientAdd: onError: context:', context)
       },
     },
   )
 
-  console.log(error)
-
   return (
-    <CommonPageHeader title="Ajout client">
+    <CommonPageHeader title="Ajouter un nouveau client">
       <ClientForm
         onSubmit={mutate}
         isUpdating={isUpdating}
         isSuccess={isSuccess}
         error={error}
         onClose={reset}
-        href="/clients/list"
+        href="/clients"
+        create
       />
     </CommonPageHeader>
   )

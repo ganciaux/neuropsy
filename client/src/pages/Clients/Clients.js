@@ -2,18 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Button, TextField } from '@mui/material'
 import { getData } from '../../api/api'
-import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 import ClientTable from '../../components/Clients/ClientTable'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
+import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoaderAlert'
 
 const Clients = () => {
+  const title = 'Liste des clients'
   const [clientsFiltered, setClientsFiltered] = useState([])
   const {
     isLoading,
+    isSuccess,
     error,
     data: clients,
-    isSuccess,
   } = useQuery('clients', () => getData('/clients'))
 
   useEffect(() => {
@@ -23,10 +24,10 @@ const Clients = () => {
   if (isLoading) {
     return <CommonLoader />
   }
-  if (error)
-    return (
-      <CommonAlert title="An error has occurred:" content={error.message} />
-    )
+
+  if (error) {
+    return <CommonLoaderAlert title={title} alertContent={error.message} />
+  }
 
   const handleFilter = (e) => {
     const pattern = e.target.value.toLowerCase()
@@ -39,8 +40,10 @@ const Clients = () => {
     setClientsFiltered(result)
   }
 
+  console.log('Clients: ', isLoading, isSuccess, error, clients)
+
   return (
-    <CommonPageHeader title="Gestion client">
+    <CommonPageHeader title={title}>
       <TextField
         name="search"
         placeholder="Recherche dans le nom, le prénom et l'email"
@@ -59,7 +62,11 @@ const Clients = () => {
         Ajouter
       </Button>
 
-      <ClientTable data={clientsFiltered}></ClientTable>
+      <ClientTable
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+        data={clientsFiltered}
+      ></ClientTable>
     </CommonPageHeader>
   )
 }

@@ -1,6 +1,5 @@
 import { Link } from '@mui/material'
 import ListAltIcon from '@mui/icons-material/ListAlt'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 
 export const columns = [

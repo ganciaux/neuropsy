@@ -16,20 +16,19 @@ export const getData = async (path, id) => {
     })
     .catch((err) => {
       console.log(err.response.data)
-      return err.response.data
+      throw err.response.data
     })
 }
 
 export const createData = async (path, data) => {
   return await axios
-    .post(`${process.env.REACT_APP_API_URL}/${path}`, data)
+    .post(`${process.env.REACT_APP_API_URL}${path}`, data)
     .then((res) => {
       console.log('api: createData:', res.data.data)
     })
     .catch((err) => {
       console.log(err.response.data)
       throw err.response.data
-      return err.response.data
     })
 }
 
@@ -42,6 +41,6 @@ export const updateData = async (path, data) => {
     })
     .catch((err) => {
       console.log(err.response.data)
-      return err.response.data
+      throw err.response.data
     })
 }

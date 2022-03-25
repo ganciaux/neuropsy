@@ -4,49 +4,74 @@ import { useQuery, useQueryClient, useMutation } from 'react-query'
 import { getData, updateData } from '../../api/api'
 import ClientForm from '../../components/Clients/ClientForm'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
-import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
+import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoaderAlert'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
+import CommonGridLine from '../../components/common/CommonGridLine/CommonGridLine'
 
 const ClientEdit = () => {
   const { id } = useParams()
+
   const queryClient = useQueryClient()
-  const { isLoading, error, data } = useQuery('client', () =>
-    getData('/clients', id),
-  )
+
+  const {
+    isLoading,
+    error: errorLoading,
+    data,
+  } = useQuery('client', () => getData('/clients', id))
+
+  console.log('ClientEdit:', data)
 
   const {
     isLoading: isUpdating,
     isSuccess,
     reset,
     mutate,
+    error: errorAction,
   } = useMutation(
-    async (e) => {
-      const editedClient = await updateData('/clients', e)
+    async (formData) => {
+      const mutatedData = await updateData('/clients', formData)
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('clients')
+      onSuccess: (data, variables, context) => {
+        console.log('ClientEdit: onSuccess: data:', data)
+        console.log('ClientEdit: onSuccess: variables:', variables)
+        console.log('ClientEdit: onSuccess: context:', context)
+      },
+      onError: (error, variables, context) => {
+        console.log('ClientEdit: onError: error:', error)
+        console.log('ClientEdit: onError: variables:', variables)
+        console.log('ClientEdit: onError: context:', context)
       },
     },
   )
 
-  if (isLoading) return <CommonLoader />
+  const title = data ? 'Gestion client - ' + data?._name : 'Gestion client'
 
-  if (error) {
+  if (isLoading) {
+    return <CommonLoader />
+  }
+
+  if (errorLoading) {
     return (
-      <CommonAlert title="An error has occurred:" content={error.message} />
+      <CommonLoaderAlert
+        title={title}
+        alertContent={errorLoading.message}
+        href="/clients"
+      />
     )
   }
 
   return (
-    <CommonPageHeader title="Gestion client">
+    <CommonPageHeader title={title}>
       <ClientForm
         client={data}
         onSubmit={mutate}
         isUpdating={isUpdating}
+        isLoading={isLoading}
         isSuccess={isSuccess}
+        error={errorAction}
         onClose={reset}
-        href="/clients/list"
+        href="/clients"
       />
     </CommonPageHeader>
   )
