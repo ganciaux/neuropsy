@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Grid, TextField } from '@mui/material'
-import { ErrorMessage } from '@hookform/error-message'
 import { clientTypes } from '../Clients/consts/clientTypes'
 import { defaultData } from './consts/defaultData'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
@@ -12,8 +11,8 @@ import * as yup from 'yup'
 
 const schema = yup
   .object({
-    name: yup.string().required(),
-    firstname: yup.string().required(),
+    name: yup.string().required('Le nom est obligatoire'),
+    firstname: yup.string().required('Le prénom est obligatoire'),
   })
   .required()
 
@@ -48,6 +47,9 @@ const ClientForm = ({
   const submitHandler = handleSubmit((data) => {
     onSubmit(data, {
       onSuccess: (data, variables, context) => {
+        if (create) {
+          reset(client)
+        }
         console.log('client form: mutate: onSuccess...')
       },
       onError: (error, variables, context) => {

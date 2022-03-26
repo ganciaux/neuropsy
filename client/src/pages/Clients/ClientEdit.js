@@ -6,7 +6,6 @@ import ClientForm from '../../components/Clients/ClientForm'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoaderAlert'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
-import CommonGridLine from '../../components/common/CommonGridLine/CommonGridLine'
 
 const ClientEdit = () => {
   const { id } = useParams()
@@ -17,7 +16,7 @@ const ClientEdit = () => {
     isLoading,
     error: errorLoading,
     data,
-  } = useQuery('client', () => getData('/clients', id))
+  } = useQuery(['client', id], () => getData('/clients', id))
 
   console.log('ClientEdit:', data)
 
@@ -36,6 +35,7 @@ const ClientEdit = () => {
         console.log('ClientEdit: onSuccess: data:', data)
         console.log('ClientEdit: onSuccess: variables:', variables)
         console.log('ClientEdit: onSuccess: context:', context)
+        queryClient.invalidateQueries(['client', id])
       },
       onError: (error, variables, context) => {
         console.log('ClientEdit: onError: error:', error)

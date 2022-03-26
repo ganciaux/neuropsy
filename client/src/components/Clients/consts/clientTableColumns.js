@@ -4,13 +4,13 @@ import EditIcon from '@mui/icons-material/Edit'
 
 export const columns = [
   {
-    field: 'firstname',
+    field: 'name',
     headerName: 'Nom',
     minWidth: 90,
     flex: 1,
   },
   {
-    field: 'name',
+    field: 'firstname',
     headerName: 'Prénom',
     minWidth: 90,
     flex: 1,
