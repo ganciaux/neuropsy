@@ -1,12 +1,10 @@
 import React from 'react'
-import { useQueryClient, useMutation } from 'react-query'
+import { useMutation } from 'react-query'
 import { createData } from '../../api/api'
 import ClientForm from '../../components/Clients/ClientForm'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
 
 const ClientAdd = () => {
-  const queryClient = useQueryClient()
-
   const {
     isLoading: isUpdating,
     isSuccess,
