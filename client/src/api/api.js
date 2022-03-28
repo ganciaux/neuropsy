@@ -1,4 +1,3 @@
-import { TableRow, tableRowClasses } from '@mui/material'
 import axios from 'axios'
 
 export const getData = async (path, id) => {
@@ -7,6 +6,7 @@ export const getData = async (path, id) => {
     params.set('limit', 10)
     params.toString()
   */
+  console.log('getData', path, id)
   const url = id ? `${path}/${id}` : path
   return await axios
     .get(`${process.env.REACT_APP_API_URL}${url}`)
@@ -20,7 +20,7 @@ export const getData = async (path, id) => {
     })
 }
 
-export const createData = async (path, data) => {
+export const createData = async ({ path, ...data }) => {
   return await axios
     .post(`${process.env.REACT_APP_API_URL}${path}`, data)
     .then((res) => {
@@ -32,7 +32,7 @@ export const createData = async (path, data) => {
     })
 }
 
-export const updateData = async (path, data) => {
+export const updateData = async ({ path, ...data }) => {
   const url = data.id ? `${path}/${data.id}` : path
   return await axios
     .put(`${process.env.REACT_APP_API_URL}${url}`, data)

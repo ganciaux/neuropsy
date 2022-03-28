@@ -9,7 +9,6 @@ const CommonAlert = ({
   severity = 'error',
 }) => {
   const alertErrors = Object.entries(errors)
-  console.log('CommonAlert:', alertErrors)
   return (
     <Alert severity={severity} sx={{ marginBottom: '10px' }} onClose={onClose}>
       {title && <AlertTitle>{title}</AlertTitle>}

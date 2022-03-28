@@ -9,41 +9,25 @@ import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPag
 
 const ClientEdit = () => {
   const { id } = useParams()
-
   const queryClient = useQueryClient()
-
   const {
     isLoading,
     error: errorLoading,
     data,
   } = useQuery(['client', id], () => getData('/clients', id))
 
-  console.log('ClientEdit:', data)
-
   const {
-    isLoading: isUpdating,
+    isLoading: isMutating,
     isSuccess,
     reset,
-    mutate,
-    error: errorAction,
-  } = useMutation(
-    async (formData) => {
-      const mutatedData = await updateData('/clients', formData)
-    },
-    {
-      onSuccess: (data, variables, context) => {
-        console.log('ClientEdit: onSuccess: data:', data)
-        console.log('ClientEdit: onSuccess: variables:', variables)
-        console.log('ClientEdit: onSuccess: context:', context)
-        queryClient.invalidateQueries(['client', id])
-      },
-      onError: (error, variables, context) => {
-        console.log('ClientEdit: onError: error:', error)
-        console.log('ClientEdit: onError: variables:', variables)
-        console.log('ClientEdit: onError: context:', context)
-      },
-    },
-  )
+    mutateAsync,
+    error: errorMutating,
+  } = useMutation(updateData)
+
+  const onSubmit = async (data) => {
+    await mutateAsync({ path: '/clients', ...data })
+    queryClient.invalidateQueries(['client', id])
+  }
 
   const title = data ? 'Gestion client - ' + data?._name : 'Gestion client'
 
@@ -65,11 +49,10 @@ const ClientEdit = () => {
     <CommonPageHeader title={title}>
       <ClientForm
         client={data}
-        onSubmit={mutate}
-        isUpdating={isUpdating}
-        isLoading={isLoading}
+        onSubmit={onSubmit}
+        isLoading={isMutating}
         isSuccess={isSuccess}
-        error={errorAction}
+        error={errorMutating}
         onClose={reset}
         href="/clients"
       />

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Grid, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
-import { defaultData } from './consts/defaultData'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
 import CommonDatePickerForm from '../common/CommonDatePickerForm/CommonDatePickerForm'
 import CommonSelectForm from '../common/CommonSelectForm/CommonSelectForm'
@@ -20,22 +19,20 @@ const ClientForm = ({
   client,
   onSubmit,
   onClose,
-  isUpdating,
+  isLoading,
   isSuccess,
   error,
   href,
-  create = true,
 }) => {
-  console.log('client form: client:', client)
   const {
     control,
     register,
     handleSubmit,
     reset,
     clearErrors,
-    formState: { isSubmitted, errors },
+    formState: { errors },
   } = useForm({
-    defaultValues: client ? client : defaultData,
+    defaultValues: client,
     reValidateMode: 'onSubmit',
     resolver: yupResolver(schema),
   })
@@ -45,27 +42,8 @@ const ClientForm = ({
     clearErrors()
   }
   const submitHandler = handleSubmit((data) => {
-    onSubmit(data, {
-      onSuccess: (data, variables, context) => {
-        if (create) {
-          reset(client)
-        }
-        console.log('client form: mutate: onSuccess...')
-      },
-      onError: (error, variables, context) => {
-        console.log('client form: mutate: onError...')
-      },
-    })
+    onSubmit(data, reset)
   })
-
-  useEffect(() => {
-    if (isSuccess == true) {
-      console.log('client form: useEffect:', client)
-      reset(client ? client : defaultData)
-    }
-  }, [client])
-
-  console.log('client form: errors', isSubmitted, errors)
 
   return (
     <form>
@@ -203,7 +181,7 @@ const ClientForm = ({
             type="submit"
             variant="contained"
             color="primary"
-            disabled={isUpdating}
+            disabled={isLoading}
             onClick={submitHandler}
           >
             Sauvegarder
