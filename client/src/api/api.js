@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+export const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+
 export const getData = async (path, id) => {
   /*
     const params = new URLSearchParams()

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Grid, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
@@ -41,6 +41,18 @@ const ClientForm = ({
     onClose()
     clearErrors()
   }
+  const handleSave = () => {
+    setIsOpen(true)
+  }
+  const handleCancel = () => {
+    setIsOpen(false)
+  }
+  const handleOk = (data) => {
+    console.log(data)
+    setIsOpen(false)
+    submitHandler(data)
+  }
+
   const submitHandler = handleSubmit((data) => {
     onSubmit(data, reset)
   })
@@ -178,11 +190,11 @@ const ClientForm = ({
         </Grid>
         <Grid item xs={12}>
           <Button
-            type="submit"
+            type="button"
             variant="contained"
             color="primary"
-            disabled={isLoading}
-            onClick={submitHandler}
+            disabled={isLoading || isSuccess}
+            onClick={handleSave}
           >
             Sauvegarder
           </Button>
