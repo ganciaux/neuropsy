@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Grid, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
-import CommonAlert from '../common/CommonAlert/CommonAlert'
 import CommonDatePickerForm from '../common/CommonDatePickerForm/CommonDatePickerForm'
+import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
 import CommonSelectForm from '../common/CommonSelectForm/CommonSelectForm'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -16,72 +16,42 @@ const schema = yup
   .required()
 
 const ClientForm = ({
-  client,
+  data,
   onSubmit,
-  onClose,
   isLoading,
   isSuccess,
-  error,
+  queryError,
+  queryReset,
   href,
 }) => {
   const {
     control,
     register,
     handleSubmit,
-    reset,
-    clearErrors,
-    formState: { errors },
+    reset: formRest,
+    clearErrors: formClearErrors,
+    formState: { errors: formStateErrors },
   } = useForm({
-    defaultValues: client,
+    defaultValues: data,
     reValidateMode: 'onSubmit',
     resolver: yupResolver(schema),
   })
 
-  const handleOnClose = () => {
-    onClose()
-    clearErrors()
-  }
-  const handleSave = () => {
-    setIsOpen(true)
-  }
-  const handleCancel = () => {
-    setIsOpen(false)
-  }
-  const handleOk = (data) => {
-    console.log(data)
-    setIsOpen(false)
-    submitHandler(data)
-  }
-
   const submitHandler = handleSubmit((data) => {
-    onSubmit(data, reset)
+    onSubmit(data, formRest)
   })
 
   return (
     <form>
       <Grid container spacing={1}>
         <Grid xs={12} item>
-          {isSuccess && (
-            <CommonAlert
-              title="Sauvegarde réussie..."
-              severity="success"
-              onClose={onClose}
-            />
-          )}
-          {error && (
-            <CommonAlert
-              title="Une erreur s'est produite:"
-              content={error.message}
-              onClose={onClose}
-            />
-          )}
-          {Object.keys(errors).length > 0 && (
-            <CommonAlert
-              title="Une erreur s'est produite:"
-              errors={errors}
-              onClose={handleOnClose}
-            />
-          )}
+          <CommonFormAlert
+            queryIsSuccess={isSuccess}
+            queryError={queryError}
+            formStateErrors={formStateErrors}
+            queryReset={queryReset}
+            formClearErrors={formClearErrors}
+          />
         </Grid>
         <Grid xs={12} sm={6} item>
           <TextField
@@ -194,7 +164,7 @@ const ClientForm = ({
             variant="contained"
             color="primary"
             disabled={isLoading || isSuccess}
-            onClick={handleSave}
+            onClick={submitHandler}
           >
             Sauvegarder
           </Button>
