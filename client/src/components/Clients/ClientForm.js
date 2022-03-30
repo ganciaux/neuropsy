@@ -7,6 +7,7 @@ import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
 import CommonSelectForm from '../common/CommonSelectForm/CommonSelectForm'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import CommonFormButton from '../common/CommonFormButton/CommonFormButton'
 
 const schema = yup
   .object({
@@ -149,26 +150,12 @@ const ClientForm = ({ query, mutation, onSubmit, href }) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            disabled={mutation.isLoading || mutation.isSuccess}
-            onClick={submitHandler}
-          >
-            Sauvegarder
-          </Button>
-          {href && (
-            <Button
-              sx={{ marginLeft: '10px' }}
-              type="button"
-              variant="outlined"
-              color="primary"
-              href={href}
-            >
-              Retour
-            </Button>
-          )}
+          <CommonFormButton
+            isLoading={mutation.isLoading}
+            isSuccess={mutation.isSuccess}
+            submitHandler={submitHandler}
+            href={href}
+          />
         </Grid>
       </Grid>
     </form>

@@ -9,10 +9,11 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import Clients from './pages/Clients/Clients'
 import ClientAdd from './pages/Clients/ClientAdd'
-import ClientAdd2 from './pages/Clients/ClientAdd2'
 import ClientEdit from './pages/Clients/ClientEdit'
-import ClientEdit2 from './pages/Clients/ClientEdit2'
 import ClientDetails from './pages/Clients/ClientDetails'
+import Articles from './pages/Articles/Articles'
+import ArticleAdd from './pages/Articles/ArticleAdd'
+import ArticleEdit from './pages/Articles/ArticleEdit'
 import Home from './pages/Home/Home'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -35,10 +36,12 @@ ReactDOM.render(
             <Route path="home" element={<Home />} />
             <Route path="clients/" element={<Clients />} />
             <Route path="clients/add" element={<ClientAdd />} />
-            <Route path="clients/add2" element={<ClientAdd2 />} />
             <Route path="clients/details/:id" element={<ClientDetails />} />
             <Route path="clients/edit/:id" element={<ClientEdit />} />
-            <Route path="clients/edit2/:id" element={<ClientEdit2 />} />
+            <Route path="articles/" element={<Articles />} />
+            <Route path="articles/add" element={<ArticleAdd />} />
+            {/* <Route path="articles/details/:id" element={<ArticleDetails />} /> */}
+            <Route path="articles/edit/:id" element={<ArticleEdit />} />
           </Route>
         </Routes>
       </BrowserRouter>

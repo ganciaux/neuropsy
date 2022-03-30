@@ -1,22 +1,17 @@
 import React from 'react'
 import { defaultData } from '../../components/Clients/consts/defaultData'
 import ClientForm from '../../components/Clients/ClientForm'
-import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
-import { useFormQueryAdd } from '../../utils/useFormQueryAdd'
+import ModelAdd from '../../components/Model/ModelAdd'
 
-const ClientAdd = () => {
-  const { query, mutation, onSubmit } = useFormQueryAdd('clients', defaultData)
-
+const ClientAdd2 = () => {
   return (
-    <CommonPageHeader title="Ajouter un nouveau client">
-      <ClientForm
-        query={query}
-        mutation={mutation}
-        onSubmit={onSubmit}
-        href="/clients"
-      />
-    </CommonPageHeader>
+    <ModelAdd
+      title="Ajouter client"
+      model={'clients'}
+      defaultData={defaultData}
+      modelForm={(data) => <ClientForm href="/clients" {...data} />}
+    />
   )
 }
 
-export default ClientAdd
+export default ClientAdd2
