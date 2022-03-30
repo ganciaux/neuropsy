@@ -7,24 +7,28 @@ import { useFormQueryUpdate } from '../../utils/useFormQueryUpdate'
 const ModelEdit = ({ title, model, href, modelForm }) => {
   const formQuery = useFormQueryUpdate(model)
 
-  const header = formQuery.data ? `${title} - ` + formQuery.data?._name : title
+  const pageTitle = formQuery.data
+    ? `${title} - ` + formQuery.data?._name
+    : title
 
-  if (formQuery.queryIsLoading) {
+  if (formQuery.query.isLoading) {
     return <CommonLoader />
   }
 
-  if (formQuery.errorLoading) {
+  if (formQuery.query.error) {
     return (
       <CommonLoaderAlert
-        title={header}
-        alertContent={formQuery.errorLoading.message}
+        title={pageTitle}
+        alertContent={formQuery.query.error.message}
         href={href}
       />
     )
   }
 
   return (
-    <CommonPageHeader title={header}>{modelForm(formQuery)}</CommonPageHeader>
+    <CommonPageHeader title={pageTitle}>
+      {modelForm(formQuery)}
+    </CommonPageHeader>
   )
 }
 

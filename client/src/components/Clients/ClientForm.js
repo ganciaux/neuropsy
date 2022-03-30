@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Grid, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
@@ -15,15 +15,7 @@ const schema = yup
   })
   .required()
 
-const ClientForm = ({
-  data,
-  onSubmit,
-  isLoading,
-  isSuccess,
-  queryError,
-  queryReset,
-  href,
-}) => {
+const ClientForm = ({ query, mutation, onSubmit, href }) => {
   const {
     control,
     register,
@@ -32,7 +24,7 @@ const ClientForm = ({
     clearErrors: formClearErrors,
     formState: { errors: formStateErrors },
   } = useForm({
-    defaultValues: data,
+    defaultValues: query.data,
     reValidateMode: 'onSubmit',
     resolver: yupResolver(schema),
   })
@@ -46,10 +38,8 @@ const ClientForm = ({
       <Grid container spacing={1}>
         <Grid xs={12} item>
           <CommonFormAlert
-            queryIsSuccess={isSuccess}
-            queryError={queryError}
+            mutation={mutation}
             formStateErrors={formStateErrors}
-            queryReset={queryReset}
             formClearErrors={formClearErrors}
           />
         </Grid>
@@ -163,7 +153,7 @@ const ClientForm = ({
             type="button"
             variant="contained"
             color="primary"
-            disabled={isLoading || isSuccess}
+            disabled={mutation.isLoading || mutation.isSuccess}
             onClick={submitHandler}
           >
             Sauvegarder

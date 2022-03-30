@@ -1,10 +1,5 @@
 export const clientTypes = [
   {
-    id: 0,
-    value: 0,
-    label: 'Autre',
-  },
-  {
     id: 1,
     value: 1,
     label: 'Madame',
@@ -18,5 +13,10 @@ export const clientTypes = [
     id: 3,
     value: 3,
     label: 'Societé',
+  },
+  {
+    id: 4,
+    value: 4,
+    label: 'Autre',
   },
 ]

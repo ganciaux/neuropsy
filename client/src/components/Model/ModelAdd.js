@@ -3,10 +3,10 @@ import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPag
 import { useFormQueryAdd } from '../../utils/useFormQueryAdd'
 
 const ModelAdd = ({ title, model, defaultData, modelForm }) => {
-  const formQery = useFormQueryAdd(model, defaultData)
+  const formQuery = useFormQueryAdd(model, defaultData)
 
   return (
-    <CommonPageHeader title={title}>{modelForm(formQery)}</CommonPageHeader>
+    <CommonPageHeader title={title}>{modelForm(formQuery)}</CommonPageHeader>
   )
 }
 

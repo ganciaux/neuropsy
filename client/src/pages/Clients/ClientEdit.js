@@ -6,28 +6,21 @@ import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPag
 import { useFormQueryUpdate } from '../../utils/useFormQueryUpdate'
 
 const ClientEdit = () => {
-  const {
-    data,
-    isLoading,
-    isMutating,
-    isSuccess,
-    errorMutating,
-    errorLoading,
-    onSubmit,
-    reset,
-  } = useFormQueryUpdate('clients')
+  const { query, mutation, onSubmit } = useFormQueryUpdate('clients')
 
-  const title = data ? 'Gestion client - ' + data?._name : 'Gestion client'
+  const title = query.data
+    ? 'Gestion client - ' + query.data?._name
+    : 'Gestion client'
 
-  if (isLoading) {
+  if (query.isLoading) {
     return <CommonLoader />
   }
 
-  if (errorLoading) {
+  if (query.error) {
     return (
       <CommonLoaderAlert
         title={title}
-        alertContent={errorLoading.message}
+        alertContent={query.error.message}
         href="/clients"
       />
     )
@@ -36,12 +29,9 @@ const ClientEdit = () => {
   return (
     <CommonPageHeader title={title}>
       <ClientForm
-        data={data}
+        query={query}
+        mutation={mutation}
         onSubmit={onSubmit}
-        isLoading={isMutating}
-        isSuccess={isSuccess}
-        queryError={errorMutating}
-        queryReset={reset}
         href="/clients"
       />
     </CommonPageHeader>

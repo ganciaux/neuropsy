@@ -5,19 +5,14 @@ import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPag
 import { useFormQueryAdd } from '../../utils/useFormQueryAdd'
 
 const ClientAdd = () => {
-  const { isLoading, isSuccess, error, onSubmit, reset } = useFormQueryAdd(
-    'clients',
-    defaultData,
-  )
+  const { query, mutation, onSubmit } = useFormQueryAdd('clients', defaultData)
 
   return (
     <CommonPageHeader title="Ajouter un nouveau client">
       <ClientForm
+        query={query}
+        mutation={mutation}
         onSubmit={onSubmit}
-        isLoading={isLoading}
-        isSuccess={isSuccess}
-        queryError={error}
-        queryReset={reset}
         href="/clients"
       />
     </CommonPageHeader>

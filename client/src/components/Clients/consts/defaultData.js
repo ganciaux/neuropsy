@@ -1,7 +1,7 @@
 export const defaultData = {
   name: '',
   firstname: '',
-  type: '-1',
+  type: -1,
   email: '',
   phone: '',
   address: '',
