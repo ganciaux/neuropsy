@@ -69,7 +69,7 @@ const orderSchema = new mongoose.Schema(
           ref: 'Article',
           null: true,
           transform: (v) => {
-            return v ? v : '-1'
+            return v ? v : -1
           },
         },
         quantity: {

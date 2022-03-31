@@ -2,9 +2,9 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Grid, TextField } from '@mui/material'
 import { clientTypes } from '../Clients/consts/clientTypes'
-import CommonDatePickerForm from '../common/CommonDatePickerForm/CommonDatePickerForm'
+import CommonFormDatePicker from '../common/CommonFormDatePicker/CommonFormDatePicker'
 import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
-import CommonSelectForm from '../common/CommonSelectForm/CommonSelectForm'
+import CommonFormSelect from '../common/CommonFormSelect/CommonFormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import CommonFormButton from '../common/CommonFormButton/CommonFormButton'
@@ -67,14 +67,14 @@ const ClientForm = ({ query, mutation, onSubmit, href }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <CommonDatePickerForm
+          <CommonFormDatePicker
             control={control}
             name="birthdate"
             label="Date de naissance"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <CommonSelectForm
+          <CommonFormSelect
             control={control}
             name="type"
             label="Type"

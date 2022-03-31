@@ -1,11 +1,10 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Grid, InputAdornment, TextField } from '@mui/material'
-import EuroIcon from '@mui/icons-material/Euro'
+import { Grid, TextField } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { paymentStatus } from './consts/paymentStatus'
-import { paymentTypes } from './consts/paymentTypes'
+import { sessionStatus } from './consts/sessionStatus'
+import { sessionTypes } from './consts/sessionTypes'
 import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
 import CommonFormButton from '../common/CommonFormButton/CommonFormButton'
 import CommonFormSelect from '../common/CommonFormSelect/CommonFormSelect'
@@ -14,13 +13,11 @@ import CommonFormSelectQuery from '../common/CommonFormSelectQuery/CommonFormSel
 
 const schema = yup
   .object({
-    type: yup.number().required('Le type est obligatoire'),
-    status: yup.number().required('Le status est obligatoire'),
-    price: yup.number().required('Le prix est obligatoire'),
+    date: yup.date().required('La date est obligatoire'),
   })
   .required()
 
-const PaymentForm = ({ query, mutation, onSubmit, href }) => {
+const SessionForm = ({ query, mutation, onSubmit, href }) => {
   const {
     control,
     register,
@@ -65,36 +62,7 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
           <CommonFormDatePicker
             control={control}
             name="date"
-            label="Date du paiement"
-          />
-        </Grid>
-        <Grid item xs={6} sm={6} md={3}>
-          <TextField
-            name="price"
-            placeholder="Montant"
-            label="Montant"
-            variant="outlined"
-            fullWidth
-            required
-            sx={{ input: { textAlign: 'right' } }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <EuroIcon />
-                </InputAdornment>
-              ),
-            }}
-            {...register('price')}
-          />
-        </Grid>
-        <Grid item xs={6} sm={6} md={3}>
-          <CommonFormSelect
-            control={control}
-            name="type"
-            label="Type"
-            id="selectType"
-            data={paymentTypes}
-            defaultValue
+            label="Date du rendez-vous"
           />
         </Grid>
         <Grid item xs={6} sm={6} md={3}>
@@ -103,7 +71,17 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
             name="status"
             label="Statut"
             id="selectStatus"
-            data={paymentStatus}
+            data={sessionStatus}
+            defaultValue
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <CommonFormSelect
+            control={control}
+            name="type"
+            label="Type"
+            id="selectType"
+            data={sessionTypes}
             defaultValue
           />
         </Grid>
@@ -132,4 +110,4 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
   )
 }
 
-export default PaymentForm
+export default SessionForm

@@ -1,11 +1,9 @@
-import { ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import CommonAlert from '../../common/CommonAlert/CommonAlert'
 import {
   getTypeLabel,
-  getTypeIcon,
   getStatusLabel,
   getStatusSeverity,
-} from '../utils/paymentUtils'
+} from '../utils/sessionUtils'
 import CommonDataGridRowAction from '../../common/CommonDataGridRowAction/CommonDataGridRowAction'
 
 export const columns = (data, setData) => [
@@ -21,38 +19,23 @@ export const columns = (data, setData) => [
     minWidth: 90,
     flex: 2,
     valueGetter: (params) => {
-      return params.row.clientId?._name
-    },
-  },
-  {
-    field: 'price',
-    headerName: 'Montant',
-    minWidth: 90,
-    flex: 1,
-    align: 'right',
-    headerAlign: 'right',
-    valueGetter: (params) => {
-      return `${params.row.price?.toFixed(2)} €`
+      return params.row.clientId._name
     },
   },
   {
     field: 'type',
     headerName: 'Type',
     minWidth: 90,
-    flex: 2,
-    renderCell: (params) => {
-      return (
-        <ListItem>
-          <ListItemIcon>{getTypeIcon(params.row.type)}</ListItemIcon>
-          <ListItemText primary={getTypeLabel(params.row.type)} />
-        </ListItem>
-      )
+    flex: 1,
+    valueGetter: (params) => {
+      return getTypeLabel(params.row.type)
     },
   },
   {
     field: 'status',
     headerName: 'Status',
     description: 'This column has a value getter and is not sortable.',
+    sortable: false,
     minWidth: 90,
     flex: 1,
     renderCell: (params) => {
@@ -65,6 +48,14 @@ export const columns = (data, setData) => [
     },
   },
   {
+    field: 'description',
+    headerName: 'description',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    minWidth: 90,
+    flex: 1,
+  },
+  {
     field: 'action',
     headerName: 'Action',
     description: 'This column has a value getter and is not sortable.',
@@ -72,9 +63,9 @@ export const columns = (data, setData) => [
     renderCell: (params) => {
       return (
         <CommonDataGridRowAction
-          editHref={`/payments/edit/${params.row.slug}`}
-          deleteHref="/payments"
-          dialogTitle="Supprimer le paiment ?"
+          editHref={`/sessions/edit/${params.row.slug}`}
+          deleteHref="/sessions"
+          dialogTitle="Supprimer le rendez-vous ?"
           dialogContent="todo..."
           id={params.row._id}
           data={data}

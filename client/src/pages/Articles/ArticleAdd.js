@@ -6,10 +6,10 @@ import ModelAdd from '../../components/Model/ModelAdd'
 const ArticleAdd = () => {
   return (
     <ModelAdd
-      title="Ajouter article"
+      title="Ajouter un article"
       model={'articles'}
       defaultData={defaultData}
-      modelForm={(data) => <ArticleForm href="/articles" {...data} />}
+      render={(data) => <ArticleForm href="/articles" {...data} />}
     />
   )
 }

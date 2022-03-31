@@ -5,6 +5,8 @@ import CommonDataGrid from '../common/CommonDataGrid/CommonDataGrid'
 import { columns } from './consts/clientTableColumns'
 
 export default function ClientTable({ data }) {
+  const [clients, setClients] = useState(data)
+  const clientColumns = columns(clients, setClients)
   const length = data ? data.length : 0
 
   const handleFilter = (e, data, setFilter) => {
@@ -23,8 +25,8 @@ export default function ClientTable({ data }) {
   }
   return (
     <CommonDataGrid
-      data={data}
-      columns={columns}
+      data={clients}
+      columns={clientColumns}
       model="clients"
       handleFilter={handleFilter}
       href="/clients/add"

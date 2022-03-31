@@ -1,36 +1,48 @@
+import CommonAlert from '../../common/CommonAlert/CommonAlert'
+import { getStatusLabel, getStatusSeverity } from '../utils/orderUtils'
 import CommonDataGridRowAction from '../../common/CommonDataGridRowAction/CommonDataGridRowAction'
 
 export const columns = (data, setData) => [
   {
-    field: 'name',
-    headerName: 'Nom',
+    field: '_date',
+    headerName: 'Date',
     minWidth: 90,
     flex: 1,
   },
   {
-    field: 'label',
-    headerName: 'label',
+    field: 'client',
+    headerName: 'Client',
     minWidth: 90,
-    flex: 1,
+    flex: 2,
+    valueGetter: (params) => {
+      return params.row.clientId?._name
+    },
   },
   {
     field: 'price',
     headerName: 'Montant',
-    type: 'number',
     minWidth: 90,
     flex: 1,
     align: 'right',
     headerAlign: 'right',
+    valueGetter: (params) => {
+      return `${params.row.price?.toFixed(2)} €`
+    },
   },
   {
-    field: 'sessions',
-    headerName: 'Rendez-vous',
+    field: 'status',
+    headerName: 'Status',
     description: 'This column has a value getter and is not sortable.',
-    sortable: false,
     minWidth: 90,
     flex: 1,
-    align: 'right',
-    headerAlign: 'right',
+    renderCell: (params) => {
+      return (
+        <CommonAlert
+          severity={getStatusSeverity(params.row.status)}
+          content={getStatusLabel(params.row.status)}
+        />
+      )
+    },
   },
   {
     field: 'action',
@@ -40,9 +52,9 @@ export const columns = (data, setData) => [
     renderCell: (params) => {
       return (
         <CommonDataGridRowAction
-          editHref={`/articles/edit/${params.row.slug}`}
-          deleteHref="/articles"
-          dialogTitle="Supprimer l'article ?"
+          editHref={`/orders/edit/${params.row.slug}`}
+          deleteHref="/orders"
+          dialogTitle="Supprimer la commande ?"
           dialogContent="todo..."
           id={params.row._id}
           data={data}

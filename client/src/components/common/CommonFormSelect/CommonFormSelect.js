@@ -2,7 +2,18 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
-const CommonSelectForm = ({ control, name, label, id, data, defaultValue }) => {
+const CommonFormSelect = ({
+  control,
+  name,
+  label,
+  id,
+  data,
+  defaultValue,
+  keyId = 'id',
+  keyValue = 'value',
+  keyLabel = 'label',
+  commonOnChange,
+}) => {
   return (
     <Controller
       name={name}
@@ -16,7 +27,12 @@ const CommonSelectForm = ({ control, name, label, id, data, defaultValue }) => {
             id={id}
             value={value ? value : -1}
             label={label}
-            onChange={onChange}
+            onChange={(e) => {
+              onChange(e)
+              if (commonOnChange) {
+                commonOnChange(e)
+              }
+            }}
           >
             {defaultValue && (
               <MenuItem disabled value={-1}>
@@ -25,8 +41,8 @@ const CommonSelectForm = ({ control, name, label, id, data, defaultValue }) => {
             )}
 
             {data?.map((d) => (
-              <MenuItem key={d.id} value={d.value}>
-                {d.label}
+              <MenuItem key={d[keyId]} value={d[keyValue]}>
+                {d[keyLabel]}
               </MenuItem>
             ))}
           </Select>
@@ -36,4 +52,4 @@ const CommonSelectForm = ({ control, name, label, id, data, defaultValue }) => {
   )
 }
 
-export default CommonSelectForm
+export default CommonFormSelect

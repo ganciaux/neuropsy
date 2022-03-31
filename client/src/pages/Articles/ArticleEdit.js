@@ -7,7 +7,7 @@ const ArticleEdit = () => {
     <ModelEdit
       title="Gestion article"
       model={'articles'}
-      modelForm={(data) => <ArticleForm href="/articles" {...data} />}
+      render={(data) => <ArticleForm href="/articles" {...data} />}
     />
   )
 }

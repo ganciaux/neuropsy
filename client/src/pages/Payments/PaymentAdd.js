@@ -6,10 +6,10 @@ import ModelAdd from '../../components/Model/ModelAdd'
 const PaymentAdd = () => {
   return (
     <ModelAdd
-      title="Ajouter paiement"
+      title="Ajouter un paiement"
       model={'payments'}
       defaultData={defaultData}
-      modelForm={(data) => <PaymentForm href="/payments" {...data} />}
+      render={(data) => <PaymentForm href="/payments" {...data} />}
     />
   )
 }

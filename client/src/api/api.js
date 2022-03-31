@@ -36,6 +36,7 @@ export const createData = async ({ path, ...data }) => {
 
 export const updateData = async ({ path, ...data }) => {
   const url = data.id ? `${path}/${data.id}` : path
+  console.log('api: updateData:', data)
   return await axios
     .put(`${process.env.REACT_APP_API_URL}${url}`, data)
     .then((res) => {

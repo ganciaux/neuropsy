@@ -1,8 +1,6 @@
-import { Link } from '@mui/material'
-import ListAltIcon from '@mui/icons-material/ListAlt'
-import EditIcon from '@mui/icons-material/Edit'
+import CommonDataGridRowAction from '../../common/CommonDataGridRowAction/CommonDataGridRowAction'
 
-export const columns = [
+export const columns = (data, setData) => [
   {
     field: 'name',
     headerName: 'Nom',
@@ -31,14 +29,16 @@ export const columns = [
     sortable: false,
     renderCell: (params) => {
       return (
-        <>
-          <Link href={`/clients/edit/${params.row.slug}`} underline="hover">
-            <EditIcon>Modifier</EditIcon>
-          </Link>
-          <Link href={`/clients/details/${params.row.slug}`} underline="hover">
-            <ListAltIcon>Fiche</ListAltIcon>
-          </Link>
-        </>
+        <CommonDataGridRowAction
+          detailsHref={`/clients/details/${params.row.slug}`}
+          editHref={`/clients/edit/${params.row.slug}`}
+          deleteHref="/clients"
+          dialogTitle="Supprimer le clients ?"
+          dialogContent="todo..."
+          id={params.row._id}
+          data={data}
+          setData={setData}
+        />
       )
     },
   },

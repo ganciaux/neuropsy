@@ -3,15 +3,15 @@ import { defaultData } from '../../components/Clients/consts/defaultData'
 import ClientForm from '../../components/Clients/ClientForm'
 import ModelAdd from '../../components/Model/ModelAdd'
 
-const ClientAdd2 = () => {
+const ClientAdd = () => {
   return (
     <ModelAdd
-      title="Ajouter client"
+      title="Ajouter un client"
       model={'clients'}
       defaultData={defaultData}
-      modelForm={(data) => <ClientForm href="/clients" {...data} />}
+      render={(data) => <ClientForm href="/clients" {...data} />}
     />
   )
 }
 
-export default ClientAdd2
+export default ClientAdd

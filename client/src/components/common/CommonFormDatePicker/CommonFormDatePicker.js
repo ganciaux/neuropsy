@@ -6,7 +6,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import frLocale from 'date-fns/locale/fr'
 
-const CommonDatePickerForm = ({ control, name, label, fullWidth = true }) => {
+const CommonFormDatePicker = ({ control, name, label, fullWidth = true }) => {
   return (
     <Controller
       control={control}
@@ -26,4 +26,4 @@ const CommonDatePickerForm = ({ control, name, label, fullWidth = true }) => {
   )
 }
 
-export default CommonDatePickerForm
+export default CommonFormDatePicker

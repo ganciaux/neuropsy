@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
 import CommonDataGrid from '../common/CommonDataGrid/CommonDataGrid'
 import { columns } from './consts/articleTableColumns'
 
-export default function ArticleTable({ data, handleDelete }) {
-  const articleColumn = columns(handleDelete)
+export default function ArticleTable({ data }) {
+  const [articles, setArticles] = useState(data)
+  const articleColumn = columns(articles, setArticles)
   const length = data ? data.length : 0
 
   const handleFilter = (e, data, setFilter) => {
@@ -22,7 +23,7 @@ export default function ArticleTable({ data, handleDelete }) {
   }
   return (
     <CommonDataGrid
-      data={data}
+      data={articles}
       columns={articleColumn}
       model="articles"
       handleFilter={handleFilter}

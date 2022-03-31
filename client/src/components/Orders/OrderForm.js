@@ -1,26 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Grid, InputAdornment, TextField } from '@mui/material'
-import EuroIcon from '@mui/icons-material/Euro'
+import Grid from '@mui/material/Grid'
+import { TextField } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { paymentStatus } from './consts/paymentStatus'
-import { paymentTypes } from './consts/paymentTypes'
-import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
+import { orderStatus } from './consts/orderStatus'
+import OrderLines from './OrderLines'
 import CommonFormButton from '../common/CommonFormButton/CommonFormButton'
-import CommonFormSelect from '../common/CommonFormSelect/CommonFormSelect'
-import CommonFormDatePicker from '../common/CommonFormDatePicker/CommonFormDatePicker'
+import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
 import CommonFormSelectQuery from '../common/CommonFormSelectQuery/CommonFormSelectQuery'
+import CommonFormDatePicker from '../common/CommonFormDatePicker/CommonFormDatePicker'
+import CommonFormSelect from '../common/CommonFormSelect/CommonFormSelect'
 
 const schema = yup
   .object({
-    type: yup.number().required('Le type est obligatoire'),
-    status: yup.number().required('Le status est obligatoire'),
-    price: yup.number().required('Le prix est obligatoire'),
+    date: yup.date().required('La date est obligatoire'),
   })
   .required()
 
-const PaymentForm = ({ query, mutation, onSubmit, href }) => {
+const OrderForm = ({ query, mutation, onSubmit, href }) => {
+  const [data, setData] = useState(query.data)
   const {
     control,
     register,
@@ -35,8 +34,21 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
   })
 
   const submitHandler = handleSubmit((data) => {
+    console.log('form order data:', data)
     onSubmit(data, formRest)
   })
+
+  const formatData = (data) => {
+    return {
+      ...data,
+      articles: data.articles.map((article) => {
+        if (article.articleId === '-1') {
+          delete article.articleId
+        }
+        return article
+      }),
+    }
+  }
 
   return (
     <form>
@@ -61,49 +73,20 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
             model="clients"
           />
         </Grid>
-        <Grid item xs={6} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={4}>
           <CommonFormDatePicker
             control={control}
             name="date"
-            label="Date du paiement"
+            label="Date de la commande"
           />
         </Grid>
-        <Grid item xs={6} sm={6} md={3}>
-          <TextField
-            name="price"
-            placeholder="Montant"
-            label="Montant"
-            variant="outlined"
-            fullWidth
-            required
-            sx={{ input: { textAlign: 'right' } }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <EuroIcon />
-                </InputAdornment>
-              ),
-            }}
-            {...register('price')}
-          />
-        </Grid>
-        <Grid item xs={6} sm={6} md={3}>
-          <CommonFormSelect
-            control={control}
-            name="type"
-            label="Type"
-            id="selectType"
-            data={paymentTypes}
-            defaultValue
-          />
-        </Grid>
-        <Grid item xs={6} sm={6} md={3}>
+        <Grid item xs={6} sm={6} md={8}>
           <CommonFormSelect
             control={control}
             name="status"
             label="Statut"
             id="selectStatus"
-            data={paymentStatus}
+            data={orderStatus}
             defaultValue
           />
         </Grid>
@@ -120,6 +103,9 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
           />
         </Grid>
         <Grid item xs={12}>
+          <OrderLines control={control} data={data} setData={setData} />
+        </Grid>
+        <Grid item xs={12}>
           <CommonFormButton
             isLoading={mutation.isLoading}
             isSuccess={mutation.isSuccess}
@@ -132,4 +118,4 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
   )
 }
 
-export default PaymentForm
+export default OrderForm

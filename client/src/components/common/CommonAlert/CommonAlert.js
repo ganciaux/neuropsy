@@ -10,7 +10,11 @@ const CommonAlert = ({
 }) => {
   const alertErrors = Object.entries(errors)
   return (
-    <Alert severity={severity} sx={{ marginBottom: '10px' }} onClose={onClose}>
+    <Alert
+      severity={severity}
+      sx={{ marginTop: '10px', marginBottom: '10px' }}
+      onClose={onClose}
+    >
       {title && <AlertTitle>{title}</AlertTitle>}
       {content}
       {alertErrors.map((error) => (

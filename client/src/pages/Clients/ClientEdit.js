@@ -7,7 +7,7 @@ const ClientEdit = () => {
     <ModelEdit
       title="Gestion client"
       model={'clients'}
-      modelForm={(data) => <ClientForm href="/clients" {...data} />}
+      render={(data) => <ClientForm href="/clients" {...data} />}
     />
   )
 }

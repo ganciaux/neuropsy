@@ -7,7 +7,7 @@ const PaymentEdit = () => {
     <ModelEdit
       title="Gestion paiement"
       model={'payments'}
-      modelForm={(data) => <PaymentForm href="/payments" {...data} />}
+      render={(data) => <PaymentForm href="/payments" {...data} />}
     />
   )
 }

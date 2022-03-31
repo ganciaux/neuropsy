@@ -4,7 +4,7 @@ import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoader
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
 import { useFormQueryUpdate } from '../../utils/useFormQueryUpdate'
 
-const ModelEdit = ({ title, model, href, modelForm }) => {
+const ModelEdit = ({ title, model, href, render }) => {
   const formQuery = useFormQueryUpdate(model)
 
   const pageTitle = formQuery.data
@@ -26,9 +26,7 @@ const ModelEdit = ({ title, model, href, modelForm }) => {
   }
 
   return (
-    <CommonPageHeader title={pageTitle}>
-      {modelForm(formQuery)}
-    </CommonPageHeader>
+    <CommonPageHeader title={pageTitle}>{render(formQuery)}</CommonPageHeader>
   )
 }
 

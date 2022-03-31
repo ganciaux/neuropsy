@@ -9,20 +9,22 @@ const CommonLoaderAlert = ({
   alertContent,
   severity = 'error',
   btnText = 'Retour',
-  href = '/',
+  href,
   onClose,
 }) => {
   return (
-    <CommonPageHeader title={title}>
+    <CommonPageHeader title={title ? title : ''}>
       <CommonAlert
         title={alertTitle}
         content={alertContent}
         severity={severity}
         onClose={onClose}
       />
-      <Button type="button" variant="contained" color="primary" href={href}>
-        {btnText}
-      </Button>
+      {href && (
+        <Button type="button" variant="contained" color="primary" href={href}>
+          {btnText}
+        </Button>
+      )}
     </CommonPageHeader>
   )
 }

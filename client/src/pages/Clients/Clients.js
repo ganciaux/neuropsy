@@ -3,21 +3,11 @@ import ClientTable from '../../components/Clients/ClientTable'
 import ModelList from '../../components/Model/ModelList'
 
 const Clients = () => {
-  const render = (data) => {
-    return (
-      <ClientTable
-        isLoading={data.isLoading}
-        isSuccess={data.isSuccess}
-        data={data.data}
-      />
-    )
-  }
-
   return (
     <ModelList
       title="Liste des clients"
       model={'clients'}
-      render={(data) => render({ ...data })}
+      render={(data) => <ClientTable data={data.data} />}
     ></ModelList>
   )
 }

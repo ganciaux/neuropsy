@@ -9,10 +9,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { deleteData } from '../../../api/api'
 
 export function CommonDialogDelete({
-  title = 'delete',
+  title = 'Supprimer ?',
   content = '...',
   path,
-  row,
+  id,
   data,
   setData,
 }) {
@@ -24,7 +24,7 @@ export function CommonDialogDelete({
 
   const handleCloseOk = () => {
     setOpen(false)
-    setData(data.filter((d) => d._id !== row._id))
+    setData(data.filter((d) => d._id !== id))
   }
 
   const handleCloseCancel = () => {
@@ -32,7 +32,7 @@ export function CommonDialogDelete({
   }
 
   return (
-    <div>
+    <>
       <DeleteForeverIcon
         sx={{ cursor: 'pointer' }}
         color="error"
@@ -57,6 +57,6 @@ export function CommonDialogDelete({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   )
 }
