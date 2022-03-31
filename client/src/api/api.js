@@ -60,3 +60,23 @@ export const deleteData = async (path, id, data, setData) => {
       throw err.response.data
     })
 }
+
+export const printData = (path, id, filename) => {
+  axios
+    .get(`${process.env.REACT_APP_API_URL}${path}/${id}`, {
+      responseType: 'blob',
+    })
+    .then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `${filename}.pdf`) //or any other extension
+      document.body.appendChild(link)
+      link.click()
+      //setError({ isSuccess: true, isError: false, message: 'Success' })
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      throw err.response.data
+    })
+}

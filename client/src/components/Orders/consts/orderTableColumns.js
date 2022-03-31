@@ -54,6 +54,7 @@ export const columns = (data, setData) => [
         <CommonDataGridRowAction
           editHref={`/orders/edit/${params.row.slug}`}
           deleteHref="/orders"
+          printHref="/orders/print"
           dialogTitle="Supprimer la commande ?"
           dialogContent="todo..."
           id={params.row._id}

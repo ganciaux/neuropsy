@@ -12,6 +12,7 @@ const CommonDataGrid = ({
   hrefContent = 'Ajouter',
   placeholder = '',
   label = 'Filtre de recherche',
+  children,
 }) => {
   const [dataFiltered, setDataFiltered] = useState([])
 
@@ -21,6 +22,7 @@ const CommonDataGrid = ({
 
   return (
     <>
+      {children}
       {handleFilter && (
         <>
           <TextField

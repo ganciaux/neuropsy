@@ -1,14 +1,22 @@
 import React from 'react'
-import Grid from '@mui/material/Grid'
-import { InputAdornment, Stack, TextField, Typography } from '@mui/material'
+import {
+  Grid,
+  Skeleton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { useFormQueryList } from '../../utils/useFormQueryList'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
+import CommonLoaderAlert from '../common/CommonLoader/CommonLoaderAlert'
 
-const OrderLines = ({ control, data, setData }) => {
+const OrderLines = ({ data, setData }) => {
   const queryArticles = useFormQueryList('articles')
+  console.log(queryArticles.data)
   const lineUpdate = (articles) => {
     setData({
       ...data,
@@ -27,7 +35,6 @@ const OrderLines = ({ control, data, setData }) => {
   }
 
   const onChange = (e, index) => {
-    console.log('orderlines: onchange:', index, [e.target.name], e.target.value)
     data.articles[index] = {
       ...data.articles[index],
       [e.target.name]: e.target.value,
@@ -48,9 +55,15 @@ const OrderLines = ({ control, data, setData }) => {
   }
 
   const handleDelete = (index) => {
-    console.log('handleDelete: before:', data.articles)
     lineUpdate(data.articles.splice(index, 1))
-    console.log('handleDelete: after:', data.articles)
+  }
+
+  if (queryArticles.isLoading) {
+    return <Skeleton sx={{ height: '60px' }} />
+  }
+
+  if (queryArticles.error) {
+    return <CommonLoaderAlert alertContent={queryArticles.error.message} />
   }
 
   return (
@@ -63,12 +76,11 @@ const OrderLines = ({ control, data, setData }) => {
       </Grid>
       <Grid item xs={12}>
         {data.articles?.map((line, index) => {
-          console.log(line)
           return (
             <Grid container spacing={1} key={index} sx={{ marginTop: '5px' }}>
               <Grid item xs={12} sm={12} md={6}>
                 <CommonSelect
-                  name={`article-${line}`}
+                  name="articleId"
                   label="Article"
                   id={`selectArticle-${line}`}
                   data={queryArticles.data}

@@ -35,7 +35,7 @@ const CommonFormSelectQuery = ({
       keyValue={keyValue}
       keyLabel={keyLabel}
       data={queryClients.data}
-      defaultValue
+      defaultValue={defaultValue}
     />
   )
 }

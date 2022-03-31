@@ -12,6 +12,7 @@ const CommonSelect = ({
   keyLabel = 'label',
   onChange,
   value,
+  all,
 }) => {
   return (
     <FormControl fullWidth>
@@ -22,13 +23,13 @@ const CommonSelect = ({
         value={value ? value : -1}
         label={label}
         onChange={onChange}
+        name={name}
       >
         {defaultValue && (
-          <MenuItem disabled value={-1}>
+          <MenuItem disabled={!Boolean(all)} value={-1}>
             <em>Choisir</em>
           </MenuItem>
         )}
-
         {data?.map((d) => (
           <MenuItem key={d[keyId]} value={d[keyValue]}>
             {d[keyLabel]}

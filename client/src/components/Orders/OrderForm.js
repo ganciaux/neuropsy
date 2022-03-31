@@ -33,22 +33,10 @@ const OrderForm = ({ query, mutation, onSubmit, href }) => {
     resolver: yupResolver(schema),
   })
 
-  const submitHandler = handleSubmit((data) => {
-    console.log('form order data:', data)
-    onSubmit(data, formRest)
+  const submitHandler = handleSubmit((formData) => {
+    const submitData = { ...formData, articles: data.articles }
+    onSubmit(submitData, formRest)
   })
-
-  const formatData = (data) => {
-    return {
-      ...data,
-      articles: data.articles.map((article) => {
-        if (article.articleId === '-1') {
-          delete article.articleId
-        }
-        return article
-      }),
-    }
-  }
 
   return (
     <form>
@@ -103,7 +91,7 @@ const OrderForm = ({ query, mutation, onSubmit, href }) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <OrderLines control={control} data={data} setData={setData} />
+          <OrderLines data={data} setData={setData} />
         </Grid>
         <Grid item xs={12}>
           <CommonFormButton
