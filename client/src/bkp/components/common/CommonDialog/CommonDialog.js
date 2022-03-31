@@ -23,7 +23,7 @@ export default function CommonDialog({
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {content()}
+          {content && content()}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

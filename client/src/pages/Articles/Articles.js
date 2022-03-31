@@ -9,7 +9,7 @@ const Articles = () => {
         isLoading={data.isLoading}
         isSuccess={data.isSuccess}
         data={data.data}
-      ></ArticleTable>
+      />
     )
   }
 

@@ -46,3 +46,16 @@ export const updateData = async ({ path, ...data }) => {
       throw err.response.data
     })
 }
+
+export const deleteData = async (path, id, data, setData) => {
+  return await axios
+    .delete(`${process.env.REACT_APP_API_URL}${path}/${id}`)
+    .then((res) => {
+      console.log('api: deleteData:')
+      setData(data.filter((d) => d._id !== id))
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      throw err.response.data
+    })
+}

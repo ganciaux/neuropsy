@@ -7,13 +7,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from '@mui/styles'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import Articles from './pages/Articles/Articles'
+import ArticleAdd from './pages/Articles/ArticleAdd'
+import ArticleEdit from './pages/Articles/ArticleEdit'
 import Clients from './pages/Clients/Clients'
 import ClientAdd from './pages/Clients/ClientAdd'
 import ClientEdit from './pages/Clients/ClientEdit'
 import ClientDetails from './pages/Clients/ClientDetails'
-import Articles from './pages/Articles/Articles'
-import ArticleAdd from './pages/Articles/ArticleAdd'
-import ArticleEdit from './pages/Articles/ArticleEdit'
+import Payments from './pages/Payments/Payments'
+import PaymentAdd from './pages/Payments/PaymentAdd'
+import PaymentEdit from './pages/Payments/PaymentEdit'
 import Home from './pages/Home/Home'
 import { dashboardTheme } from './dashboardTheme'
 
@@ -34,14 +37,18 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="home" element={<Home />} />
-            <Route path="clients/" element={<Clients />} />
-            <Route path="clients/add" element={<ClientAdd />} />
-            <Route path="clients/details/:id" element={<ClientDetails />} />
-            <Route path="clients/edit/:id" element={<ClientEdit />} />
             <Route path="articles/" element={<Articles />} />
             <Route path="articles/add" element={<ArticleAdd />} />
             {/* <Route path="articles/details/:id" element={<ArticleDetails />} /> */}
             <Route path="articles/edit/:id" element={<ArticleEdit />} />
+            <Route path="clients/" element={<Clients />} />
+            <Route path="clients/add" element={<ClientAdd />} />
+            <Route path="clients/details/:id" element={<ClientDetails />} />
+            <Route path="clients/edit/:id" element={<ClientEdit />} />
+            <Route path="payments/" element={<Payments />} />
+            <Route path="payments/add" element={<PaymentAdd />} />
+            {/* <Route path="payments/details/:id" element={<PaymentDetails />} /> */}
+            <Route path="payments/edit/:id" element={<PaymentEdit />} />
           </Route>
         </Routes>
       </BrowserRouter>

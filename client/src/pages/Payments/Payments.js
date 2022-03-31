@@ -1,11 +1,11 @@
-import React from 'react'
-import ClientTable from '../../components/Clients/ClientTable'
+import React, { useState } from 'react'
+import PaymentTable from '../../components/Payments/PaymentTable'
 import ModelList from '../../components/Model/ModelList'
 
-const Clients = () => {
+const Payments = () => {
   const render = (data) => {
     return (
-      <ClientTable
+      <PaymentTable
         isLoading={data.isLoading}
         isSuccess={data.isSuccess}
         data={data.data}
@@ -15,11 +15,11 @@ const Clients = () => {
 
   return (
     <ModelList
-      title="Liste des clients"
-      model={'clients'}
+      title="Liste des paiements"
+      model={'payments'}
       render={(data) => render({ ...data })}
     ></ModelList>
   )
 }
 
-export default Clients
+export default Payments
