@@ -7,49 +7,15 @@ const CommonDataGrid = ({
   data,
   columns,
   pages = [10, 50, 100],
-  handleFilter,
-  href,
-  hrefContent = 'Ajouter',
-  placeholder = '',
-  label = 'Filtre de recherche',
   children,
 }) => {
-  const [dataFiltered, setDataFiltered] = useState([])
-
-  useEffect(() => {
-    setDataFiltered(data)
-  }, [data])
-
   return (
     <>
       {children}
-      {handleFilter && (
-        <>
-          <TextField
-            name="search"
-            placeholder={placeholder}
-            label={label}
-            variant="outlined"
-            fullWidth
-            onChange={(e) => handleFilter(e, data, setDataFiltered)}
-          />
-          {href && (
-            <Button
-              sx={{ marginTop: '10px' }}
-              type="button"
-              variant="contained"
-              color="primary"
-              href={href}
-            >
-              {hrefContent}
-            </Button>
-          )}
-        </>
-      )}
       <div style={{ height: height, width: width }}>
         <DataGrid
           localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
-          rows={dataFiltered}
+          rows={data}
           columns={columns}
           rowsPerPageOptions={pages}
           components={{ Toolbar: GridToolbar }}

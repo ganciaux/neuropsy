@@ -1,14 +1,19 @@
-import { Grid } from '@mui/material'
+import { Button, Grid, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
 import CommonDataGrid from '../common/CommonDataGrid/CommonDataGrid'
+import CommonDateRange from '../common/CommonDateRange/CommonDateRange'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { orderStatus } from './consts/orderStatus'
 import { columns } from './consts/orderTableColumns'
 
 export default function OrderTable({ data }) {
   const [orders, setOrders] = useState(data)
-  const [filters, setFilters] = useState({ search: '', status: -1 })
+  const [filters, setFilters] = useState({
+    search: '',
+    status: -1,
+    dates: [null, null],
+  })
   const orderColumn = columns(orders, setOrders)
   const length = data ? data.length : 0
 
@@ -16,37 +21,44 @@ export default function OrderTable({ data }) {
     setFilters({ ...filters, [e.target.name]: e.target.value })
   }
 
-  const handleFilter = (e, data, setFilter) => {
-    const pattern = e.target.value.toLowerCase()
-    const result = data.filter((order) =>
-      order.clientId?._name.toLowerCase().includes(pattern),
-    )
-    setFilter(result)
+  const handleOnChangeRange = (dates) => {
+    setFilters({ ...filters, dates })
   }
 
   useEffect(() => {
     const pattern = filters.search.toLowerCase()
+    const dates = filters.dates[0] != undefined && filters.dates[1] != undefined
     const result = data.filter(
       (order) =>
         order.clientId?._name.toLowerCase().includes(pattern) &&
-        (order.status === filters.status || filters.status === -1),
+        (order.status === filters.status || filters.status === -1) &&
+        (!dates ||
+          (dates &&
+            new Date(filters.dates[0]).getTime() <=
+              new Date(order.date).getTime() &&
+            new Date(filters.dates[1]).getTime() >=
+              new Date(order.date).getTime())),
     )
+
     setOrders(result)
-  }, [filters])
+  }, [data, filters])
 
   if (length === 0) {
     return <CommonAlert title="" content="Aucun rendez-vous" severity="info" />
   }
   return (
-    <CommonDataGrid
-      data={orders}
-      columns={orderColumn}
-      model="orders"
-      handleFilter={handleFilter}
-      href="/orders/add"
-      placeholder="Recherche dans le nom"
-    >
+    <CommonDataGrid data={orders} columns={orderColumn}>
       <Grid container spacing={1}>
+        <Grid xs={12} item>
+          <TextField
+            name="search"
+            placeholder="Recherche dans le nom"
+            label="Filtre de recherche"
+            variant="outlined"
+            fullWidth
+            onChange={handleOnChange}
+          />
+        </Grid>
         <Grid xs={12} item>
           <CommonSelect
             name="status"
@@ -58,6 +70,23 @@ export default function OrderTable({ data }) {
             defaultValue
             all
           />
+        </Grid>
+        <Grid item xs={12}>
+          <CommonDateRange
+            onChange={handleOnChangeRange}
+            dates={filters.dates}
+          />
+        </Grid>
+        <Grid xs={12} item>
+          <Button
+            sx={{ marginTop: '10px' }}
+            type="button"
+            variant="contained"
+            color="primary"
+            href="/orders/add"
+          >
+            Ajouter
+          </Button>
         </Grid>
       </Grid>
     </CommonDataGrid>
