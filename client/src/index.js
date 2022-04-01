@@ -24,6 +24,7 @@ import Sessions from './pages/Sessions/Sessions'
 import SessionAdd from './pages/Sessions/SessionAdd'
 import SessionEdit from './pages/Sessions/SessionEdit'
 import Home from './pages/Home/Home'
+import UserLogin from './pages/Users/UserLogin'
 import { dashboardTheme } from './dashboardTheme'
 
 const queryClient = new QueryClient({
@@ -67,6 +68,7 @@ ReactDOM.render(
             <Route path="sessions/add" element={<SessionAdd />} />
             {/* <Route path="sessions/details/:id" element={<SessionDetails />} /> */}
             <Route path="sessions/edit/:id" element={<SessionEdit />} />
+            <Route path="users/login" element={<UserLogin />} />
           </Route>
         </Routes>
       </BrowserRouter>

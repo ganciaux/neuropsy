@@ -1,6 +1,58 @@
 import axios from 'axios'
 
+const apiUrl = `${process.env.REACT_APP_API_URL}`
+
+/*
+axios.interceptors.request.use(
+  (config) => {
+    const { origin } = new URL(config.url)
+    const allowedOrigins = [apiUrl]
+    const token = localStorage.getItem('token')
+    console.log('origin: ', origin)
+    console.log('allowedOrigins: ', allowedOrigins)
+    console.log('token: ', token)
+    console.log('config.url: ', config.url)
+
+    if (allowedOrigins.includes(origin + '/api') && token) {
+      console.log('set cookie...')
+      config.headers.authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
+*/
+
 export const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+
+export const isLoggedIn = async () => {
+  return await axios
+    .get(`${process.env.REACT_APP_API_URL}/users/isLoggedIn`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      return res.data.data
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      throw err.response.data
+    })
+}
+
+export const login = async ({ path, ...data }) => {
+  return await axios
+    .post(`${process.env.REACT_APP_API_URL}${path}`, data)
+    .then((res) => {
+      console.log('api: login:', res.data.data)
+      localStorage.setItem('token', res.data.token)
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      throw err.response.data
+    })
+}
 
 export const getData = async (path, id) => {
   /*

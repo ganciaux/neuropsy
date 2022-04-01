@@ -1,19 +1,21 @@
 import React from 'react'
 import CommonAlert from '../CommonAlert/CommonAlert'
 
-const CommonFormAlert = ({ mutation, formStateErrors, formClearErrors }) => {
+const CommonFormAlert = ({
+  mutation,
+  formStateErrors,
+  formClearErrors,
+  successTitle,
+}) => {
   const handleOnClose = () => {
     mutation.reset()
     formClearErrors()
   }
 
   if (mutation.isSuccess) {
+    const title = successTitle ? successTitle : 'Sauvegarde réussie...'
     return (
-      <CommonAlert
-        title="Sauvegarde réussie..."
-        severity="success"
-        onClose={mutation.reset}
-      />
+      <CommonAlert title={title} severity="success" onClose={mutation.reset} />
     )
   }
   if (mutation.error) {

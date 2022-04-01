@@ -1,14 +1,8 @@
 import React from 'react'
+import UserLogin from '../Users/UserLogin'
 
 const Home = () => {
-  return (
-    <div>
-      <div>Total clients: TODO</div>
-      <div>Total rendez-vous: TODO</div>
-      <div>Total paiements: TODO</div>
-      <div>Total commandes: TODO</div>
-    </div>
-  )
+  return <UserLogin />
 }
 
 export default Home

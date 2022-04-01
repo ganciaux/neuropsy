@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query'
 import { createData } from '../api/api'
 
-export const useFormQueryAdd = (path, defaultData) => {
+export const useQueryMutation = (path, defaultData) => {
   const mutation = useMutation(createData)
 
   const onSubmit = async (data, formReset) => {

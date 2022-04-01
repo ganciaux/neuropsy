@@ -129,7 +129,7 @@ class pdfGenerator {
         body: [
           [
             {
-              text: 'Description=*',
+              text: 'Description',
               bold: true,
               style: 'tableHeader',
               fillColor: 'gray',

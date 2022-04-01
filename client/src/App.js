@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import Header from './components/Header/Header'
 import Grid from '@mui/material/Grid'
 import { makeStyles } from '@mui/styles'
+import { userContext } from './AppContext'
+import { isLoggedIn } from './api/api'
 
 export const useStyles = makeStyles((theme) => ({
   gridWrapperStyles: {
@@ -23,14 +25,24 @@ export const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles()
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const data = isLoggedIn()
+    //setUser(localStorage.getItem('token'))
+    setUser(data)
+  }, [])
+
   return (
-    <Grid container>
-      <Header />
-      <Navbar />
-      <Grid className={classes.gridWrapperStyles}>
-        <Outlet />
+    <userContext.Provider value={user}>
+      <Grid container>
+        <Header />
+        <Navbar />
+        <Grid className={classes.gridWrapperStyles}>
+          <Outlet />
+        </Grid>
       </Grid>
-    </Grid>
+    </userContext.Provider>
   )
 }
 

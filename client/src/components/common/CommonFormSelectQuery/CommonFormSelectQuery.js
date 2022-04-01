@@ -1,6 +1,6 @@
 import React from 'react'
 import { Skeleton } from '@mui/material'
-import { useFormQueryList } from '../../../utils/useFormQueryList'
+import { useQueryList } from '../../../utils/useQueryList'
 import CommonLoaderAlert from '../CommonLoader/CommonLoaderAlert'
 import CommonFormSelect from '../CommonFormSelect/CommonFormSelect'
 
@@ -15,7 +15,7 @@ const CommonFormSelectQuery = ({
   keyLabel = 'label',
   model,
 }) => {
-  const queryClients = useFormQueryList(model)
+  const queryClients = useQueryList(model)
 
   if (queryClients.isLoading) {
     return <Skeleton sx={{ height: '60px' }} />

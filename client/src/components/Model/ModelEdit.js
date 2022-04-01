@@ -2,10 +2,10 @@ import React from 'react'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoaderAlert'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
-import { useFormQueryUpdate } from '../../utils/useFormQueryUpdate'
+import { useQueryAndMutation } from '../../utils/useQueryAndMutation'
 
 const ModelEdit = ({ title, model, href, render }) => {
-  const formQuery = useFormQueryUpdate(model)
+  const formQuery = useQueryAndMutation(model)
 
   const pageTitle = formQuery.data
     ? `${title} - ` + formQuery.data?._name

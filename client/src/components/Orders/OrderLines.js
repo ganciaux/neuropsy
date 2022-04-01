@@ -10,12 +10,12 @@ import {
 import EuroIcon from '@mui/icons-material/Euro'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import { useFormQueryList } from '../../utils/useFormQueryList'
+import { useQueryList } from '../../utils/useQueryList'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import CommonLoaderAlert from '../common/CommonLoader/CommonLoaderAlert'
 
 const OrderLines = ({ data, setData }) => {
-  const queryArticles = useFormQueryList('articles')
+  const queryArticles = useQueryList('articles')
   console.log(queryArticles.data)
   const lineUpdate = (articles) => {
     setData({

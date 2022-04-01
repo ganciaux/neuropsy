@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useQueryClient, useMutation } from 'react-query'
 import { delay, getData, updateData } from '../api/api'
 
-export const useFormQueryUpdate = (path, refresh = 2000) => {
+export const useQueryAndMutation = (path, refresh = 2000) => {
   const { id } = useParams()
 
   const queryClient = useQueryClient()
