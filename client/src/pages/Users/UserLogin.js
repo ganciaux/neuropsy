@@ -1,15 +1,15 @@
 import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { useMutation, useQuery } from 'react-query'
-import { Button, Grid, TextField } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
+import { Grid, TextField } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import CommonFormAlert from '../../components/common/CommonFormAlert/CommonFormAlert'
 import CommonFormButton from '../../components/common/CommonFormButton/CommonFormButton'
-import { delay, login, logout } from '../../api/api'
+import { delay, login } from '../../api/api'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
 import { userContext } from '../../AppContext'
-import { useNavigate } from 'react-router-dom'
 
 const schema = yup
   .object({
@@ -19,13 +19,9 @@ const schema = yup
   .required()
 
 const UserLogin = () => {
-  const { user, setUser } = useContext(userContext)
+  const user = useContext(userContext)
   const navigate = useNavigate()
-
   const mutation = useMutation(login)
-  const { status, data, error, refetch } = useQuery('logout', logout, {
-    enabled: false,
-  })
 
   const onSubmit = async (data) => {
     const userData = await mutation.mutateAsync({
@@ -33,9 +29,9 @@ const UserLogin = () => {
       ...data,
     })
     console.log(userData)
-    setUser(userData)
     await delay()
-    window.location.reload()
+    //navigate('/clients')
+    window.location.replace('/clients')
   }
 
   const {
@@ -51,13 +47,6 @@ const UserLogin = () => {
   const submitHandler = handleSubmit((data) => {
     onSubmit(data)
   })
-
-  const submitHandlerLogout = async () => {
-    refetch()
-    await delay()
-    setUser(null)
-    window.location.reload()
-  }
 
   return (
     <CommonPageHeader title="Login">
@@ -106,7 +95,7 @@ const UserLogin = () => {
           </Grid>
         </form>
       ) : (
-        <Button onClick={submitHandlerLogout}>Logout</Button>
+        <div>You are already logged !</div>
       )}
     </CommonPageHeader>
   )

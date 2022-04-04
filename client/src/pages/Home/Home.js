@@ -1,8 +1,8 @@
 import React from 'react'
-import UserLogin from '../Users/UserLogin'
+import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
 
 const Home = () => {
-  return <UserLogin />
+  return <CommonPageHeader title="Home" />
 }
 
 export default Home

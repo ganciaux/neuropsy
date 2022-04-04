@@ -25,7 +25,9 @@ import SessionAdd from './pages/Sessions/SessionAdd'
 import SessionEdit from './pages/Sessions/SessionEdit'
 import Home from './pages/Home/Home'
 import UserLogin from './pages/Users/UserLogin'
+import UserLogout from './pages/Users/UserLogout'
 import { dashboardTheme } from './dashboardTheme'
+import NotFoundPage from './pages/Errors/NotFoundPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,7 +70,9 @@ ReactDOM.render(
             <Route path="sessions/add" element={<SessionAdd />} />
             {/* <Route path="sessions/details/:id" element={<SessionDetails />} /> */}
             <Route path="sessions/edit/:id" element={<SessionEdit />} />
-            <Route path="users/login" element={<UserLogin />} />
+            <Route path="login" element={<UserLogin />} />
+            <Route path="logout" element={<UserLogout />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
