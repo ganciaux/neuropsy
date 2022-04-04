@@ -27,14 +27,15 @@ function App() {
   const classes = useStyles()
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    const data = isLoggedIn()
-    //setUser(localStorage.getItem('token'))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    const data = await isLoggedIn()
+    console.log(data)
     setUser(data)
   }, [])
 
   return (
-    <userContext.Provider value={user}>
+    <userContext.Provider value={{ user, setUser }}>
       <Grid container>
         <Header />
         <Navbar />

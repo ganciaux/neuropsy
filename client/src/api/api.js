@@ -1,8 +1,8 @@
 import axios from 'axios'
 
+/*
 const apiUrl = `${process.env.REACT_APP_API_URL}`
 
-/*
 axios.interceptors.request.use(
   (config) => {
     const { origin } = new URL(config.url)
@@ -33,6 +33,7 @@ export const isLoggedIn = async () => {
       withCredentials: true,
     })
     .then((res) => {
+      console.log('isLoggedIn', res.data.data)
       return res.data.data
     })
     .catch((err) => {
@@ -43,10 +44,26 @@ export const isLoggedIn = async () => {
 
 export const login = async ({ path, ...data }) => {
   return await axios
-    .post(`${process.env.REACT_APP_API_URL}${path}`, data)
+    .post(`${process.env.REACT_APP_API_URL}${path}`, data, {
+      withCredentials: true,
+    })
     .then((res) => {
       console.log('api: login:', res.data.data)
-      localStorage.setItem('token', res.data.token)
+      //localStorage.setItem('token', res.data.token)
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      throw err.response.data
+    })
+}
+
+export const logout = async () => {
+  return await axios
+    .get(`${process.env.REACT_APP_API_URL}/users/logout`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      console.log('api: logout:', res.data.data)
     })
     .catch((err) => {
       console.log(err.response.data)
@@ -63,7 +80,9 @@ export const getData = async (path, id) => {
   console.log('getData', path, id)
   const url = id ? `${path}/${id}` : path
   return await axios
-    .get(`${process.env.REACT_APP_API_URL}${url}`)
+    .get(`${process.env.REACT_APP_API_URL}${url}`, {
+      withCredentials: true,
+    })
     .then((res) => {
       console.log('api: getData:', id, res.data.data)
       return res.data.data

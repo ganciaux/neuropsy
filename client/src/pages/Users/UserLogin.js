@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
-import { Grid, TextField } from '@mui/material'
+import { useMutation, useQuery } from 'react-query'
+import { Button, Grid, TextField } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import CommonFormAlert from '../../components/common/CommonFormAlert/CommonFormAlert'
 import CommonFormButton from '../../components/common/CommonFormButton/CommonFormButton'
-import { login } from '../../api/api'
+import { delay, login, logout } from '../../api/api'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
+import { userContext } from '../../AppContext'
+import { useNavigate } from 'react-router-dom'
 
 const schema = yup
   .object({
@@ -17,10 +19,23 @@ const schema = yup
   .required()
 
 const UserLogin = () => {
+  const { user, setUser } = useContext(userContext)
+  const navigate = useNavigate()
+
   const mutation = useMutation(login)
+  const { status, data, error, refetch } = useQuery('logout', logout, {
+    enabled: false,
+  })
 
   const onSubmit = async (data) => {
-    await mutation.mutateAsync({ path: '/users/login', ...data })
+    const userData = await mutation.mutateAsync({
+      path: '/users/login',
+      ...data,
+    })
+    console.log(userData)
+    setUser(userData)
+    await delay()
+    window.location.reload()
   }
 
   const {
@@ -37,51 +52,62 @@ const UserLogin = () => {
     onSubmit(data)
   })
 
+  const submitHandlerLogout = async () => {
+    refetch()
+    await delay()
+    setUser(null)
+    window.location.reload()
+  }
+
   return (
     <CommonPageHeader title="Login">
-      <form>
-        <Grid container spacing={1}>
-          <Grid xs={12} item>
-            <CommonFormAlert
-              mutation={mutation}
-              formStateErrors={formStateErrors}
-              formClearErrors={formClearErrors}
-              successTitle="Login réussi..."
-            />
+      {!user ? (
+        <form>
+          <Grid container spacing={1}>
+            <Grid xs={12} item>
+              <CommonFormAlert
+                mutation={mutation}
+                formStateErrors={formStateErrors}
+                formClearErrors={formClearErrors}
+                successTitle="Login réussi..."
+              />
+            </Grid>
+            <Grid xs={12} sm={12} item>
+              <TextField
+                name="email"
+                placeholder="Email"
+                label="Email"
+                variant="outlined"
+                fullWidth
+                required
+                {...register('email')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="password"
+                type="password"
+                placeholder="Mot de passe"
+                label="Mot de passe"
+                variant="outlined"
+                fullWidth
+                required
+                {...register('password')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CommonFormButton
+                isLoading={mutation.isLoading}
+                isSuccess={mutation.isSuccess}
+                submitHandler={submitHandler}
+                submitTitle="Login"
+              />
+            </Grid>
           </Grid>
-          <Grid xs={12} sm={12} item>
-            <TextField
-              name="email"
-              placeholder="Email"
-              label="Email"
-              variant="outlined"
-              fullWidth
-              required
-              {...register('email')}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="password"
-              type="password"
-              placeholder="Mot de passe"
-              label="Mot de passe"
-              variant="outlined"
-              fullWidth
-              required
-              {...register('password')}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CommonFormButton
-              isLoading={mutation.isLoading}
-              isSuccess={mutation.isSuccess}
-              submitHandler={submitHandler}
-              submitTitle="Login"
-            />
-          </Grid>
-        </Grid>
-      </form>
+        </form>
+      ) : (
+        <Button onClick={submitHandlerLogout}>Logout</Button>
+      )}
     </CommonPageHeader>
   )
 }

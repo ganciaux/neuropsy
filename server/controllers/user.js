@@ -13,6 +13,14 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj
 }
 
+exports.getMeLocal = (req, res, next) => {
+  console.log(res.locals)
+  if (res.locals.user === undefined) return next(new AppError('No user', 403))
+
+  req.params.id = res.locals.user.id
+  next()
+}
+
 exports.getMe = (req, res, next) => {
   req.params.id = req.user.id
   next()
