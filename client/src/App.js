@@ -8,7 +8,6 @@ import { makeStyles } from '@mui/styles'
 import { userContext } from './AppContext'
 import { isLoggedIn } from './api/api'
 import UserLogin from './pages/Users/UserLogin'
-import CommonLoader from './components/common/CommonLoader/CommonLoader'
 
 export const useStyles = makeStyles((theme) => ({
   gridWrapperStyles: {

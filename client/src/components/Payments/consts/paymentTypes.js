@@ -5,6 +5,12 @@ import EuroIcon from '@mui/icons-material/Euro'
 
 export const paymentTypes = [
   {
+    id: -1,
+    value: 1,
+    icon: <EuroIcon />,
+    label: 'Choisir',
+  },
+  {
     id: 1,
     value: 1,
     icon: <EuroIcon />,

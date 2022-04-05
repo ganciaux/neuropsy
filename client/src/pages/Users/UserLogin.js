@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import { Grid, TextField } from '@mui/material'
+import { Grid, TextField, Typography } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import CommonFormAlert from '../../components/common/CommonFormAlert/CommonFormAlert'
@@ -49,11 +49,11 @@ const UserLogin = () => {
   })
 
   return (
-    <CommonPageHeader title="Login">
+    <CommonPageHeader title="">
       {!user ? (
         <form>
-          <Grid container spacing={1}>
-            <Grid xs={12} item>
+          <Grid container spacing={1} justifyContent="center">
+            <Grid xs={8} sm={8} item>
               <CommonFormAlert
                 mutation={mutation}
                 formStateErrors={formStateErrors}
@@ -61,7 +61,12 @@ const UserLogin = () => {
                 successTitle="Login réussi..."
               />
             </Grid>
-            <Grid xs={12} sm={12} item>
+            <Grid xs={8} sm={8} item>
+              <Typography variant="h5" sx={{}}>
+                Login
+              </Typography>
+            </Grid>
+            <Grid xs={8} sm={8} item>
               <TextField
                 name="email"
                 placeholder="Email"
@@ -72,7 +77,7 @@ const UserLogin = () => {
                 {...register('email')}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid xs={8} sm={8} item>
               <TextField
                 name="password"
                 type="password"
@@ -84,7 +89,7 @@ const UserLogin = () => {
                 {...register('password')}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid xs={8} sm={8} item>
               <CommonFormButton
                 isLoading={mutation.isLoading}
                 isSuccess={mutation.isSuccess}

@@ -10,31 +10,31 @@ import {
 } from '@mui/material'
 
 const CommonFormAutocomplete = ({
+  options = [],
+  renderInput,
+  getOptionLabel,
+  onChange: ignored,
   control,
-  name,
-  label,
-  id,
-  data,
   defaultValue,
-  keyId = 'id',
-  keyValue = 'value',
-  keyLabel = 'label',
-  commonOnChange,
+  name,
+  renderOption,
 }) => {
   return (
     <Controller
-      name={name}
-      label={label}
-      control={control}
-      render={({ field: { onChange, value } }) => (
-        <FormControl fullWidth>
-          <Autocomplete
-            id={id}
-            options={data.map((option) => option.label)}
-            renderInput={(params) => <TextField {...params} label={label} />}
-          />
-        </FormControl>
+      render={({ onChange, ...props }) => (
+        <Autocomplete
+          options={options}
+          getOptionLabel={getOptionLabel}
+          renderOption={renderOption}
+          renderInput={renderInput}
+          onChange={(e, data) => onChange(data)}
+          {...props}
+        />
       )}
+      onChange={([, data]) => data}
+      defaultValue={defaultValue}
+      name={name}
+      control={control}
     />
   )
 }
