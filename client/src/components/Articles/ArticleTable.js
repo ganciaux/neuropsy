@@ -17,12 +17,14 @@ export default function ArticleTable({ data = [] }) {
 
   useEffect(() => {
     const pattern = filters.search.toLowerCase()
-    const result = data.filter(
-      (article) =>
-        article.name.toLowerCase().includes(pattern) ||
-        article.label.toLowerCase().includes(pattern) ||
-        article.price?.toString().toLowerCase().includes(pattern),
-    )
+    const result = data.filter((article) => {
+      console.log(article)
+      return (
+        article.name?.toLowerCase().includes(pattern) ||
+        article.label?.toLowerCase().includes(pattern) ||
+        article.price?.toString().toLowerCase().includes(pattern)
+      )
+    })
     setArticles(result)
   }, [data, filters])
 
@@ -35,7 +37,7 @@ export default function ArticleTable({ data = [] }) {
         <Grid xs={12} item>
           <TextField
             name="search"
-            placeholder="Recherche dans le nom et le label et le prix"
+            placeholder="Recherche dans le nom le label et le prix"
             label="Filtre de recherche"
             variant="outlined"
             fullWidth

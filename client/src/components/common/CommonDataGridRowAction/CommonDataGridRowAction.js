@@ -4,6 +4,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { CommonDialogDelete } from '../CommonDialogDelete/CommonDialogDelete'
 import { printData } from '../../../api/api'
+import { useNavigate } from 'react-router-dom'
 
 const CommonDataGridRowAction = ({
   detailsHref,
@@ -19,10 +20,12 @@ const CommonDataGridRowAction = ({
   data,
   setData,
 }) => {
+  const navigate = useNavigate()
+
   return (
     <Stack direction="row" gap={1}>
       {detailsHref && (
-        <Link href={detailsHref} underline="hover">
+        <Link onClick={() => navigate(detailsHref)} underline="hover">
           <ListAltIcon size="small">{detailsLabel}</ListAltIcon>
         </Link>
       )}
@@ -33,7 +36,7 @@ const CommonDataGridRowAction = ({
         />
       )}
       {editHref && (
-        <Link href={editHref} underline="hover">
+        <Link onClick={() => navigate(editHref)} underline="hover">
           <EditIcon size="small">{editLabel}</EditIcon>
         </Link>
       )}

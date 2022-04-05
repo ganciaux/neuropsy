@@ -8,6 +8,8 @@ import { makeStyles } from '@mui/styles'
 import { userContext } from './AppContext'
 import { isLoggedIn } from './api/api'
 import UserLogin from './pages/Users/UserLogin'
+import CommonLoader from './components/common/CommonLoader/CommonLoader'
+import CommonAlert from './components/common/CommonAlert/CommonAlert'
 
 export const useStyles = makeStyles((theme) => ({
   gridWrapperStyles: {
@@ -30,24 +32,53 @@ function App() {
   const classes = useStyles({ user })
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  const { status, data, error, refetch, isSuccess } = useQuery(
+  const { status, data, error, isLoading, refetch, isSuccess } = useQuery(
     'isLoggin',
     isLoggedIn,
     {
       onSuccess: (data) => {
         setUser(data.id)
       },
+      retry: false,
     },
   )
+
+  const render = () => {
+    if (isLoading) {
+      return <CommonLoader />
+    }
+    if (error) {
+      return (
+        <Grid className={classes.gridWrapperStyles}>
+          <UserLogin />
+        </Grid>
+      )
+    }
+    if (isSuccess) {
+      if (user) {
+        return (
+          <>
+            <Navbar />
+            <Grid className={classes.gridWrapperStyles}>
+              <Outlet />
+            </Grid>
+          </>
+        )
+      } else {
+        return (
+          <Grid className={classes.gridWrapperStyles}>
+            <UserLogin />
+          </Grid>
+        )
+      }
+    }
+  }
 
   return (
     <userContext.Provider value={user}>
       <Grid container>
         <Header />
-        {user && <Navbar />}
-        <Grid className={classes.gridWrapperStyles}>
-          {user ? <Outlet /> : <UserLogin />}
-        </Grid>
+        {render()}
       </Grid>
     </userContext.Provider>
   )

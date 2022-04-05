@@ -11,7 +11,6 @@ import CommonFormAlert from '../common/CommonFormAlert/CommonFormAlert'
 import CommonFormSelectQuery from '../common/CommonFormSelectQuery/CommonFormSelectQuery'
 import CommonFormDatePicker from '../common/CommonFormDatePicker/CommonFormDatePicker'
 import CommonFormSelect from '../common/CommonFormSelect/CommonFormSelect'
-import CommonFormAutocomplete from '../common/CommonFormAutocomplete/CommonFormAutocomplete'
 
 const schema = yup
   .object({
@@ -70,7 +69,7 @@ const OrderForm = ({ query, mutation, onSubmit, href }) => {
           />
         </Grid>
         <Grid item xs={6} sm={6} md={8}>
-          <CommonFormAutocomplete
+          <CommonFormSelect
             control={control}
             name="status"
             label="Statut"
