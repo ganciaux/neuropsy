@@ -1,36 +1,53 @@
-import { Button, TextField } from '@mui/material'
+import { Grid, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
+import CommonButtonNavigate from '../common/CommonButtonNavigate/CommonButtonNavigate'
 import CommonDataGrid from '../common/CommonDataGrid/CommonDataGrid'
 import { columns } from './consts/clientTableColumns'
 
-export default function ClientTable({ data }) {
+export default function ClientTable({ data = [] }) {
   const [clients, setClients] = useState(data)
   const clientColumns = columns(clients, setClients)
-  const length = data ? data.length : 0
+  const [filters, setFilters] = useState({
+    search: '',
+  })
+  const handleOnChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value })
+  }
 
-  const handleFilter = (e, data, setFilter) => {
-    const pattern = e.target.value.toLowerCase()
+  useEffect(() => {
+    const pattern = filters.search.toLowerCase()
     const result = data.filter(
       (client) =>
         client.name.toLowerCase().includes(pattern) ||
         client.firstname.toLowerCase().includes(pattern) ||
         client.email.toLowerCase().includes(pattern),
     )
-    setFilter(result)
-  }
 
-  if (length === 0) {
+    setClients(result)
+  }, [data, filters])
+
+  if (data.length === 0) {
     return <CommonAlert title="" content="Aucun client" severity="info" />
   }
+
   return (
-    <CommonDataGrid
-      data={clients}
-      columns={clientColumns}
-      model="clients"
-      handleFilter={handleFilter}
-      href="/clients/add"
-      placeholder="Recherche dans le nom, le prénom et l'email"
-    />
+    <CommonDataGrid data={clients} columns={clientColumns}>
+      <Grid container spacing={1}>
+        <Grid xs={12} item>
+          <TextField
+            name="search"
+            placeholder="Recherche dans le nom, le prénom et l'email"
+            label="Filtre de recherche"
+            variant="outlined"
+            fullWidth
+            onChange={handleOnChange}
+          />
+        </Grid>
+        <Grid xs={12} item>
+          <CommonButtonNavigate navigation="/clients/add" />
+        </Grid>
+      </Grid>
+    </CommonDataGrid>
   )
 }

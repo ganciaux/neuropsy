@@ -1,37 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Grid, TextField } from '@mui/material'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
+import CommonButtonNavigate from '../common/CommonButtonNavigate/CommonButtonNavigate'
 import CommonDataGrid from '../common/CommonDataGrid/CommonDataGrid'
 import { columns } from './consts/paymentTableColumns'
 
-export default function PaymentTable({ data }) {
+export default function PaymentTable({ data = [] }) {
   const [payments, setPayments] = useState(data)
-  const paymentColumn = columns(payments, setPayments)
+  const paymentColumns = columns(payments, setPayments)
+  const [filters, setFilters] = useState({
+    search: '',
+  })
+  const handleOnChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value })
+  }
 
-  const length = data ? data.length : 0
-
-  const handleFilter = (e, data, setFilter) => {
-    const pattern = e.target.value.toLowerCase()
+  useEffect(() => {
+    const pattern = filters.search.toLowerCase()
     const result = data.filter(
       (payment) =>
         payment.clientId?._name?.toLowerCase().includes(pattern) ||
         payment.price?.toString().toLowerCase().includes(pattern),
     )
-    setFilter(result)
-  }
+    setPayments(result)
+  }, [data, filters])
 
-  if (length === 0) {
+  if (data.length === 0) {
     return <CommonAlert title="" content="Aucun payment" severity="info" />
   }
   return (
-    <>
-      <CommonDataGrid
-        data={payments}
-        columns={paymentColumn}
-        model="payments"
-        handleFilter={handleFilter}
-        href="/payments/add"
-        placeholder="Recherche dans le nom du client et le prix"
-      />
-    </>
+    <CommonDataGrid data={payments} columns={paymentColumns}>
+      <Grid container spacing={1}>
+        <Grid xs={12} item>
+          <TextField
+            name="search"
+            placeholder="Recherche dans le nom du client et le prix"
+            label="Filtre de recherche"
+            variant="outlined"
+            fullWidth
+            onChange={handleOnChange}
+          />
+        </Grid>
+        <Grid xs={12} item>
+          <CommonButtonNavigate navigation="/payments/add" />
+        </Grid>
+      </Grid>
+    </CommonDataGrid>
   )
 }

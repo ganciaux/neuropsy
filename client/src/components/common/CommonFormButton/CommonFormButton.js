@@ -1,5 +1,6 @@
 import { Button } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const CommonFormButton = ({
   isLoading,
@@ -9,6 +10,8 @@ const CommonFormButton = ({
   submitTitle = 'Sauvegarder',
   hrefTitle = 'Retour',
 }) => {
+  const navigate = useNavigate()
+
   return (
     <>
       <Button
@@ -26,8 +29,9 @@ const CommonFormButton = ({
           type="button"
           variant="outlined"
           color="primary"
-          href={href}
+          onClick={() => navigate(href)}
         >
+          {/*href={href}*/}
           {hrefTitle}
         </Button>
       )}

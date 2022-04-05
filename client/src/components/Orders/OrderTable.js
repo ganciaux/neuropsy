@@ -1,21 +1,21 @@
-import { Button, Grid, TextField } from '@mui/material'
+import { Grid, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CommonAlert from '../common/CommonAlert/CommonAlert'
+import CommonButtonNavigate from '../common/CommonButtonNavigate/CommonButtonNavigate'
 import CommonDataGrid from '../common/CommonDataGrid/CommonDataGrid'
 import CommonDateRange from '../common/CommonDateRange/CommonDateRange'
 import CommonSelect from '../common/CommonSelect/CommonSelect'
 import { orderStatus } from './consts/orderStatus'
 import { columns } from './consts/orderTableColumns'
 
-export default function OrderTable({ data }) {
+export default function OrderTable({ data = [] }) {
   const [orders, setOrders] = useState(data)
   const [filters, setFilters] = useState({
     search: '',
     status: -1,
     dates: [null, null],
   })
-  const orderColumn = columns(orders, setOrders)
-  const length = data ? data.length : 0
+  const orderColumns = columns(orders, setOrders)
 
   const handleOnChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value })
@@ -43,11 +43,11 @@ export default function OrderTable({ data }) {
     setOrders(result)
   }, [data, filters])
 
-  if (length === 0) {
+  if (data.length === 0) {
     return <CommonAlert title="" content="Aucun rendez-vous" severity="info" />
   }
   return (
-    <CommonDataGrid data={orders} columns={orderColumn}>
+    <CommonDataGrid data={orders} columns={orderColumns}>
       <Grid container spacing={1}>
         <Grid xs={12} item>
           <TextField
@@ -78,15 +78,7 @@ export default function OrderTable({ data }) {
           />
         </Grid>
         <Grid xs={12} item>
-          <Button
-            sx={{ marginTop: '10px' }}
-            type="button"
-            variant="contained"
-            color="primary"
-            href="/orders/add"
-          >
-            Ajouter
-          </Button>
+          <CommonButtonNavigate navigation="/orders/add" />
         </Grid>
       </Grid>
     </CommonDataGrid>
