@@ -94,6 +94,30 @@ export const getData = async (path, id) => {
     })
 }
 
+export const getReport = async (data) => {
+  let url = `/reports/?type=${data.type}`
+  url += `&year=${data.year}`
+  url += `&period=${data.period}`
+  console.log('reports', data)
+  if (data.dates[0] != undefined && data.dates[1] != undefined) {
+    url += `&date[gte]=${new Date(data.dates[0]).getTime()}`
+    url += `&date[lte]=${new Date(data.dates[1]).getTime()}`
+  }
+
+  return await axios
+    .get(`${process.env.REACT_APP_API_URL}${url}`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      console.log('api: getReport:', res.data.data)
+      return res.data.data
+    })
+    .catch((err) => {
+      console.log(err.response.data)
+      throw err.response.data
+    })
+}
+
 export const createData = async ({ path, ...data }) => {
   return await axios
     .post(`${process.env.REACT_APP_API_URL}${path}`, data)

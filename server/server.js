@@ -13,6 +13,7 @@ const order = require('./routes/order')
 const payment = require('./routes/payment')
 const session = require('./routes/session')
 const user = require('./routes/user')
+const report = require('./routes/report')
 
 const appError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/error')
@@ -67,6 +68,7 @@ app.use('/api/references', reference)
 app.use('/api/orders', order)
 app.use('/api/payments', payment)
 app.use('/api/sessions', session)
+app.use('/api/reports', report)
 
 app.all('*', (req, res, next) => {
   next(new appError(`Can't find ${req.originalUrl} on this server`, 404))
