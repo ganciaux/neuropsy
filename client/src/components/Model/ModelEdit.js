@@ -7,8 +7,8 @@ import { useQueryAndMutation } from '../../utils/useQueryAndMutation'
 const ModelEdit = ({ title, model, href, render }) => {
   const formQuery = useQueryAndMutation(model)
 
-  const pageTitle = formQuery.data
-    ? `${title} - ` + formQuery.data?._name
+  const pageTitle = formQuery.query.data?._name
+    ? `${title} - ` + formQuery.query.data?._name
     : title
 
   if (formQuery.query.isLoading) {

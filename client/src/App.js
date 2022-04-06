@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
   gridWrapperStyles: {
     position: 'relative',
     paddingTop: '80px',
-    paddingLeft: ({ user }) => (user ? '200px' : '20px'),
+    paddingLeft: '200px',
     paddingRight: '20px',
     minHeight: 'calc(100vh)',
     textAlign: 'justify',

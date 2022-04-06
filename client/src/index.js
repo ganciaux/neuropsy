@@ -24,6 +24,7 @@ import Sessions from './pages/Sessions/Sessions'
 import SessionAdd from './pages/Sessions/SessionAdd'
 import SessionEdit from './pages/Sessions/SessionEdit'
 import Home from './pages/Home/Home'
+import Report from './pages/Report/Report'
 import UserLogin from './pages/Users/UserLogin'
 import UserLogout from './pages/Users/UserLogout'
 import { dashboardTheme } from './dashboardTheme'
@@ -72,6 +73,7 @@ ReactDOM.render(
             <Route path="sessions/edit/:id" element={<SessionEdit />} />
             <Route path="login" element={<UserLogin />} />
             <Route path="logout" element={<UserLogout />} />
+            <Route path="reports" element={<Report />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
