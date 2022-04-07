@@ -1,8 +1,20 @@
 import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
-import { Grid, TextField, Typography } from '@mui/material'
+import {
+  FormControl,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+  Typography,
+} from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import LockIcon from '@mui/icons-material/Lock'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import CommonFormAlert from '../../components/common/CommonFormAlert/CommonFormAlert'
@@ -20,7 +32,6 @@ const schema = yup
 
 const UserLogin = () => {
   const user = useContext(userContext)
-  const navigate = useNavigate()
   const mutation = useMutation(login)
 
   const onSubmit = async (data) => {
@@ -48,6 +59,29 @@ const UserLogin = () => {
     onSubmit(data)
   })
 
+  const [values, setValues] = React.useState({
+    email: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  })
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    })
+  }
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault()
+  }
+
   return (
     <CommonPageHeader title="">
       {!user ? (
@@ -67,26 +101,50 @@ const UserLogin = () => {
               </Typography>
             </Grid>
             <Grid xs={8} sm={8} item>
-              <TextField
-                name="email"
-                placeholder="Email"
-                label="Email"
-                variant="outlined"
+              <OutlinedInput
+                id="outlined-adornment-email"
+                value={values.email}
                 fullWidth
-                required
                 {...register('email')}
+                onChange={handleChange('email')}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <AccountCircleIcon />
+                    </IconButton>
+                  </InputAdornment>
+                }
+                placeholder="Email"
               />
             </Grid>
             <Grid xs={8} sm={8} item>
-              <TextField
-                name="password"
-                type="password"
-                placeholder="Mot de passe"
-                label="Mot de passe"
-                variant="outlined"
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
                 fullWidth
-                required
                 {...register('password')}
+                onChange={handleChange('password')}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <LockIcon />
+                    </IconButton>
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                placeholder="Mot de passe"
               />
             </Grid>
             <Grid xs={8} sm={8} item>
