@@ -56,7 +56,9 @@ export const columns = (data, setData) => [
           deleteHref="/orders"
           printHref="/orders/print"
           dialogTitle="Supprimer la commande ?"
-          dialogContent="todo..."
+          dialogContent={`${params.row._date} - ${
+            params.row.clientId?._name
+          } - ${params.row.price?.toFixed(2)} €`}
           id={params.row._id}
           data={data}
           setData={setData}

@@ -75,7 +75,9 @@ export const columns = (data, setData) => [
           editHref={`/payments/edit/${params.row.slug}`}
           deleteHref="/payments"
           dialogTitle="Supprimer le paiment ?"
-          dialogContent="todo..."
+          dialogContent={`${params.row._date} - ${
+            params.row.clientId?._name
+          } - ${params.row.price?.toFixed(2)} €`}
           id={params.row._id}
           data={data}
           setData={setData}

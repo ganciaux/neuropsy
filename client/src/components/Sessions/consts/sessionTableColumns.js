@@ -66,7 +66,7 @@ export const columns = (data, setData) => [
           editHref={`/sessions/edit/${params.row.slug}`}
           deleteHref="/sessions"
           dialogTitle="Supprimer le rendez-vous ?"
-          dialogContent="todo..."
+          dialogContent={`${params.row._date} - ${params.row.clientId?._name}`}
           id={params.row._id}
           data={data}
           setData={setData}

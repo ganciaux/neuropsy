@@ -24,6 +24,7 @@ export function CommonDialogDelete({
 
   const handleCloseOk = () => {
     setOpen(false)
+    console.log('delete: ', path, id)
     setData(data.filter((d) => d._id !== id))
   }
 

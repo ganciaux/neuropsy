@@ -5,8 +5,13 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import frLocale from 'date-fns/locale/fr'
 import Box from '@mui/material/Box'
+import { Button } from '@mui/material'
 
-export default function CommonDateRange({ onChange, dates = [null, null] }) {
+export default function CommonDateRange({
+  onChange,
+  dates = [null, null],
+  clearDate,
+}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
       <DateRangePicker
@@ -14,6 +19,8 @@ export default function CommonDateRange({ onChange, dates = [null, null] }) {
         endText="Fin"
         value={dates}
         onChange={onChange}
+        clearable
+        clearText="Vider"
         renderInput={(startProps, endProps) => (
           <React.Fragment>
             <TextField {...startProps} />
@@ -22,6 +29,7 @@ export default function CommonDateRange({ onChange, dates = [null, null] }) {
           </React.Fragment>
         )}
       />
+      {clearDate && <Button onClick={clearDate}>Effacer</Button>}
     </LocalizationProvider>
   )
 }

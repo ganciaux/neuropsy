@@ -17,6 +17,8 @@ const CommonFormDatePicker = ({ control, name, label, fullWidth = true }) => {
             inputFormat="dd/MM/yyyy"
             label={label}
             value={value}
+            clearable
+            clearText="Vider"
             onChange={onChange}
             renderInput={(params) => <TextField fullWidth {...params} />}
           />

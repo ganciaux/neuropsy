@@ -28,11 +28,11 @@ const getArticlesPrice = (articles) => {
 }
 
 const formatDate = (date) => {
-  return datefns.format(Date.parse(date), 'dd-MMMM-yyyy', { locale: frLocale })
+  return datefns.format(Date.parse(date), 'dd MMMM yyyy', { locale: frLocale })
 }
 
 const formatTime = (date) => {
-  return datefns.format(Date.parse(date), 'dd-MM-yyyy HH:mm', {
+  return datefns.format(Date.parse(date), 'dd MMMM yyyy HH:mm', {
     locale: frLocale,
   })
 }

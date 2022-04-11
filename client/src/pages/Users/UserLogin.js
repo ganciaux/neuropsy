@@ -67,19 +67,11 @@ const UserLogin = () => {
     showPassword: false,
   })
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
   const handleClickShowPassword = () => {
     setValues({
       ...values,
       showPassword: !values.showPassword,
     })
-  }
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
   }
 
   return (
@@ -103,10 +95,8 @@ const UserLogin = () => {
             <Grid xs={8} sm={8} item>
               <OutlinedInput
                 id="outlined-adornment-email"
-                value={values.email}
                 fullWidth
                 {...register('email')}
-                onChange={handleChange('email')}
                 startAdornment={
                   <InputAdornment position="start">
                     <IconButton>
@@ -121,10 +111,8 @@ const UserLogin = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={values.showPassword ? 'text' : 'password'}
-                value={values.password}
                 fullWidth
                 {...register('password')}
-                onChange={handleChange('password')}
                 startAdornment={
                   <InputAdornment position="start">
                     <IconButton>
@@ -137,7 +125,6 @@ const UserLogin = () => {
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
                       {values.showPassword ? <VisibilityOff /> : <Visibility />}

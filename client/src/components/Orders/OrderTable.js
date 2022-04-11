@@ -75,6 +75,7 @@ export default function OrderTable({ data = [] }) {
           <CommonDateRange
             onChange={handleOnChangeRange}
             dates={filters.dates}
+            clearDate={() => setFilters({ ...filters, dates: [null, null] })}
           />
         </Grid>
         <Grid xs={12} item>

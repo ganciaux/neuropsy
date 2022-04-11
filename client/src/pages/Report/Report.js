@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import {
-  Button,
-  Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from '@mui/material'
-import Avatar from '@mui/material/Avatar'
-import FolderIcon from '@mui/icons-material/Folder'
+import { Button, Grid } from '@mui/material'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoaderAlert'
 import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPageHeader'
@@ -18,14 +16,6 @@ import { reportType } from '../../components/Report/consts/reportType'
 import CommonSelect from '../../components/common/CommonSelect/CommonSelect'
 import { getReport } from '../../api/api'
 import CommonAlert from '../../components/common/CommonAlert/CommonAlert'
-
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  )
-}
 
 const reportYears = [
   { id: 2020, value: 2020, label: '2020' },
@@ -77,10 +67,6 @@ const Report = () => {
       },
     },
   )
-
-  const submitHandlerLogout = async () => {
-    refetch()
-  }
 
   return (
     <CommonPageHeader title="Report">
@@ -145,18 +131,32 @@ const Report = () => {
           <CommonAlert title="" content={error.message} severity="error" />
         )}
         {data && (
-          <List>
-            {generate(
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <FolderIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Single-line item xgsdr g awsergeèr hge hewhge ehehersh eerhesth  e hethjhe3 heh" />
-              </ListItem>,
-            )}
-          </List>
+          <TableContainer sx={{ marginTop: '15px' }} component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow sx={{ backgroundColor: '#efefef' }}>
+                  <TableCell sx={{ fontSize: '20px' }}>Client</TableCell>
+                  <TableCell sx={{ fontSize: '20px' }} align="right">
+                    Paiements
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data?.map((client) => (
+                  <TableRow key={client._id}>
+                    <TableCell component="th" scope="row">
+                      {`${client.name} ${client.firstname}`}
+                    </TableCell>
+                    <TableCell align="right">{`${client.total}€`}</TableCell>
+                  </TableRow>
+                ))}
+                <TableRow>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right">Total: ...</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
       </Grid>
     </CommonPageHeader>
