@@ -28,7 +28,12 @@ export default function ClientTable({ data = [] }) {
   }, [data, filters])
 
   if (data.length === 0) {
-    return <CommonAlert title="" content="Aucun client" severity="info" />
+    return (
+      <>
+        <CommonAlert title="" content="Aucun client" severity="info" />
+        <CommonButtonNavigate navigation="/clients/add" />
+      </>
+    )
   }
 
   return (

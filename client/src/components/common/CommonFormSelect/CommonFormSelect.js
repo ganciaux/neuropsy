@@ -13,6 +13,7 @@ const CommonFormSelect = ({
   keyValue = 'value',
   keyLabel = 'label',
   commonOnChange,
+  disabled = false,
 }) => {
   return (
     <Controller
@@ -20,7 +21,7 @@ const CommonFormSelect = ({
       label={label}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <FormControl fullWidth>
+        <FormControl fullWidth disabled={disabled}>
           <InputLabel id={`${id}-label`}>{label}</InputLabel>
           <Select
             labelId={`${id}-label`}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Autocomplete, Grid, InputAdornment, TextField } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro'
@@ -12,7 +12,6 @@ import CommonFormButton from '../common/CommonFormButton/CommonFormButton'
 import CommonFormSelect from '../common/CommonFormSelect/CommonFormSelect'
 import CommonFormDatePicker from '../common/CommonFormDatePicker/CommonFormDatePicker'
 import CommonFormSelectQuery from '../common/CommonFormSelectQuery/CommonFormSelectQuery'
-import CommonFormAutocomplete from '../common/CommonFormAutocomplete/CommonFormAutocomplete'
 
 const schema = yup
   .object({
@@ -62,6 +61,7 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
             keyLabel="_name"
             defaultValue
             model="clients"
+            disabled={Boolean(query.data.isFromClient)}
           />
         </Grid>
         <Grid item xs={6} sm={6} md={3}>
@@ -162,7 +162,7 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
             isLoading={mutation.isLoading}
             isSuccess={mutation.isSuccess}
             submitHandler={submitHandler}
-            href={href}
+            href={query.data.back ? query.data.back : href}
           />
         </Grid>
       </Grid>

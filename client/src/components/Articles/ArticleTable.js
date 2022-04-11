@@ -29,7 +29,12 @@ export default function ArticleTable({ data = [] }) {
   }, [data, filters])
 
   if (data.length === 0) {
-    return <CommonAlert title="" content="Aucun article" severity="info" />
+    return (
+      <>
+        <CommonAlert title="" content="Aucun article" severity="info" />
+        <CommonButtonNavigate navigation="/articles/add" />
+      </>
+    )
   }
   return (
     <CommonDataGrid data={articles} columns={articleColumns}>

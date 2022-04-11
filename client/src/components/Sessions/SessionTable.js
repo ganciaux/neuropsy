@@ -45,7 +45,12 @@ export default function SessionTable({ data }) {
   }, [data, filters])
 
   if (data.length === 0) {
-    return <CommonAlert title="" content="Aucun payment" severity="info" />
+    return (
+      <>
+        <CommonAlert title="" content="Aucun rendez-vous" severity="info" />
+        <CommonButtonNavigate navigation="/sessions/add" />
+      </>
+    )
   }
   return (
     <CommonDataGrid data={sessions} columns={sessionColumn}>

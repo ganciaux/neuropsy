@@ -2,6 +2,7 @@ import { Button } from '@mui/material'
 import React from 'react'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getData } from '../../api/api'
 import CommonGridLine from '../../components/common/CommonGridLine/CommonGridLine'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
@@ -10,7 +11,7 @@ import CommonPageHeader from '../../components/common/CommonPageHeader/CommonPag
 
 const ClientDetails = () => {
   const { id } = useParams()
-
+  const navigate = useNavigate()
   const { isLoading, error, data } = useQuery('client', () =>
     getData('/clients', id),
   )
@@ -49,6 +50,15 @@ const ClientDetails = () => {
         href="/Clients"
       >
         Retour
+      </Button>
+      <Button
+        sx={{ marginTop: '10px' }}
+        type="button"
+        variant="outlined"
+        color="primary"
+        onClick={() => navigate(`/clients/payment/${data.slug}`)}
+      >
+        Ajouter paiment
       </Button>
     </CommonPageHeader>
   )

@@ -44,7 +44,12 @@ export default function OrderTable({ data = [] }) {
   }, [data, filters])
 
   if (data.length === 0) {
-    return <CommonAlert title="" content="Aucun rendez-vous" severity="info" />
+    return (
+      <>
+        <CommonAlert title="" content="Aucune commande" severity="info" />
+        <CommonButtonNavigate navigation="/orders/add" />
+      </>
+    )
   }
   return (
     <CommonDataGrid data={orders} columns={orderColumns}>

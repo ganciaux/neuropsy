@@ -43,7 +43,12 @@ export default function PaymentTable({ data = [] }) {
   }, [data, filters])
 
   if (data.length === 0) {
-    return <CommonAlert title="" content="Aucun payment" severity="info" />
+    return (
+      <>
+        <CommonAlert title="" content="Aucun payment" severity="info" />
+        <CommonButtonNavigate navigation="/payments/add" />
+      </>
+    )
   }
   return (
     <CommonDataGrid data={payments} columns={paymentColumns}>

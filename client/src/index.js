@@ -59,6 +59,7 @@ ReactDOM.render(
             <Route path="clients/add" element={<ClientAdd />} />
             <Route path="clients/details/:id" element={<ClientDetails />} />
             <Route path="clients/edit/:id" element={<ClientEdit />} />
+            <Route path="clients/payment/:id" element={<PaymentAdd />} />
             <Route path="orders/" element={<Orders />} />
             <Route path="orders/add" element={<OrderAdd />} />
             {/* <Route path="orders/details/:id" element={<OrderDetails />} /> */}

@@ -14,6 +14,7 @@ const CommonFormSelectQuery = ({
   keyValue = 'value',
   keyLabel = 'label',
   model,
+  disabled = false,
 }) => {
   const queryClients = useQueryList(model)
 
@@ -36,6 +37,7 @@ const CommonFormSelectQuery = ({
       keyLabel={keyLabel}
       data={queryClients.data}
       defaultValue={defaultValue}
+      disabled={disabled}
     />
   )
 }
