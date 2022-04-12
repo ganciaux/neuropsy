@@ -13,7 +13,7 @@ const ClientDetails = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { isLoading, error, data } = useQuery('client', () =>
-    getData('/clients', id),
+    getData('/clients/details', id),
   )
 
   if (isLoading) {
@@ -60,6 +60,10 @@ const ClientDetails = () => {
       >
         Ajouter paiment
       </Button>
+
+      {data.payments?.map((payment) => {
+        return <div key={payment.id}>{payment._date}</div>
+      })}
     </CommonPageHeader>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Autocomplete, Grid, InputAdornment, TextField } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro'
@@ -22,6 +22,7 @@ const schema = yup
   .required()
 
 const PaymentForm = ({ query, mutation, onSubmit, href }) => {
+  console.log('PaymentForm:', query.data.isFromClient, query.data.clientId)
   const {
     control,
     register,
@@ -114,18 +115,12 @@ const PaymentForm = ({ query, mutation, onSubmit, href }) => {
                 value={value}
                 options={paymentTypes}
                 getOptionLabel={(item) => {
-                  console.log('getOptionLabel:', item)
+                  //console.log('getOptionLabel:', item)
                   if (item > 0) return getTypeLabel(item)
                   else return item.label ? item.label : ''
                   //return item.label ? item.label : getTypeLabel(item)
                 }}
                 isOptionEqualToValue={(option, value) => {
-                  console.log(
-                    'isOptionEqualToValue Option:',
-                    option,
-                    'value:',
-                    value,
-                  )
                   if (value === -1 && option.id === 1) return true
                   return option?.id === value
                 }}

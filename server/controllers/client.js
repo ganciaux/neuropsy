@@ -14,13 +14,19 @@ exports.createClient = factory.createOne(Client)
 exports.updateClient = factory.updateOne(Client)
 exports.deleteClient = factory.deleteOne(Client)
 exports.detailsClient = catchAsync(async (req, res, next) => {
-  if (ObjectId.isValid(req.params.id) == true)
+  let doc = null
+  if (ObjectId.isValid(req.params.id) == true) {
     query = Client.findById(req.params.id)
-  else query = Client.findOne({ slug: req.params.id })
+    query = query.populate(['sessions', 'orders', 'payments'])
+    doc = await query
+  }
 
-  query = query.populate(['sessions', 'orders', 'payments'])
+  if (!doc) {
+    query = Client.findOne({ slug: req.params.id })
+    query = query.populate(['sessions', 'orders', 'payments'])
+    doc = await query
+  }
 
-  doc = await query
   if (!doc) {
     return next(new AppError('No document found with this id', 404))
   }

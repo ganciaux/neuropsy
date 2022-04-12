@@ -63,8 +63,7 @@ export const logout = async () => {
       withCredentials: true,
     })
     .then((res) => {
-      console.log('api: logout(1):', res.data)
-      console.log('api: logout(2):', res.data.data)
+      console.log('api: logout:', res.data)
     })
     .catch((err) => {
       console.log(err.response.data)

@@ -41,13 +41,18 @@ exports.createOne = (Model) =>
 
 exports.getOne = (Model, populateOptions) =>
   catchAsync(async (req, res, next) => {
-    if (ObjectId.isValid(req.params.id) == true)
+    let doc = null
+    if (ObjectId.isValid(req.params.id) == true) {
       query = Model.findById(req.params.id)
-    else query = Model.find({ slug: req.params.id })
+      if (populateOptions) query = query.populate(populateOptions)
+      doc = await query
+    }
 
-    if (populateOptions) query = query.populate(populateOptions)
-
-    let doc = await query
+    if (!doc) {
+      query = Model.findOne({ slug: req.params.id })
+      if (populateOptions) query = query.populate(populateOptions)
+      doc = await query
+    }
 
     if (!doc) {
       return next(new AppError('No document found with this id', 404))
