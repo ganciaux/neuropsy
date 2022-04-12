@@ -45,7 +45,7 @@ export default function PaymentTable({ data = [] }) {
   if (data.length === 0) {
     return (
       <>
-        <CommonAlert title="" content="Aucun payment" severity="info" />
+        <CommonAlert title="" content="Aucun paiement" severity="info" />
         <CommonButtonNavigate navigation="/payments/add" />
       </>
     )

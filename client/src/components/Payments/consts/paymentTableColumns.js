@@ -74,7 +74,7 @@ export const columns = (data, setData) => [
         <CommonDataGridRowAction
           editHref={`/payments/edit/${params.row.slug}`}
           deleteHref="/payments"
-          dialogTitle="Supprimer le paiment ?"
+          dialogTitle="Supprimer le paiement ?"
           dialogContent={`${params.row._date} - ${
             params.row.clientId?._name
           } - ${params.row.price?.toFixed(2)} €`}

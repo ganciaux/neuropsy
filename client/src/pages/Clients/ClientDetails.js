@@ -4,6 +4,7 @@ import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { getData } from '../../api/api'
+import CommonButtonNavigate from '../../components/common/CommonButtonNavigate/CommonButtonNavigate'
 import CommonGridLine from '../../components/common/CommonGridLine/CommonGridLine'
 import CommonLoader from '../../components/common/CommonLoader/CommonLoader'
 import CommonLoaderAlert from '../../components/common/CommonLoader/CommonLoaderAlert'
@@ -51,15 +52,18 @@ const ClientDetails = () => {
       >
         Retour
       </Button>
-      <Button
-        sx={{ marginTop: '10px' }}
-        type="button"
-        variant="outlined"
-        color="primary"
-        onClick={() => navigate(`/clients/payment/${data.slug}`)}
-      >
-        Ajouter paiment
-      </Button>
+      <CommonButtonNavigate
+        navigation={`/clients/session/${data.slug}`}
+        label="Ajouter un rendez-vous"
+      />
+      <CommonButtonNavigate
+        navigation={`/clients/payment/${data.slug}`}
+        label="Ajouter un paiement"
+      />
+      <CommonButtonNavigate
+        navigation={`/clients/order/${data.slug}`}
+        label="Ajouter une commande"
+      />
 
       {data.payments?.map((payment) => {
         return <div key={payment.id}>{payment._date}</div>
